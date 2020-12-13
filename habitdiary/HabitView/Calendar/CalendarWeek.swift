@@ -10,63 +10,32 @@ import SwiftUI
 struct CustomCalendarWeek: View {
     
     let week: Int
-    let currentDate: Date
+    let isExpanded: Bool
     @ObservedObject var habit: HabitInfo
+    @Binding var selectedDate: Date
     
     var firstDayofWeek: Int {
         let calendar = Calendar.current
-        var dateComponents  = calendar.dateComponents([.year, .month], from: currentDate)
+        var dateComponents  = calendar.dateComponents([.year, .month], from: selectedDate)
         dateComponents.day = 1
         return calendar.date(from: dateComponents)?.dayOfTheWeek ?? 1
     }
     var lastDayofWeek: Int {
         let calendar = Calendar.current
-        var dateComponents  = calendar.dateComponents([.year, .month], from: currentDate)
-        dateComponents.day = getMonthLength(year: currentDate.year, month: currentDate.month)
+        var dateComponents  = calendar.dateComponents([.year, .month], from: selectedDate)
+        dateComponents.day = getMonthLength(year: selectedDate.year, month: selectedDate.month)
         return calendar.date(from: dateComponents)?.dayOfTheWeek ?? 1
     }
-    var lineNum: Int {
-        let date = currentDate
-        let calendar = Calendar.current
-        let weekRange = calendar.range(
-            of: .weekOfMonth,
-            in: .month,
-            for: date
-        )
-        return weekRange?.count ?? 0
-    }
-    @Binding var selectedDate: Date
     
     var body: some View {
         HStack {
-            if week == 0 {
-                ForEach(1..<8) { day in
-                    CalendarUnit(
-                        color: Color(str: habit.color),
-                        progress: percentAchieved(day: firstDayofWeek <= day ? day-firstDayofWeek+1 : nil) ?? 0,
-                        date: dayToDate(firstDayofWeek <= day ? day-firstDayofWeek+1 : nil),
-                        isUnderline: isMemo(.first, day: day), currentDate: currentDate,
-                        selectedDate: $selectedDate
-                    )
-                }
-            } else if week == lineNum - 1 {
-                ForEach(1..<8) { day in
-                    CalendarUnit(
-                        color: Color(str: habit.color),
-                        progress: percentAchieved(day: lastDayofWeek >= day ? day+7*week-firstDayofWeek+1 : nil) ?? 0,
-                        date: dayToDate(lastDayofWeek >= day ? day+7*week-firstDayofWeek+1 : nil),
-                        isUnderline: isMemo(.last, day: day), currentDate: currentDate,
-                        selectedDate: $selectedDate)
-                }
-            } else {
-                ForEach(1..<8) { day in
-                    CalendarUnit(
-                        color: Color(str: habit.color),
-                        progress: percentAchieved(day: day+7*week-firstDayofWeek+1) ?? 0,
-                        date: dayToDate(day+7*week-firstDayofWeek+1),
-                        isUnderline: isMemo(.middle, day: day), currentDate: currentDate,
-                        selectedDate: $selectedDate)
-                }
+            ForEach(1..<8) { day in
+                CalendarUnit(
+                    color: (monthTypef(weekNum: week, dayOfWeek: day) != .this) && isExpanded == true ? .gray : Color(str: habit.color),
+                    progress: percentAchieved(date: dayOfWeekToDate(weekNum: week, dayOfWeek: day)),
+                    date: dayOfWeekToDate(weekNum: week, dayOfWeek: day),
+                    isUnderline: habit.diary[dayOfWeekToDate(weekNum: week, dayOfWeek: day).dictKey] != nil,
+                    selectedDate: $selectedDate)
             }
         }
     }
@@ -74,24 +43,67 @@ struct CustomCalendarWeek: View {
     enum WeekType {
         case first, middle, last
     }
+    enum MonthType {
+        case previous, this, next
+    }
     
-    func isMemo(_ weekType: WeekType, day: Int) -> Bool {
-        func weekTypeToDay(_ weekType: WeekType, day: Int) -> Int? {
-            switch(weekType) {
-            case .first:
-                return firstDayofWeek <= day ? day-firstDayofWeek+1 : nil
-            case .last:
-                return lastDayofWeek >= day ? day+7*week-firstDayofWeek+1 : nil
-            case .middle:
-                return day+7*week-firstDayofWeek+1
+    func weekTypef(_ weekNum: Int) -> WeekType {
+        let date = selectedDate
+        let calendar = Calendar.current
+        let lineNum = calendar.range(
+            of: .weekOfMonth,
+            in: .month,
+            for: date
+        )?.count ?? 0
+        if weekNum == 1 {
+            return .first
+        } else if weekNum == lineNum {
+            return .last
+        } else {
+            return .middle
+        }
+    }
+    
+    func monthTypef(weekNum: Int, dayOfWeek: Int) -> MonthType {
+        let weekType = weekTypef(weekNum)
+        if weekType == .first && dayOfWeek < firstDayofWeek {
+            return .previous
+        } else if weekType == .last && dayOfWeek > lastDayofWeek {
+            return .next
+        } else {
+            return .this
+        }
+    }
+    
+    func dayOfWeekToDate(weekNum: Int, dayOfWeek: Int) -> Date {
+        let weekType = weekTypef(weekNum)
+        let monthType = monthTypef(weekNum: weekNum, dayOfWeek: dayOfWeek)
+        let calendar = Calendar.current
+        var dateComponents: DateComponents
+        dateComponents = calendar.dateComponents([.year, .month], from: selectedDate)
+        switch(monthType) {
+        case .previous:
+            if dateComponents.month != nil {
+                dateComponents.month = dateComponents.month! - 1
+            }
+        case .this:
+            break
+        case .next:
+            if dateComponents.month != nil {
+                dateComponents.month = dateComponents.month! + 1
             }
         }
-        if let realDay = weekTypeToDay(weekType, day: day) {
-            if let day = dayToDate(realDay) {
-                return habit.diary[day.dictKey] != nil
-            }
+        let day: Int?
+        switch(weekType) {
+        case .first:
+            day = firstDayofWeek <= dayOfWeek ? dayOfWeek-firstDayofWeek+1 : getMonthLength(year: selectedDate.year, month: selectedDate.month-1)-firstDayofWeek+dayOfWeek+1
+        case .last:
+            day = lastDayofWeek >= dayOfWeek ? dayOfWeek+7*(week-1)-firstDayofWeek+1 : dayOfWeek - lastDayofWeek
+        case .middle:
+            day = dayOfWeek+7*(week-1)-firstDayofWeek+1
         }
-        return false
+        dateComponents.day = day
+        return calendar.date(from: dateComponents) ?? Date()
     }
     
     func getMonthLength(year: Int, month: Int) -> Int {
@@ -102,25 +114,7 @@ struct CustomCalendarWeek: View {
         return range.count
     }
     
-    func percentAchieved(day: Int?) -> Double? {
-        if let day = day {
-          let date = dayToDate(day) ?? currentDate
-            guard habit.times > 0 else {
-                return 1.0
-            }
-            return min(Double((habit.achieve[date.dictKey] ?? 0))/Double(habit.times), 1)
-        } else {
-            return nil
-        }
-    }
-    
-    func dayToDate(_ day: Int?) -> Date? {
-        if day == nil {
-            return nil
-        }
-        let calendar = Calendar.current
-        var dateComponents = calendar.dateComponents([.year, .month], from: currentDate)
-        dateComponents.day = day
-        return calendar.date(from: dateComponents)
+    func percentAchieved(date: Date) -> Double {
+        min(Double((habit.achieve[date.dictKey] ?? 0))/Double(habit.times), 1)
     }
 }

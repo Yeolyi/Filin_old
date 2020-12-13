@@ -7,19 +7,11 @@
 
 import SwiftUI
 
-struct AddHabit: View {
+struct EditHabit: View {
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var managedObjectContext
-    @FetchRequest(
-        entity: HabitInfo.entity(),
-        sortDescriptors: []
-    )
-    var habitInfos: FetchedResults<HabitInfo>
-    let targetHabit: HabitInfo?
-    var isEdit: Bool {
-        targetHabit != nil
-    }
+    let targetHabit: HabitInfo
     @State var habitName = ""
     @State var habitExplain = ""
     @State var habitType = HabitType.daily
@@ -27,16 +19,14 @@ struct AddHabit: View {
     @State var number = 0
     @State var selectedColor = Color.black
     
-    init(targetHabit: HabitInfo? = nil) {
+    init(targetHabit: HabitInfo) {
         self.targetHabit = targetHabit
-        if let targetHabit = targetHabit {
-            self._habitName = State(initialValue: targetHabit.name)
-            self._habitExplain = State(initialValue: targetHabit.explanation ?? "")
-            self._habitType = State(initialValue: HabitType(rawValue: targetHabit.habitType) ?? .daily)
-            self._dayOfTheWeek = State(initialValue: targetHabit.dayOfWeek?.map{Int($0)} ?? [])
-            self._number = State(initialValue: Int(targetHabit.times))
-            self._selectedColor = State(initialValue: Color(str: targetHabit.color))
-        }
+        self._habitName = State(initialValue: targetHabit.name)
+        self._habitExplain = State(initialValue: targetHabit.explanation ?? "")
+        self._habitType = State(initialValue: HabitType(rawValue: targetHabit.habitType) ?? .daily)
+        self._dayOfTheWeek = State(initialValue: targetHabit.dayOfWeek?.map{Int($0)} ?? [])
+        self._number = State(initialValue: Int(targetHabit.times))
+        self._selectedColor = State(initialValue: Color(str: targetHabit.color))
     }
     
     var body: some View {
@@ -76,14 +66,12 @@ struct AddHabit: View {
                         }
                     }
                 }
-                if isEdit {
-                    Button(action: {
-                        managedObjectContext.delete(targetHabit!)
-                        CoreDataManager.save(managedObjectContext)
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("삭제")
-                    }
+                Button(action: {
+                    managedObjectContext.delete(targetHabit)
+                    CoreDataManager.save(managedObjectContext)
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("삭제")
                 }
             }
             .insetGroupedListStyle()
@@ -102,25 +90,12 @@ struct AddHabit: View {
     
     var saveButton: some View {
         Button(action: {
-            if let targetHabit = targetHabit {
-                targetHabit.name = habitName
-                targetHabit.explanation = habitExplain == "" ? nil : habitExplain
-                targetHabit.color = selectedColor.string
-                targetHabit.habitType = habitType.rawValue
-                targetHabit.dayOfWeek = dayOfTheWeek.map({Int16($0)})
-                targetHabit.times = Int16(number)
-            } else {
-                let newHabit = HabitInfo(context: managedObjectContext)
-                newHabit.name = habitName
-                newHabit.explanation = habitExplain == "" ? nil : habitExplain
-                newHabit.color = selectedColor.string
-                newHabit.habitType = habitType.rawValue
-                newHabit.dayOfWeek = dayOfTheWeek.map({Int16($0)})
-                newHabit.userOrder = Int16(habitInfos.count)
-                newHabit.id = UUID()
-                newHabit.times = Int16(number)
-                newHabit.achieve = [:]
-            }
+            targetHabit.name = habitName
+            targetHabit.explanation = habitExplain == "" ? nil : habitExplain
+            targetHabit.color = selectedColor.string
+            targetHabit.habitType = habitType.rawValue
+            targetHabit.dayOfWeek = dayOfTheWeek.map({Int16($0)})
+            targetHabit.times = Int16(number)
             CoreDataManager.save(managedObjectContext)
             self.presentationMode.wrappedValue.dismiss()
         }) {
@@ -129,8 +104,10 @@ struct AddHabit: View {
     }
 }
 
-struct AddHabit_Previews: PreviewProvider {
+/*
+struct EditHabit_Previews: PreviewProvider {
     static var previews: some View {
-        AddHabit()
+        EditHabit()
     }
 }
+*/

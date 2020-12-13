@@ -20,6 +20,9 @@ extension Date {
     var dayOfTheWeek: Int {
         Calendar.current.component(.weekday, from: self)
     }
+    var weekNum: Int {
+        Calendar.current.component(.weekOfMonth, from: self)
+    }
     
     static func dayOfTheWeekStr(_ num: Int) -> String {
         switch(num) {

@@ -11,10 +11,9 @@ struct CalendarRow: View {
     
     @Binding var selectedDate: Date
     @ObservedObject var habit: HabitInfo
-    @State var currentDate = Date()
     let isExpanded: Bool
     var lineNum: Int {
-        let date = currentDate
+        let date = selectedDate
         let calendar = Calendar.current
         let weekRange = calendar.range(
             of: .weekOfMonth,
@@ -23,93 +22,81 @@ struct CalendarRow: View {
         )
         return weekRange?.count ?? 0
     }
-    var currentWeekNum: Int {
-        let calendar = Calendar.current
-        return calendar.component(.weekOfMonth, from: currentDate) - 1
-    }
     let dayOfWeekStr = ["일", "월", "화", "수", "목", "금", "토"]
+    let ordinalToStr = [1: "첫", 2:"둘", 3:"셋", 4:"넷", 5:"다섯번"]
     
     init(selectedDate: Binding<Date>, habit: HabitInfo, isExpanded: Bool) {
         self._selectedDate = selectedDate
         self.habit = habit
         self.isExpanded = isExpanded
-        self.currentDate = Date()
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ZStack {
                 HStack {
                     Spacer()
-                    Text("\(String(currentDate.year))년 \(currentDate.month)월")
-                        .font(.system(size: 20, weight: .bold))
+                    if isExpanded {
+                        Text("\(String(selectedDate.year))년 \(selectedDate.month)월")
+                            .font(.system(size: 20, weight: .bold))
+                    } else {
+                        Text("\(selectedDate.month)월 \(selectedDate.day)일")
+                            .font(.system(size: 20, weight: .bold))
+                    }
                     Spacer()
                 }
                 HStack {
                     Spacer()
-                    Button(action: monthMinus) {
+                    Button(action: {
+                        withAnimation {
+                            if isExpanded {
+                                selectedDate = Calendar.current.date(byAdding: .month, value: -1, to: selectedDate) ?? Date()
+                            } else {
+                                selectedDate = Calendar.current.date(byAdding: .weekOfMonth, value: -1, to: selectedDate) ?? Date()
+                            }
+                        }
+                    }) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 20))
+                            .frame(width: 30, height: 30)
                     }
                     .padding(5)
-                    Button(action: monthPlus) {
+                    Button(action: {
+                        withAnimation {
+                            if isExpanded {
+                                selectedDate = Calendar.current.date(byAdding: .month, value: 1, to: selectedDate) ?? Date()
+                            } else {
+                                selectedDate = Calendar.current.date(byAdding: .weekOfMonth, value: 1, to: selectedDate) ?? Date()
+                            }
+                        }
+                    }) {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 20))
+                            .frame(width: 30, height: 30)
                     }
                     .padding(5)
                 }
             }
+            .padding(.bottom, 15)
             HStack {
                 ForEach(dayOfWeekStr, id: \.self) { str in
                     Text(str)
                         .font(.headline)
-                        .frame(width: 40, height: 40)
+                        .foregroundColor(.gray)
+                        .frame(width: 40)
                 }
             }
+            .padding(.bottom, 5)
             if isExpanded {
-                ForEach(0..<lineNum, id: \.self) { week in
-                    CustomCalendarWeek(week: week, currentDate: currentDate, habit: habit, selectedDate: $selectedDate)
+                ForEach(1..<lineNum+1, id: \.self) { week in
+                    CustomCalendarWeek(week: week, isExpanded: true, habit: habit, selectedDate: $selectedDate)
+                        .padding(.bottom, 10)
                 }
             } else {
-                CustomCalendarWeek(week: currentWeekNum, currentDate: currentDate, habit: habit, selectedDate: $selectedDate)
+                CustomCalendarWeek(week: selectedDate.weekNum, isExpanded: false, habit: habit, selectedDate: $selectedDate)
+                    .padding(.bottom, 10)
             }
         }
-    }
-    
-    func monthMinus() {
-        let calendar = Calendar.current
-        guard currentDate.month-1 >= 1 else {
-            var dateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
-            if dateComponents.year != nil {
-                dateComponents.year = dateComponents.year! - 1
-                dateComponents.month = 12
-            }
-            currentDate =  calendar.date(from: dateComponents) ?? Date()
-            return
-        }
-        var dateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
-        if dateComponents.month != nil {
-            dateComponents.month = dateComponents.month! - 1
-        }
-        currentDate = calendar.date(from: dateComponents) ?? Date()
-    }
-    
-    func monthPlus() {
-        let calendar = Calendar.current
-        guard currentDate.month+1 <= 12 else {
-            var dateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
-            if dateComponents.year != nil {
-                dateComponents.year = dateComponents.year! + 1
-                dateComponents.month = 1
-            }
-            currentDate =  calendar.date(from: dateComponents) ?? Date()
-            return
-        }
-        var dateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
-        if dateComponents.month != nil {
-            dateComponents.month = dateComponents.month! + 1
-        }
-        currentDate =  calendar.date(from: dateComponents) ?? Date()
     }
 }
 

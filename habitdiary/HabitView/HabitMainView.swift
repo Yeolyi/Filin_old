@@ -22,57 +22,64 @@ struct HabitViewMain: View {
     @State var activeSheet: ActiveSheet?
     @State var selectedDate = Date()
     @State var diaryExpanded = false
+    @State var calendarExpanded = false
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                if habit.explanation != nil {
+        ZStack {
+            ScrollView {
+                VStack(spacing: 0) {
                     HStack {
                         Spacer()
-                        Text(habit.explanation!)
-                            .font(.headline)
+                        CalendarRow(selectedDate: $selectedDate, habit: habit, isExpanded: calendarExpanded)
                         Spacer()
                     }
                     .rowBackground()
+                    /*
+                    if habit.explanation != nil {
+                        HStack {
+                            Spacer()
+                            Text(habit.explanation!)
+                                .font(.headline)
+                            Spacer()
+                        }
+                        .rowBackground()
+                    }
+ */
+                    TodayHabit(habit: habit, selectedDate: $selectedDate)
+                        .padding(.bottom, 20)
+                    DiaryRow(activeSheet: $activeSheet, expanded: $diaryExpanded, habit: habit, selectedDate: selectedDate)
+                        .padding(.bottom, 60)
                 }
-                HStack {
-                    Spacer()
-                    CalendarRow(selectedDate: $selectedDate, habit: habit, isExpanded: sharedViewData.isCalendarMode)
-                    Spacer()
+            }
+            .padding(.top, 1)
+            .navigationBarTitle(habit.name)
+            .navigationBarItems(
+                trailing:
+                    Button(action: { activeSheet = ActiveSheet.edit }) {
+                        Text("편집")
+                    }
+            )
+            .sheet(item: $activeSheet) { item in
+                switch(item) {
+                case .diary:
+                    DiaryModal(habit: habit, targetDate: selectedDate)
+                        .allowAutoDismiss(false)
+                case .edit:
+                    EditHabit(targetHabit: habit)
+                        .environment(\.managedObjectContext, managedObjectContext)
                 }
-                .rowBackground()
-                TodayHabit(habit: habit, selectedDate: $selectedDate)
-                DiaryRow(activeSheet: $activeSheet, expanded: $diaryExpanded, habit: habit, selectedDate: selectedDate)
-                    .padding(.bottom, 60)
             }
-        }
-        .padding(.top, 1)
-        .navigationBarTitle(habit.name)
-        .navigationBarItems(
-            trailing:
-                Button(action: { activeSheet = ActiveSheet.edit }) {
-                    Text("편집")
+            .onAppear {
+                withAnimation {
+                    sharedViewData.inMainView = false
                 }
-        )
-        .sheet(item: $activeSheet) { item in
-            switch(item) {
-            case .diary:
-                DiaryModal(habit: habit, targetDate: selectedDate)
-                    .allowAutoDismiss(false)
-            case .edit:
-                AddHabit(targetHabit: habit)
-                    .environment(\.managedObjectContext, managedObjectContext)
             }
-        }
-        .onAppear {
-            withAnimation {
-                sharedViewData.inMainView = false
+            .onDisappear {
+                withAnimation {
+                    sharedViewData.inMainView = true
+                }
             }
-        }
-        .onDisappear {
-            withAnimation {
-                sharedViewData.inMainView = true
-            }
+            BottomBar(activeSheet: $activeSheet, isCalendarExpanded: $calendarExpanded, isDiaryExpanded: $diaryExpanded, habit: habit)
         }
     }
 }

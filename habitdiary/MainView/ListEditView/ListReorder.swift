@@ -14,12 +14,13 @@ struct ListReorder: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \HabitInfo.userOrder, ascending: true)]
     )
     var habitInfos: FetchedResults<HabitInfo>
+    @EnvironmentObject var listOrderManager: ListOrderManager
     @Environment(\.managedObjectContext) var managedObjectContext
     
     var body: some View {
         List {
-            ForEach(habitInfos) { habitInfo in
-                Text(habitInfo.name )
+            ForEach(listOrderManager.habitOrder, id: \.self) { id in
+                Text((habitInfos.first(where: {$0.id==id}) ?? HabitInfo(context: managedObjectContext)).name)
             }
             .onMove(perform: move)
             .onDelete(perform: remove)
@@ -29,23 +30,11 @@ struct ListReorder: View {
     }
     
     func move(from source: IndexSet, to destination: Int) {
-        var revisedItems: [HabitInfo] = habitInfos.map{$0}
-        revisedItems.move(fromOffsets: source, toOffset: destination )
-        // update the userOrder attribute in revisedItems to
-        // persist the new order. This is done in reverse order
-        // to minimize changes to the indices.
-        for reverseIndex in stride(from: revisedItems.count - 1, through: 0, by: -1) {
-            revisedItems[reverseIndex].userOrder = Int16(reverseIndex)
-        }
-        CoreDataManager.save(managedObjectContext)
+        listOrderManager.habitOrder.move(fromOffsets: source, toOffset: destination)
     }
     
     func remove(at offsets: IndexSet) {
-        for index in offsets {
-            let habit = habitInfos[index]
-            managedObjectContext.delete(habit)
-        }
-        CoreDataManager.save(managedObjectContext)
+        listOrderManager.habitOrder.remove(atOffsets: offsets)
     }
     
 }

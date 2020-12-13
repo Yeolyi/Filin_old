@@ -18,28 +18,28 @@ struct DiaryRow: View {
         VStack {
             HStack {
                 Text("일기")
-                    .font(.headline)
+                    .font(.system(size: 20, weight: .bold))
                 Spacer()
-                Button(action: {
-                    withAnimation {
-                        expanded.toggle()
-                    }
-                }) {
-                    Image(systemName: "square.split.1x2")
-                        .font(.system(size: 25, weight: .light))
-                        .padding(.trailing, 10)
-                }
-                Button(action: {activeSheet = ActiveSheet.diary}) {
-                    Image(systemName: "square.and.pencil")
-                        .font(.system(size: 25, weight: .light))
-                }
             }
             if !expanded && habit.diary[selectedDate.dictKey] != nil {
-                Text(habit.diary[selectedDate.dictKey]!)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 5)
-                    .foregroundColor(.gray)
-                    .padding(8)
+                HStack {
+                    Text(habit.diary[selectedDate.dictKey]!)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.leading, 5)
+                        .foregroundColor(.gray)
+                        .padding(8)
+                    Spacer()
+                }
+            }
+            if !expanded && habit.diary[selectedDate.dictKey] == nil {
+                HStack {
+                    Text("오늘의 일기장이 비어있습니다.")
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.leading, 5)
+                        .foregroundColor(.gray)
+                        .padding(8)
+                    Spacer()
+                }
             }
             if expanded {
                 DiaryExpanded(habit: habit)

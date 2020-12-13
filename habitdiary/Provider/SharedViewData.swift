@@ -9,5 +9,4 @@ import SwiftUI
 
 class SharedViewData: ObservableObject {
     @Published var inMainView = true
-    @Published var isCalendarMode = false
 }

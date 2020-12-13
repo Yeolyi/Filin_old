@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var showAddModal = false
     @State var editMode = false
     @EnvironmentObject var sharedViewData: SharedViewData
+    @EnvironmentObject var listOrderManager: ListOrderManager
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(
         entity: HabitInfo.entity(),
@@ -20,23 +21,24 @@ struct ContentView: View {
     var habitInfos: FetchedResults<HabitInfo>
     
     var body: some View {
-        ZStack {
-            NavigationView {
-                Group {
-                    if editMode {
-                        ListReorder()
-                    } else {
-                        MainList()
-                    }
+        NavigationView {
+            Group {
+                if editMode {
+                    ListReorder()
+                } else {
+                    MainList()
                 }
-                .navigationBarTitle("\(Date().month)월 \(Date().day)일 목표")
-                .navigationBarItems(trailing: listReorderButton)
             }
-            MainBottomBar(showAddModal: $showAddModal, editMode: $editMode)
+            .navigationBarTitle("\(Date().month)월 \(Date().day)일 목표")
+            .navigationBarItems(
+                leading: listReorderButton,
+                trailing: habitPlusButton
+            )
         }
         .sheet(isPresented: $showAddModal) {
             AddHabit()
                 .environment(\.managedObjectContext, managedObjectContext)
+                .environmentObject(listOrderManager)
         }
     }
     
@@ -53,6 +55,16 @@ struct ContentView: View {
             }
         }
     }
+    
+    var habitPlusButton: some View {
+        Button(action: {
+            self.showAddModal = true
+        }) {
+            Image(systemName: "plus")
+                .font(.system(size: 25, weight: .light))
+        }
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

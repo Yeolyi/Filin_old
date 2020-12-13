@@ -10,7 +10,7 @@ import SwiftUI
 struct CircleProgress: View {
     var progress: Double
     let color: Color
-    let num: Int?
+    let num: String?
     let isUnderBar: Bool
     let highlighted: Bool
     
@@ -42,6 +42,6 @@ struct CircleProgress: View {
 
 struct CircleProgress_Previews: PreviewProvider {
     static var previews: some View {
-        CircleProgress(progress: 0.5, color: .blue, num: 10, isUnderBar: false, highlighted: false)
+        CircleProgress(progress: 0.5, color: .blue, num: "10", isUnderBar: false, highlighted: false)
     }
 }

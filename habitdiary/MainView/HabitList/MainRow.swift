@@ -21,7 +21,13 @@ struct MainRow: View {
                         Text(habit.name)
                             .font(.system(size: 20, weight: .light, design: .default))
                         Spacer()
-                        HabitGauge(color: Color(str: habit.color), times: habit.times, achieve: habit.achieve[Date().dictKey] ?? 0)
+                        VStack {
+                            Spacer()
+                            LinearProgressBar(color: Color(str: habit.color), progress: Double(habit.achieve[Date().dictKey] ?? 0)/Double(habit.times))
+                                .frame(width: 200)
+                                .padding(5)
+                            Spacer()
+                        }
                     }
                     NavigationLink(destination: HabitViewMain(habit: habit)) {
                         Rectangle()
@@ -36,8 +42,8 @@ struct MainRow: View {
                     }
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }) {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 25))
+                    Image(systemName: "plus")
+                        .font(.system(size: 25, weight: .light))
                 }
             }
             .padding([.top, .bottom], 10)

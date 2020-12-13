@@ -12,13 +12,18 @@
 		250823D32584A98A0005D7CE /* CalendarUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823D22584A98A0005D7CE /* CalendarUnit.swift */; };
 		250823DA2584DF6B0005D7CE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823D92584DF6B0005D7CE /* CoreDataManager.swift */; };
 		250823DE2584E0F70005D7CE /* ListReorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823DD2584E0F70005D7CE /* ListReorder.swift */; };
-		250823E42584E33A0005D7CE /* ColorGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823E32584E33A0005D7CE /* ColorGauge.swift */; };
+		250823E42584E33A0005D7CE /* LinearProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823E32584E33A0005D7CE /* LinearProgressBar.swift */; };
 		2522916A2583849100869C51 /* RowBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252291692583849100869C51 /* RowBackground.swift */; };
 		2522916D258384A900869C51 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522916C258384A900869C51 /* ThemeColor.swift */; };
 		25229171258385EA00869C51 /* SectionText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25229170258385EA00869C51 /* SectionText.swift */; };
+		252883C5258640D7006483A4 /* Test3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252883C4258640D7006483A4 /* Test3.swift */; };
+		252883C925864695006483A4 /* Test4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252883C825864695006483A4 /* Test4.swift */; };
 		252C7D3F258365F900101484 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252C7D3E258365F900101484 /* ColorExtension.swift */; };
 		2550A5662583F4EE002E1906 /* DiaryModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A5652583F4EE002E1906 /* DiaryModal.swift */; };
 		2553CD0025851A6A00307268 /* DiaryExpanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2553CCFF25851A6A00307268 /* DiaryExpanded.swift */; };
+		2557F9362586568000697C48 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F9352586568000697C48 /* AppIcon.swift */; };
+		2557F93C2586719700697C48 /* ListOrderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F93B2586719700697C48 /* ListOrderManager.swift */; };
+		2557F93F2586721100697C48 /* AutoSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F93E2586721100697C48 /* AutoSave.swift */; };
 		2563B4F52582826900731635 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2563B4F42582826900731635 /* AppDelegate.swift */; };
 		2563B4F72582826900731635 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2563B4F62582826900731635 /* SceneDelegate.swift */; };
 		2563B4F92582826900731635 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2563B4F82582826900731635 /* ContentView.swift */; };
@@ -32,12 +37,12 @@
 		257D94AD25852EA6007D4CF1 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257D94AC25852EA6007D4CF1 /* ConditionalModifier.swift */; };
 		258B6AF4258289240004BFE7 /* MainList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6AF3258289240004BFE7 /* MainList.swift */; };
 		258B6AF8258289C80004BFE7 /* DateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6AF7258289C80004BFE7 /* DateProvider.swift */; };
-		258B6AFC25828B440004BFE7 /* MainBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6AFB25828B440004BFE7 /* MainBottomBar.swift */; };
+		258B6AFC25828B440004BFE7 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6AFB25828B440004BFE7 /* BottomBar.swift */; };
 		258B6B0325828BFB0004BFE7 /* GaussianBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B0225828BFB0004BFE7 /* GaussianBlur.swift */; };
 		258B6B0725828CC70004BFE7 /* MainRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B0625828CC70004BFE7 /* MainRow.swift */; };
 		258B6B0A25828CD60004BFE7 /* HabitInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B0925828CD60004BFE7 /* HabitInfo.swift */; };
 		258B6B0F258292970004BFE7 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B0E258292970004BFE7 /* SearchBar.swift */; };
-		258B6B12258295660004BFE7 /* AddHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B11258295660004BFE7 /* AddHabit.swift */; };
+		258B6B12258295660004BFE7 /* EditHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B11258295660004BFE7 /* EditHabit.swift */; };
 		258B6B152582965F0004BFE7 /* CustomModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B142582965F0004BFE7 /* CustomModal.swift */; };
 		258B6B1A25829B660004BFE7 /* MultilineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B1925829B660004BFE7 /* MultilineTextField.swift */; };
 		258B6B1E25834EEB0004BFE7 /* RepeatDaySelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258B6B1D25834EEB0004BFE7 /* RepeatDaySelect.swift */; };
@@ -47,6 +52,9 @@
 		25C5A564258376BE00E864A5 /* HabitMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C5A563258376BE00E864A5 /* HabitMainView.swift */; };
 		25C5A56725837A0200E864A5 /* SharedViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C5A56625837A0200E864A5 /* SharedViewData.swift */; };
 		25CD8C9D258553AC00886F39 /* TodayHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CD8C9C258553AC00886F39 /* TodayHabit.swift */; };
+		25FC602C258615CE006BCFBA /* Test1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FC602B258615CE006BCFBA /* Test1.swift */; };
+		25FC6030258615D7006BCFBA /* Test2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FC602F258615D7006BCFBA /* Test2.swift */; };
+		25FC6034258615EE006BCFBA /* AddHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FC6033258615EE006BCFBA /* AddHabit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,13 +63,18 @@
 		250823D22584A98A0005D7CE /* CalendarUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUnit.swift; sourceTree = "<group>"; };
 		250823D92584DF6B0005D7CE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		250823DD2584E0F70005D7CE /* ListReorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListReorder.swift; sourceTree = "<group>"; };
-		250823E32584E33A0005D7CE /* ColorGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorGauge.swift; sourceTree = "<group>"; };
+		250823E32584E33A0005D7CE /* LinearProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearProgressBar.swift; sourceTree = "<group>"; };
 		252291692583849100869C51 /* RowBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowBackground.swift; sourceTree = "<group>"; };
 		2522916C258384A900869C51 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		25229170258385EA00869C51 /* SectionText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionText.swift; sourceTree = "<group>"; };
+		252883C4258640D7006483A4 /* Test3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test3.swift; sourceTree = "<group>"; };
+		252883C825864695006483A4 /* Test4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test4.swift; sourceTree = "<group>"; };
 		252C7D3E258365F900101484 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		2550A5652583F4EE002E1906 /* DiaryModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModal.swift; sourceTree = "<group>"; };
 		2553CCFF25851A6A00307268 /* DiaryExpanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryExpanded.swift; sourceTree = "<group>"; };
+		2557F9352586568000697C48 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		2557F93B2586719700697C48 /* ListOrderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOrderManager.swift; sourceTree = "<group>"; };
+		2557F93E2586721100697C48 /* AutoSave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoSave.swift; sourceTree = "<group>"; };
 		2563B4F12582826900731635 /* habitdiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = habitdiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2563B4F42582826900731635 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2563B4F62582826900731635 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,12 +90,12 @@
 		257D94AC25852EA6007D4CF1 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
 		258B6AF3258289240004BFE7 /* MainList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainList.swift; sourceTree = "<group>"; };
 		258B6AF7258289C80004BFE7 /* DateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProvider.swift; sourceTree = "<group>"; };
-		258B6AFB25828B440004BFE7 /* MainBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBottomBar.swift; sourceTree = "<group>"; };
+		258B6AFB25828B440004BFE7 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 		258B6B0225828BFB0004BFE7 /* GaussianBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianBlur.swift; sourceTree = "<group>"; };
 		258B6B0625828CC70004BFE7 /* MainRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRow.swift; sourceTree = "<group>"; };
 		258B6B0925828CD60004BFE7 /* HabitInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitInfo.swift; sourceTree = "<group>"; };
 		258B6B0E258292970004BFE7 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
-		258B6B11258295660004BFE7 /* AddHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabit.swift; sourceTree = "<group>"; };
+		258B6B11258295660004BFE7 /* EditHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHabit.swift; sourceTree = "<group>"; };
 		258B6B142582965F0004BFE7 /* CustomModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomModal.swift; sourceTree = "<group>"; };
 		258B6B1925829B660004BFE7 /* MultilineTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextField.swift; sourceTree = "<group>"; };
 		258B6B1D25834EEB0004BFE7 /* RepeatDaySelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatDaySelect.swift; sourceTree = "<group>"; };
@@ -93,6 +106,9 @@
 		25C5A563258376BE00E864A5 /* HabitMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMainView.swift; sourceTree = "<group>"; };
 		25C5A56625837A0200E864A5 /* SharedViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViewData.swift; sourceTree = "<group>"; };
 		25CD8C9C258553AC00886F39 /* TodayHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayHabit.swift; sourceTree = "<group>"; };
+		25FC602B258615CE006BCFBA /* Test1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test1.swift; sourceTree = "<group>"; };
+		25FC602F258615D7006BCFBA /* Test2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test2.swift; sourceTree = "<group>"; };
+		25FC6033258615EE006BCFBA /* AddHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,7 +174,7 @@
 				2563B4F42582826900731635 /* AppDelegate.swift */,
 				2563B4F62582826900731635 /* SceneDelegate.swift */,
 				258B6B2625835BE90004BFE7 /* MainView */,
-				258B6B2725835BF50004BFE7 /* HabitAddView */,
+				258B6B2725835BF50004BFE7 /* HabitModifyView */,
 				25C5A5622583766200E864A5 /* HabitView */,
 				258B6B2825835C310004BFE7 /* Design */,
 				258B6B2925835C480004BFE7 /* Provider */,
@@ -203,7 +219,6 @@
 			isa = PBXGroup;
 			children = (
 				2563B4F82582826900731635 /* ContentView.swift */,
-				258B6AFB25828B440004BFE7 /* MainBottomBar.swift */,
 				258B6B0E258292970004BFE7 /* SearchBar.swift */,
 				250823DC2584E0E50005D7CE /* ListEditView */,
 				250823E62584EDC60005D7CE /* HabitList */,
@@ -211,14 +226,15 @@
 			path = MainView;
 			sourceTree = "<group>";
 		};
-		258B6B2725835BF50004BFE7 /* HabitAddView */ = {
+		258B6B2725835BF50004BFE7 /* HabitModifyView */ = {
 			isa = PBXGroup;
 			children = (
-				258B6B11258295660004BFE7 /* AddHabit.swift */,
+				25FC602A2586153B006BCFBA /* HabitAdd */,
+				258B6B11258295660004BFE7 /* EditHabit.swift */,
 				258B6B222583573B0004BFE7 /* ColorHorizontalPicker.swift */,
 				258B6B1D25834EEB0004BFE7 /* RepeatDaySelect.swift */,
 			);
-			path = HabitAddView;
+			path = HabitModifyView;
 			sourceTree = "<group>";
 		};
 		258B6B2825835C310004BFE7 /* Design */ = {
@@ -229,6 +245,7 @@
 				258B6B0225828BFB0004BFE7 /* GaussianBlur.swift */,
 				252C7D3E258365F900101484 /* ColorExtension.swift */,
 				2522916C258384A900869C51 /* ThemeColor.swift */,
+				2557F9352586568000697C48 /* AppIcon.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -241,6 +258,8 @@
 				25C5A56625837A0200E864A5 /* SharedViewData.swift */,
 				250823C42583F93A0005D7CE /* KeyboardProvider.swift */,
 				250823D92584DF6B0005D7CE /* CoreDataManager.swift */,
+				2557F93B2586719700697C48 /* ListOrderManager.swift */,
+				2557F93E2586721100697C48 /* AutoSave.swift */,
 			);
 			path = Provider;
 			sourceTree = "<group>";
@@ -250,7 +269,7 @@
 			children = (
 				258B6B142582965F0004BFE7 /* CustomModal.swift */,
 				258B6B1925829B660004BFE7 /* MultilineTextField.swift */,
-				250823E32584E33A0005D7CE /* ColorGauge.swift */,
+				250823E32584E33A0005D7CE /* LinearProgressBar.swift */,
 				257D94A825852154007D4CF1 /* CircleProgress.swift */,
 			);
 			path = View;
@@ -261,10 +280,23 @@
 			children = (
 				25C5A563258376BE00E864A5 /* HabitMainView.swift */,
 				25CD8C9C258553AC00886F39 /* TodayHabit.swift */,
+				258B6AFB25828B440004BFE7 /* BottomBar.swift */,
 				257D949C25851B3D007D4CF1 /* Diary */,
 				250823D12584A97D0005D7CE /* Calendar */,
 			);
 			path = HabitView;
+			sourceTree = "<group>";
+		};
+		25FC602A2586153B006BCFBA /* HabitAdd */ = {
+			isa = PBXGroup;
+			children = (
+				25FC6033258615EE006BCFBA /* AddHabit.swift */,
+				25FC602B258615CE006BCFBA /* Test1.swift */,
+				25FC602F258615D7006BCFBA /* Test2.swift */,
+				252883C4258640D7006483A4 /* Test3.swift */,
+				252883C825864695006483A4 /* Test4.swift */,
+			);
+			path = HabitAdd;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -339,13 +371,15 @@
 			files = (
 				25C5A564258376BE00E864A5 /* HabitMainView.swift in Sources */,
 				2563B4FC2582826900731635 /* habitdiary.xcdatamodeld in Sources */,
-				258B6AFC25828B440004BFE7 /* MainBottomBar.swift in Sources */,
+				258B6AFC25828B440004BFE7 /* BottomBar.swift in Sources */,
 				25C5A56725837A0200E864A5 /* SharedViewData.swift in Sources */,
 				250823CC2584958A0005D7CE /* CalendarRow.swift in Sources */,
 				25C574FE2583D3BD004BF07D /* HabitInfo+CoreDataProperties.swift in Sources */,
-				258B6B12258295660004BFE7 /* AddHabit.swift in Sources */,
+				258B6B12258295660004BFE7 /* EditHabit.swift in Sources */,
 				2522916D258384A900869C51 /* ThemeColor.swift in Sources */,
 				258B6B1A25829B660004BFE7 /* MultilineTextField.swift in Sources */,
+				252883C5258640D7006483A4 /* Test3.swift in Sources */,
+				25FC602C258615CE006BCFBA /* Test1.swift in Sources */,
 				257D94A925852154007D4CF1 /* CircleProgress.swift in Sources */,
 				2563B4F52582826900731635 /* AppDelegate.swift in Sources */,
 				2563B4F72582826900731635 /* SceneDelegate.swift in Sources */,
@@ -353,23 +387,29 @@
 				2550A5662583F4EE002E1906 /* DiaryModal.swift in Sources */,
 				250823DE2584E0F70005D7CE /* ListReorder.swift in Sources */,
 				252C7D3F258365F900101484 /* ColorExtension.swift in Sources */,
+				252883C925864695006483A4 /* Test4.swift in Sources */,
 				250823C52583F93A0005D7CE /* KeyboardProvider.swift in Sources */,
 				258B6B152582965F0004BFE7 /* CustomModal.swift in Sources */,
 				258B6B1E25834EEB0004BFE7 /* RepeatDaySelect.swift in Sources */,
 				258B6AF4258289240004BFE7 /* MainList.swift in Sources */,
-				250823E42584E33A0005D7CE /* ColorGauge.swift in Sources */,
+				250823E42584E33A0005D7CE /* LinearProgressBar.swift in Sources */,
 				250823DA2584DF6B0005D7CE /* CoreDataManager.swift in Sources */,
 				258B6B0325828BFB0004BFE7 /* GaussianBlur.swift in Sources */,
 				25229171258385EA00869C51 /* SectionText.swift in Sources */,
 				258B6AF8258289C80004BFE7 /* DateProvider.swift in Sources */,
+				25FC6034258615EE006BCFBA /* AddHabit.swift in Sources */,
 				2553CD0025851A6A00307268 /* DiaryExpanded.swift in Sources */,
 				2522916A2583849100869C51 /* RowBackground.swift in Sources */,
+				2557F9362586568000697C48 /* AppIcon.swift in Sources */,
+				2557F93C2586719700697C48 /* ListOrderManager.swift in Sources */,
 				250823D32584A98A0005D7CE /* CalendarUnit.swift in Sources */,
 				257D94A425851F28007D4CF1 /* CalendarWeek.swift in Sources */,
+				25FC6030258615D7006BCFBA /* Test2.swift in Sources */,
 				257D949F25851B7F007D4CF1 /* DiaryRow.swift in Sources */,
 				258B6B0725828CC70004BFE7 /* MainRow.swift in Sources */,
 				257D94AD25852EA6007D4CF1 /* ConditionalModifier.swift in Sources */,
 				25CD8C9D258553AC00886F39 /* TodayHabit.swift in Sources */,
+				2557F93F2586721100697C48 /* AutoSave.swift in Sources */,
 				258B6B0A25828CD60004BFE7 /* HabitInfo.swift in Sources */,
 				258B6B232583573B0004BFE7 /* ColorHorizontalPicker.swift in Sources */,
 				258B6B0F258292970004BFE7 /* SearchBar.swift in Sources */,

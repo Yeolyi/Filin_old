@@ -19,10 +19,13 @@ struct DiaryExpanded: View {
                             .font(.headline)
                         Spacer()
                     }
-                    Text(String(value))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding([.leading, .bottom], 5)
-                        .foregroundColor(.gray)
+                    HStack {
+                        Text(String(value))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding([.leading, .bottom], 5)
+                            .foregroundColor(.gray)
+                        Spacer()
+                    }
                 }
             }
         }
@@ -30,9 +33,9 @@ struct DiaryExpanded: View {
 }
 
 /*
-struct DiaryExpanded_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryExpanded()
-    }
-}
-*/
+ struct DiaryExpanded_Previews: PreviewProvider {
+ static var previews: some View {
+ DiaryExpanded()
+ }
+ }
+ */

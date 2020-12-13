@@ -11,25 +11,17 @@ struct MainList: View {
     
     @FetchRequest(entity: HabitInfo.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \HabitInfo.userOrder, ascending: true)])
     var habitInfos: FetchedResults<HabitInfo>
+    @ObservedObject var listOrderManager = ListOrderManager()
     @EnvironmentObject var sharedViewData: SharedViewData
     @Environment(\.managedObjectContext) var managedObjectContext
     
     var body: some View {
-        if #available(iOS 14.0, *) {
-            component
-                .listStyle(InsetGroupedListStyle())
-        } else {
-            component
-        }
-    }
-    
-    var component: some View {
         ScrollView {
             SearchBar()
             Text("목록")
                 .sectionText()
-            ForEach(habitInfos, id: \.self) { habit in
-                MainRow(habit: habit)
+            ForEach(listOrderManager.habitOrder, id: \.self) { habitId in
+                MainRow(habit: habitInfos.first(where: {$0.id==habitId}) ?? HabitInfo(context: managedObjectContext))
             }
         }
         .padding(.top, 1)
