@@ -9,43 +9,48 @@ import SwiftUI
 
 struct Test1: View {
     
-    @Binding var color: Color
+    let color: Color
     @Binding var name: String
-    @Binding var habitExplain: String
+    @EnvironmentObject var sharedViewData: SharedViewData
+    @FetchRequest(
+        entity: HabitInfo.entity(),
+        sortDescriptors: []
+    )
+    var habitInfos: FetchedResults<HabitInfo>
     
     var body: some View {
         VStack {
-            Image(systemName: "square.dashed")
-                .font(.system(size: 80, weight: .semibold))
+            Image(systemName: "text.badge.checkmark")
+                .font(.system(size: 70, weight: .semibold))
                 .foregroundColor(color)
                 .padding(.bottom, 10)
-                .padding(.top, 100)
-            Text("새로운 습관 만들기")
-                .font(.system(size: 40, weight: .bold))
+                .padding(.top, 70)
+            Text("\(sharedViewData.isFirstRun && habitInfos.isEmpty ? "첫번째" : "새로운") 습관 만들기")
+                .font(.system(size: 30, weight: .bold))
                 .padding(.bottom, 100)
             HStack {
                 Text("제목")
-                    .font(.system(size: 25, weight: .bold))
+                    .font(.system(size: 20, weight: .bold))
                     .padding(.leading, 20)
                 Spacer()
             }
             TextField("물 다섯잔 마시기", text: $name)
                 .rowBackground()
-            HStack {
-                Text("설명(선택)")
-                    .font(.system(size: 25, weight: .bold))
-                    .padding(.leading, 20)
-                Spacer()
-            }
-            TextField("하루 2L씩 마시기", text: $habitExplain)
-                .rowBackground()
+                .padding([.leading, .trailing], 10)
             Spacer()
         }
+        .paperBackground()
+        .onTapGesture {
+            endEditing()
+        }
+    }
+    private func endEditing() {
+        UIApplication.shared.endEditing()
     }
 }
 
 struct Test1_Previews: PreviewProvider {
     static var previews: some View {
-        Test1(color: .constant(.blue), name: .constant(""), habitExplain: .constant(""))
+        Test1(color: .blue, name: .constant(""))
     }
 }

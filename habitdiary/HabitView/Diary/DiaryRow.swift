@@ -10,7 +10,6 @@ import SwiftUI
 struct DiaryRow: View {
     
     @Binding var activeSheet: ActiveSheet?
-    @Binding var expanded: Bool
     @ObservedObject var habit: HabitInfo
     let selectedDate: Date
     
@@ -21,9 +20,10 @@ struct DiaryRow: View {
                     .font(.system(size: 20, weight: .bold))
                 Spacer()
             }
-            if !expanded && habit.diary[selectedDate.dictKey] != nil {
+            if habit.diary[selectedDate.dictKey] != nil {
                 HStack {
                     Text(habit.diary[selectedDate.dictKey]!)
+                        .font(.custom("NanumBarunpen", size: 18))
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.leading, 5)
                         .foregroundColor(.gray)
@@ -31,18 +31,15 @@ struct DiaryRow: View {
                     Spacer()
                 }
             }
-            if !expanded && habit.diary[selectedDate.dictKey] == nil {
+            if habit.diary[selectedDate.dictKey] == nil {
                 HStack {
-                    Text("오늘의 일기장이 비어있습니다.")
+                    Text("일기장이 비어있습니다.")
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.leading, 5)
                         .foregroundColor(.gray)
                         .padding(8)
                     Spacer()
                 }
-            }
-            if expanded {
-                DiaryExpanded(habit: habit)
             }
         }
         .rowBackground()

@@ -11,7 +11,7 @@ struct ListReorder: View {
     
     @FetchRequest(
         entity: HabitInfo.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \HabitInfo.userOrder, ascending: true)]
+        sortDescriptors: []
     )
     var habitInfos: FetchedResults<HabitInfo>
     @EnvironmentObject var listOrderManager: ListOrderManager
@@ -19,8 +19,8 @@ struct ListReorder: View {
     
     var body: some View {
         List {
-            ForEach(listOrderManager.habitOrder, id: \.self) { id in
-                Text((habitInfos.first(where: {$0.id==id}) ?? HabitInfo(context: managedObjectContext)).name)
+            ForEach(listOrderManager.habitOrder, id: \.self) { orderInfo in
+                Text((habitInfos.first(where: {$0.id == orderInfo.id}) ?? HabitInfo(context: managedObjectContext)).name)
             }
             .onMove(perform: move)
             .onDelete(perform: remove)

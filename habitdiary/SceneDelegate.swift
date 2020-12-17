@@ -21,6 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Get the managed object context from the shared persistent container.
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let sharedViewData = SharedViewData()
+        let addUnit = AddUnit()
+        sharedViewData.runCount += 1
         let listOrderManager = ListOrderManager()
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
@@ -29,6 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .environment(\.managedObjectContext, context)
             .environmentObject(sharedViewData)
             .environmentObject(listOrderManager)
+            .environmentObject(addUnit)
             .accentColor(.gray)
 
         // Use a UIHostingController as window root view controller.

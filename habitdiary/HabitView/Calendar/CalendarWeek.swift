@@ -30,12 +30,24 @@ struct CustomCalendarWeek: View {
     var body: some View {
         HStack {
             ForEach(1..<8) { day in
-                CalendarUnit(
-                    color: (monthTypef(weekNum: week, dayOfWeek: day) != .this) && isExpanded == true ? .gray : Color(str: habit.color),
-                    progress: percentAchieved(date: dayOfWeekToDate(weekNum: week, dayOfWeek: day)),
-                    date: dayOfWeekToDate(weekNum: week, dayOfWeek: day),
-                    isUnderline: habit.diary[dayOfWeekToDate(weekNum: week, dayOfWeek: day).dictKey] != nil,
-                    selectedDate: $selectedDate)
+                if habit.habitType == HabitType.daily.rawValue || habit.targetDays?.contains(Int16(day)) == true {
+                    CalendarUnit(
+                        color: (monthTypef(weekNum: week, dayOfWeek: day) != .this) && isExpanded == true ? Color.gray.opacity(0.1) : Color(hex: habit.color),
+                        progress: percentAchieved(date: dayOfWeekToDate(weekNum: week, dayOfWeek: day)),
+                        date: dayOfWeekToDate(weekNum: week, dayOfWeek: day),
+                        isUnderline: habit.diary[dayOfWeekToDate(weekNum: week, dayOfWeek: day).dictKey] != nil,
+                        selectedDate: $selectedDate
+                    )
+                } else {
+                    CalendarUnit(
+                        color: Color.gray.opacity(0.1),
+                        progress: 0,
+                        date: dayOfWeekToDate(weekNum: week, dayOfWeek: day),
+                        isUnderline: false,
+                        selectedDate: $selectedDate
+                    )
+                    .disabled(true)
+                }
             }
         }
     }
@@ -115,6 +127,6 @@ struct CustomCalendarWeek: View {
     }
     
     func percentAchieved(date: Date) -> Double {
-        min(Double((habit.achieve[date.dictKey] ?? 0))/Double(habit.times), 1)
+        min(Double((habit.achieve[date.dictKey] ?? 0))/Double(habit.targetAmount), 1)
     }
 }

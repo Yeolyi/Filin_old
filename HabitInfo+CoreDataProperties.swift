@@ -18,14 +18,13 @@ extension HabitInfo {
 
     @NSManaged public var achieve: [String:Int16]
     @NSManaged public var color: String
-    @NSManaged public var dayOfWeek: [Int16]?
-    @NSManaged public var explanation: String?
+    @NSManaged public var targetDays: [Int16]?
     @NSManaged public var habitType: String
     @NSManaged public var id: UUID
     @NSManaged public var name: String
-    @NSManaged public var times: Int16
-    @NSManaged public var userOrder: Int16
+    @NSManaged public var targetAmount: Int16
     @NSManaged public var diary: [String:String]
+    @NSManaged public var requiredSecond: Int16
 }
 
 extension HabitInfo : Identifiable {

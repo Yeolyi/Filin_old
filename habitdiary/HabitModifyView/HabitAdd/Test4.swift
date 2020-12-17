@@ -9,26 +9,25 @@ import SwiftUI
 
 struct Test4: View {
     
-    @Binding var color: Color
+    @Binding var color: String
     
     var body: some View {
         VStack {
             Image(systemName: "paintbrush")
-                .font(.system(size: 80, weight: .semibold))
-                .foregroundColor(color)
+                .font(.system(size: 70, weight: .semibold))
+                .foregroundColor(Color(hex: color))
                 .padding(.bottom, 10)
-                .padding(.top, 100)
+                .padding(.top, 70)
             Text("테마 색 설정")
-                .font(.system(size: 40, weight: .bold))
+                .font(.system(size: 30, weight: .bold))
                 .padding(.bottom, 100)
             HStack {
                 Text("색")
-                    .font(.system(size: 25, weight: .bold))
+                    .font(.system(size: 20, weight: .bold))
                     .padding(.leading, 20)
                 Spacer()
             }
             ColorHorizontalPicker(selectedColor: $color)
-                .rowBackground()
             Spacer()
         }
     }
@@ -36,6 +35,6 @@ struct Test4: View {
 
 struct Test4_Previews: PreviewProvider {
     static var previews: some View {
-        Test4(color: .constant(.blue))
+        Test4(color: .constant(""))
     }
 }

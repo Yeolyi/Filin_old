@@ -12,10 +12,9 @@ struct SectionText: ViewModifier {
     func body(content: Content) -> some View {
         HStack {
             content
-                .font(.system(size: 16.5, weight: .medium, design: .default))
-                .padding(.top, 5)
-                .padding(.bottom, 2)
+                .font(.system(size: 20, weight: .bold))
                 .padding(.leading, 12)
+                .padding(.top, 15)
             Spacer()
         }
     }

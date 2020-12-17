@@ -16,10 +16,10 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(
         entity: HabitInfo.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \HabitInfo.userOrder, ascending: true)]
+        sortDescriptors: []
     )
     var habitInfos: FetchedResults<HabitInfo>
-    
+
     var body: some View {
         NavigationView {
             Group {
@@ -39,6 +39,13 @@ struct ContentView: View {
             AddHabit()
                 .environment(\.managedObjectContext, managedObjectContext)
                 .environmentObject(listOrderManager)
+                .environmentObject(sharedViewData)
+        }
+        .zIndex(0)
+        .onAppear {
+            if sharedViewData.isFirstRun {
+                showAddModal = true
+            }
         }
     }
     

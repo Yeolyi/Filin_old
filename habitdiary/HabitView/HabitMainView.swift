@@ -19,9 +19,9 @@ struct HabitViewMain: View {
     @EnvironmentObject var sharedViewData: SharedViewData
     @ObservedObject var habit: HabitInfo
     @Environment(\.managedObjectContext) var managedObjectContext
+    @EnvironmentObject var listOrderManager: ListOrderManager
     @State var activeSheet: ActiveSheet?
     @State var selectedDate = Date()
-    @State var diaryExpanded = false
     @State var calendarExpanded = false
     
     var body: some View {
@@ -34,20 +34,12 @@ struct HabitViewMain: View {
                         Spacer()
                     }
                     .rowBackground()
-                    /*
-                    if habit.explanation != nil {
-                        HStack {
-                            Spacer()
-                            Text(habit.explanation!)
-                                .font(.headline)
-                            Spacer()
-                        }
-                        .rowBackground()
-                    }
- */
+                    .padding([.leading, .trailing], 10)
                     TodayHabit(habit: habit, selectedDate: $selectedDate)
+                        .padding([.leading, .trailing], 10)
                         .padding(.bottom, 20)
-                    DiaryRow(activeSheet: $activeSheet, expanded: $diaryExpanded, habit: habit, selectedDate: selectedDate)
+                    DiaryRow(activeSheet: $activeSheet, habit: habit, selectedDate: selectedDate)
+                        .padding([.leading, .trailing], 10)
                         .padding(.bottom, 60)
                 }
             }
@@ -67,6 +59,7 @@ struct HabitViewMain: View {
                 case .edit:
                     EditHabit(targetHabit: habit)
                         .environment(\.managedObjectContext, managedObjectContext)
+                        .environmentObject(listOrderManager)
                 }
             }
             .onAppear {
@@ -79,7 +72,7 @@ struct HabitViewMain: View {
                     sharedViewData.inMainView = true
                 }
             }
-            BottomBar(activeSheet: $activeSheet, isCalendarExpanded: $calendarExpanded, isDiaryExpanded: $diaryExpanded, habit: habit)
+            BottomBar(activeSheet: $activeSheet, isCalendarExpanded: $calendarExpanded, habit: habit)
         }
     }
 }

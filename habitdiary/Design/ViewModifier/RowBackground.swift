@@ -10,20 +10,29 @@ import SwiftUI
 /// Cornered list row background
 struct RowBackground: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
+    let corners: UIRectCorner
+    
     func body(content: Content) -> some View {
         Group {
+            VStack {
             content
-                .padding(10)
-                .background(colorScheme == .dark ? Color.white.opacity(0.1) : Color.gray.opacity(0.05))
-                .cornerRadius(5)
+                .padding(8)
+                Divider()
+            }
+            .padding([.leading, .trailing], 10)
         }
-        .padding([.leading, .trailing], 10)
-        .padding([.top, .bottom], 3)
     }
 }
 
 extension View {
-    func rowBackground() -> some View {
-        return modifier(RowBackground())
+    func rowBackground(corners: UIRectCorner = .allCorners) -> some View {
+        return modifier(RowBackground(corners: corners))
+    }
+}
+
+struct RowBackground_Previews: PreviewProvider {
+    static var previews: some View {
+        Text("Hello")
+            .rowBackground(corners: .bottomLeft)
     }
 }

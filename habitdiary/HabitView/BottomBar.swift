@@ -12,7 +12,6 @@ struct BottomBar: View {
     @EnvironmentObject var sharedViewData: SharedViewData
     @Binding var activeSheet: ActiveSheet?
     @Binding var isCalendarExpanded: Bool
-    @Binding var isDiaryExpanded: Bool
     let habit: HabitInfo
     
     var body: some View {
@@ -23,9 +22,10 @@ struct BottomBar: View {
                     .hidden()
                     .padding(.leading, 15)
                 Spacer()
-                calendarViewModeButton
+                shareButton
+                    .hidden()
                 Spacer()
-                diaryViewModeButton
+                calendarViewModeButton
                 Spacer()
                 diaryWriteButton
                     .padding(.trailing, 15)
@@ -39,18 +39,6 @@ struct BottomBar: View {
         }
     }
     
-    var diaryViewModeButton: some View {
-        Button(action: {
-            withAnimation {
-                isDiaryExpanded.toggle()
-            }
-        }) {
-            Image(systemName: "note.text")
-                .font(.system(size: 25, weight: .light))
-                .frame(width: 30, height: 30)
-                .opacity(isDiaryExpanded ? 1.0 : 0.2)
-        }
-    }
     var shareButton: some View {
         Button(action: {}) {
             Image(systemName: "square.and.arrow.up")

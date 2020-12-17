@@ -18,7 +18,7 @@ struct CircleProgress: View {
         GeometryReader { geo in
             ZStack {
                 Circle()
-                    .foregroundColor(color.opacity(highlighted ? 0.6 : 0.2))
+                    .foregroundColor(color.lighter(by: highlighted ? 0.8 : 0.4))
                     .overlay(
                         Circle()
                             .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))

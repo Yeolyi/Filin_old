@@ -7,55 +7,24 @@
 
 import SwiftUI
 
-extension Color {
-    var string: String {
-        switch(self) {
-        case .blue:
-            return "blue"
-        case .green:
-            return "green"
-        case .gray:
-            return "gray"
-        case .orange:
-            return "orange"
-        case .pink:
-            return "pink"
-        case .purple:
-            return "purple"
-        case .red:
-            return "red"
-        case .yellow:
-            return "yellow"
-        default:
-            return "black"
-        }
+extension UIColor
+{
+    var hue: CGFloat
+    {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        self.getHue(&hue,
+                    saturation: &saturation,
+                    brightness: &brightness,
+                    alpha: &alpha)
+
+        return hue
     }
 }
 
-extension Color {
-    init(str: String?) {
-        switch(str!) {
-        case "blue":
-            self = Color.blue
-        case "green":
-            self = Color.green
-        case "gray":
-            self = Color.gray
-        case "orange":
-            self = .orange
-        case "pink":
-            self = .pink
-        case "purple":
-            self = .purple
-        case "red":
-            self = .red
-        case "yellow":
-            self = .yellow
-        default:
-            self = Color.black
-        }
-    }
-}
 
 extension Color {
     init(hex: String) {
@@ -82,4 +51,56 @@ extension Color {
             opacity: Double(a) / 255
         )
     }
+}
+
+extension Color {
+    public func lighter(by amount: CGFloat = 0.2) -> Self { Color(self.uiColor().lighter(by: amount)) }
+    public func darker(by amount: CGFloat = 0.2) -> Self { Color(self.uiColor().darker(by: amount)) }
+}
+extension Color {
+    func uiColor() -> UIColor {
+        if #available(iOS 14.0, *) {
+            return UIColor(self)
+        }
+
+        let scanner = Scanner(string: description.trimmingCharacters(in: CharacterSet.alphanumerics.inverted))
+        var hexNumber: UInt64 = 0
+        var r: CGFloat = 0.0, g: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 0.0
+
+        let result = scanner.scanHexInt64(&hexNumber)
+        if result {
+            r = CGFloat((hexNumber & 0xFF000000) >> 24) / 255
+            g = CGFloat((hexNumber & 0x00FF0000) >> 16) / 255
+            b = CGFloat((hexNumber & 0x0000FF00) >> 8) / 255
+            a = CGFloat(hexNumber & 0x000000FF) / 255
+        }
+        return UIColor(red: r, green: g, blue: b, alpha: a)
+    }
+}
+
+extension UIColor {
+    func mix(with color: UIColor, amount: CGFloat) -> Self {
+        var red1: CGFloat = 0
+        var green1: CGFloat = 0
+        var blue1: CGFloat = 0
+        var alpha1: CGFloat = 0
+
+        var red2: CGFloat = 0
+        var green2: CGFloat = 0
+        var blue2: CGFloat = 0
+        var alpha2: CGFloat = 0
+
+        getRed(&red1, green: &green1, blue: &blue1, alpha: &alpha1)
+        color.getRed(&red2, green: &green2, blue: &blue2, alpha: &alpha2)
+
+        return Self(
+            red: red1 * CGFloat(1.0 - amount) + red2 * amount,
+            green: green1 * CGFloat(1.0 - amount) + green2 * amount,
+            blue: blue1 * CGFloat(1.0 - amount) + blue2 * amount,
+            alpha: alpha1
+        )
+    }
+
+    func lighter(by amount: CGFloat = 0.2) -> Self { mix(with: .white, amount: amount) }
+    func darker(by amount: CGFloat = 0.2) -> Self { mix(with: .black, amount: amount) }
 }

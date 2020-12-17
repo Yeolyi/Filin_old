@@ -16,16 +16,16 @@ struct Test2: View {
     var body: some View {
         VStack {
             Image(systemName: "calendar")
-                .font(.system(size: 80, weight: .semibold))
+                .font(.system(size: 70, weight: .semibold))
                 .foregroundColor(color)
                 .padding(.bottom, 10)
-                .padding(.top, 100)
+                .padding(.top, 70)
             Text("주기 설정")
-                .font(.system(size: 40, weight: .bold))
+                .font(.system(size: 30, weight: .bold))
                 .padding(.bottom, 100)
             HStack {
                 Text("주기")
-                    .font(.system(size: 25, weight: .bold))
+                    .font(.system(size: 20, weight: .bold))
                     .padding(.leading, 20)
                 Spacer()
             }
@@ -34,9 +34,10 @@ struct Test2: View {
                 Text("매주").tag(HabitType.weekly)
             }
             .pickerStyle(SegmentedPickerStyle())
-            .padding([.leading, .trailing], 30)
+            .padding([.leading, .trailing], 10)
             if habitType == .weekly {
                 HStack {
+                    Spacer()
                     ForEach(1..<8) { dayOfTheWeekInt in
                         Button(action: {
                             if dayOfTheWeek.contains(dayOfTheWeekInt) {
@@ -46,7 +47,7 @@ struct Test2: View {
                             }
                         }) {
                             ZStack {
-                                CircleProgress(progress: 0, color: color, num: nil, isUnderBar: false, highlighted: dayOfTheWeek.contains(dayOfTheWeekInt))
+                                CircleProgress(progress: 0, color: color, num: nil, isUnderBar: false, highlighted: !dayOfTheWeek.contains(dayOfTheWeekInt))
                                     .frame(width: 40, height: 40)
                                     .zIndex(0)
                                 Text(Date.dayOfTheWeekStr(dayOfTheWeekInt))
@@ -56,8 +57,10 @@ struct Test2: View {
                             }
                         }
                     }
+                    Spacer()
                 }
                 .rowBackground()
+                .padding([.leading, .trailing], 10)
             }
             Spacer()
         }

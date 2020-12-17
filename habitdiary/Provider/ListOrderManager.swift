@@ -7,9 +7,14 @@
 
 import SwiftUI
 
+struct OrderInfo: Codable, Hashable {
+    var id: UUID
+    var dayOfWeek: [Int]?
+}
+
 class ListOrderManager: ObservableObject {
     @AutoSave("habitOrder", defaultValue: [])
-    var habitOrder : [UUID] {
+    var habitOrder : [OrderInfo] {
         didSet {
             objectWillChange.send()
         }

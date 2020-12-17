@@ -9,4 +9,13 @@ import SwiftUI
 
 class SharedViewData: ObservableObject {
     @Published var inMainView = true
+    @AutoSave("runCount", defaultValue: 0)
+    var runCount: Int {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    var isFirstRun: Bool {
+        runCount == 1
+    }
 }
