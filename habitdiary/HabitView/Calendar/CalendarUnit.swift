@@ -13,13 +13,14 @@ struct CalendarUnit: View {
     let progress: Double
     let date: Date
     let isUnderline: Bool
+    let isActivated: Bool
     @Binding var selectedDate: Date
     
     var body: some View {
         Button(action: {
             selectedDate = date
         }) {
-            CircleProgress(progress: progress, color: color, num: Date().dictKey == date.dictKey ? "✓" : String(date.day), isUnderBar: isUnderline, highlighted: date.dictKey == selectedDate.dictKey)
+            CircleProgress(progress: progress, color: color, num: Date().dictKey == date.dictKey ? "✓" : String(date.day), isUnderBar: isUnderline, highlighted: date.dictKey == selectedDate.dictKey, activated: isActivated)
                 .frame(width: 40, height: 40)
         }
     }

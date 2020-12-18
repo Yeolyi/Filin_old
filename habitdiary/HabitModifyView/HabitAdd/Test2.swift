@@ -21,20 +21,16 @@ struct Test2: View {
                 .padding(.bottom, 10)
                 .padding(.top, 70)
             Text("주기 설정")
-                .font(.system(size: 30, weight: .bold))
+                .title()
                 .padding(.bottom, 100)
-            HStack {
-                Text("주기")
-                    .font(.system(size: 20, weight: .bold))
-                    .padding(.leading, 20)
-                Spacer()
-            }
+            Text("주기")
+                .sectionText()
             Picker("Map type", selection: $habitType) {
                 Text("매일").tag(HabitType.daily)
                 Text("매주").tag(HabitType.weekly)
             }
             .pickerStyle(SegmentedPickerStyle())
-            .padding([.leading, .trailing], 10)
+            .padding([.leading, .trailing], 30)
             if habitType == .weekly {
                 HStack {
                     Spacer()
@@ -47,19 +43,14 @@ struct Test2: View {
                             }
                         }) {
                             ZStack {
-                                CircleProgress(progress: 0, color: color, num: nil, isUnderBar: false, highlighted: !dayOfTheWeek.contains(dayOfTheWeekInt))
+                                CircleProgress(progress: 0, color: color, num: Date.dayOfTheWeekStr(dayOfTheWeekInt), isUnderBar: false, highlighted: false, activated: dayOfTheWeek.contains(dayOfTheWeekInt))
                                     .frame(width: 40, height: 40)
                                     .zIndex(0)
-                                Text(Date.dayOfTheWeekStr(dayOfTheWeekInt))
-                                    .font(.system(size: 15, weight: .semibold))
-                                    .foregroundColor(.secondary)
-                                    .zIndex(1)
                             }
                         }
                     }
                     Spacer()
                 }
-                .rowBackground()
                 .padding([.leading, .trailing], 10)
             }
             Spacer()

@@ -21,14 +21,10 @@ struct Test3: View {
                 .padding(.bottom, 10)
                 .padding(.top, 70)
             Text("횟수 설정")
-                .font(.system(size: 30, weight: .bold))
+                .title()
                 .padding(.bottom, 100)
-            HStack {
-                Text("횟수")
-                    .font(.system(size: 20, weight: .bold))
-                    .padding(.leading, 20)
-                Spacer()
-            }
+            Text("횟수")
+                .sectionText()
             HStack {
                 TextField("15회", text: $number)
                     .keyboardType(.numberPad)
@@ -36,17 +32,12 @@ struct Test3: View {
             .rowBackground()
             .padding([.leading, .trailing], 10)
             Spacer()
-            
         }
         .paperBackground()
         .onTapGesture {
-            endEditing()
+            UIApplication.shared.endEditing()
         }
     }
-    private func endEditing() {
-        UIApplication.shared.endEditing()
-    }
-    
 }
 
 struct Test3_Previews: PreviewProvider {

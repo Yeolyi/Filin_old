@@ -11,6 +11,7 @@ struct LinearProgressBar: View {
     
     let color: Color
     let progress: Double
+    @State var isAnimation = false
     
     init(color: Color, progress: Double) {
         self.color = color
@@ -19,21 +20,22 @@ struct LinearProgressBar: View {
     
     var body: some View {
         GeometryReader { geo in
-            ZStack(alignment: .leading) {
-                Rectangle()
-                    .frame(width: geo.size.width, height: 10)
-                    .foregroundColor(color.lighter(by: 0.4))
-                    .zIndex(0)
-                Rectangle()
-                    .frame(width: CGFloat(progress) * geo.size.width, height: 10)
-                    .foregroundColor(color)
-                    .animation(.default)
-                    .zIndex(2)
-            }
-            .cornerRadius(5)
+            Rectangle()
+                .frame(width: CGFloat(progress) * geo.size.width, height: 15)
+                .foregroundColor(color)
+                .offset(x: 2, y: 4)
+                .if(isAnimation) {
+                    $0.animation(.default)
+                }
         }
-        .frame(height: 10)
-        .padding(.trailing, 5)
+        .frame(height: 15)
+        .overlay(
+            Rectangle()
+                .stroke(ThemeColor.mainColor, lineWidth: 1.5)
+        )
+        .onAppear {
+            self.isAnimation = true
+        }
     }
 }
 
@@ -43,3 +45,5 @@ struct LinearProgressBar_Previews: PreviewProvider {
             .padding(10)
     }
 }
+
+

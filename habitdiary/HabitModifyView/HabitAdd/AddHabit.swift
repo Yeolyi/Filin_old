@@ -29,7 +29,7 @@ struct AddHabit: View {
     @State var habitType = HabitType.daily
     @State var dayOfTheWeek: [Int] = []
     @State var number = "1"
-    @State var selectedColor = "#b6bdc3"
+    @State var selectedColor = "#404040"
     @State var oneTouchUnit = "1"
     
     var isNextAvailable: Bool {
@@ -72,6 +72,7 @@ struct AddHabit: View {
                     }) {
                         Text("이전으로")
                             .fixedSize()
+                            .foregroundColor(ThemeColor.mainColor)
                             .padding([.leading, .trailing], 10)
                             .padding(.bottom, 3)
                     }
@@ -103,9 +104,8 @@ struct AddHabit: View {
                         Spacer()
                     }
                     .background(
-                        Color(hex: "#2f7bf6")
+                        ThemeColor.mainColor
                     )
-                    .cornerRadius(15)
                 }
                 .frame(width: UIScreen.main.bounds.width - 60)
                 .opacity(isNextAvailable ? 1.0 : 0.3)

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DiaryModal: View {
     
-    @State var memo = ""
+    @State var memo = "탭하여 쓰기"
     let habit: HabitInfo
     let targetDate: Date
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -23,34 +23,30 @@ struct DiaryModal: View {
     
     var body: some View {
         VStack {
-            ZStack {
+            HStack {
                 Text("\(Date().month)월 \(Date().day)일 일기")
-                    .font(.custom("NanumBarunpen", size: 40))
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("취소")
-                            .font(.custom("NanumBarunpen", size: 20))
-                            .padding(.leading, 20)
-                            .foregroundColor(.black)
-                    }
-                    Spacer()
-                    Button(action: {
-                        habit.diary[targetDate.dictKey] = memo == "" ? nil : memo
-                        saveContext()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("확인")
-                            .font(.custom("NanumBarunpen", size: 20))
-                            .padding(.trailing, 20)
-                            .foregroundColor(.black)
-                    }
+                    .sectionText()
+                Spacer()
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("취소")
+                        .padding(.trailing, 20)
+                        .foregroundColor(ThemeColor.mainColor)
+                }
+                Button(action: {
+                    habit.diary[targetDate.dictKey] = memo == "" ? nil : memo
+                    saveContext()
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("저장")
+                        .padding(.trailing, 20)
+                        .foregroundColor(ThemeColor.mainColor)
                 }
             }
+            Divider()
             TextView(text: $memo)
                 .rowBackground()
-                .padding(10)
         }
         .padding(.top, 20)
     }

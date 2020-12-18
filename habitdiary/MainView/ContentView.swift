@@ -47,6 +47,7 @@ struct ContentView: View {
                 showAddModal = true
             }
         }
+        .accentColor(ThemeColor.mainColor)
     }
     
     var listReorderButton: some View {

@@ -36,6 +36,7 @@ struct CustomCalendarWeek: View {
                         progress: percentAchieved(date: dayOfWeekToDate(weekNum: week, dayOfWeek: day)),
                         date: dayOfWeekToDate(weekNum: week, dayOfWeek: day),
                         isUnderline: habit.diary[dayOfWeekToDate(weekNum: week, dayOfWeek: day).dictKey] != nil,
+                        isActivated: (monthTypef(weekNum: week, dayOfWeek: day) != .this) ? false : true,
                         selectedDate: $selectedDate
                     )
                 } else {
@@ -44,6 +45,7 @@ struct CustomCalendarWeek: View {
                         progress: 0,
                         date: dayOfWeekToDate(weekNum: week, dayOfWeek: day),
                         isUnderline: false,
+                        isActivated: false,
                         selectedDate: $selectedDate
                     )
                     .disabled(true)
@@ -127,6 +129,6 @@ struct CustomCalendarWeek: View {
     }
     
     func percentAchieved(date: Date) -> Double {
-        min(Double((habit.achieve[date.dictKey] ?? 0))/Double(habit.targetAmount), 1)
+        Double((habit.achieve[date.dictKey] ?? 0))/Double(habit.targetAmount)
     }
 }

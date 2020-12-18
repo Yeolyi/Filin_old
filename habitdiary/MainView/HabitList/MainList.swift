@@ -26,13 +26,8 @@ struct MainList: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                HStack {
                     Text("오늘")
-                        .font(.system(size: 20, weight: .bold))
-                        .padding(.leading, 10)
-                        .padding(.top, 15)
-                    Spacer()
-                }
+                        .sectionText()
                 if listOrderManager.habitOrder.filter{($0.dayOfWeek == nil) || (($0.dayOfWeek?.contains(Date().dayOfTheWeek)) == true)}.isEmpty == false {
                     ForEach(listOrderManager.habitOrder, id: \.self) { orderInfo in
                         if ((orderInfo.dayOfWeek == nil) || ((orderInfo.dayOfWeek?.contains(Date().dayOfTheWeek)) == true)) {
@@ -56,13 +51,8 @@ struct MainList: View {
                 }
                 
                 if !listOrderManager.habitOrder.filter{$0.dayOfWeek?.contains(Date().dayOfTheWeek) == false}.isEmpty {
-                    HStack {
                         Text("전체")
-                            .font(.system(size: 20, weight: .bold))
-                            .padding(.leading, 10)
-                            .padding(.top, 15)
-                        Spacer()
-                    }
+                            .sectionText()
                 }
                 
                 ForEach(listOrderManager.habitOrder, id: \.self) { orderInfo in

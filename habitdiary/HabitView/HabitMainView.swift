@@ -22,22 +22,39 @@ struct HabitViewMain: View {
     @EnvironmentObject var listOrderManager: ListOrderManager
     @State var activeSheet: ActiveSheet?
     @State var selectedDate = Date()
-    @State var calendarExpanded = false
+    
+    init(habit: HabitInfo) {
+        self.habit = habit
+        if habit.habitType == HabitType.weekly.rawValue {
+            var dateIterate = Date()
+            guard let targetDays = habit.targetDays else {
+                return
+            }
+            while !targetDays.contains(Int16(dateIterate.dayOfTheWeek)) {
+                var dayComponent = DateComponents()
+                dayComponent.day = 1
+                let theCalendar = Calendar.current
+                dateIterate = theCalendar.date(byAdding: dayComponent, to: dateIterate)!
+            }
+            _selectedDate = State(initialValue: dateIterate)
+        }
+    }
     
     var body: some View {
-        ZStack {
             ScrollView {
                 VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                        CalendarRow(selectedDate: $selectedDate, habit: habit, isExpanded: calendarExpanded)
-                        Spacer()
-                    }
+                    Text("달력")
+                        .sectionText()
+                    CalendarRow(selectedDate: $selectedDate, habit: habit)
                     .rowBackground()
                     .padding([.leading, .trailing], 10)
+                    Text("기록")
+                        .sectionText()
                     TodayHabit(habit: habit, selectedDate: $selectedDate)
                         .padding([.leading, .trailing], 10)
                         .padding(.bottom, 20)
+                    Text("일기")
+                        .sectionText()
                     DiaryRow(activeSheet: $activeSheet, habit: habit, selectedDate: selectedDate)
                         .padding([.leading, .trailing], 10)
                         .padding(.bottom, 60)
@@ -72,8 +89,6 @@ struct HabitViewMain: View {
                     sharedViewData.inMainView = true
                 }
             }
-            BottomBar(activeSheet: $activeSheet, isCalendarExpanded: $calendarExpanded, habit: habit)
-        }
     }
 }
 

@@ -25,9 +25,10 @@ struct BottomBar: View {
                 shareButton
                     .hidden()
                 Spacer()
-                calendarViewModeButton
+                shareButton
+                    .hidden()
                 Spacer()
-                diaryWriteButton
+                calendarViewModeButton
                     .padding(.trailing, 15)
             }
             .frame(height: 50)

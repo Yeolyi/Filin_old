@@ -11,7 +11,7 @@ struct CalendarRow: View {
     
     @Binding var selectedDate: Date
     @ObservedObject var habit: HabitInfo
-    let isExpanded: Bool
+    @State var isExpanded = false
     var lineNum: Int {
         let date = selectedDate
         let calendar = Calendar.current
@@ -25,10 +25,9 @@ struct CalendarRow: View {
     let dayOfWeekStr = ["일", "월", "화", "수", "목", "금", "토"]
     let ordinalToStr = [1: "첫", 2:"둘", 3:"셋", 4:"넷", 5:"다섯번"]
     
-    init(selectedDate: Binding<Date>, habit: HabitInfo, isExpanded: Bool) {
+    init(selectedDate: Binding<Date>, habit: HabitInfo) {
         self._selectedDate = selectedDate
         self.habit = habit
-        self.isExpanded = isExpanded
     }
     
     var body: some View {
@@ -38,10 +37,10 @@ struct CalendarRow: View {
                     Spacer()
                     if isExpanded {
                         Text("\(String(selectedDate.year))년 \(selectedDate.month)월")
-                            .font(.system(size: 20, weight: .bold))
+                            .rowHeadline()
                     } else {
                         Text("\(selectedDate.month)월 \(selectedDate.day)일")
-                            .font(.system(size: 20, weight: .bold))
+                            .rowHeadline()
                     }
                     Spacer()
                 }
@@ -59,6 +58,7 @@ struct CalendarRow: View {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 20))
                             .frame(width: 30, height: 30)
+                            .foregroundColor(ThemeColor.mainColor)
                     }
                     .padding(5)
                     Button(action: {
@@ -73,6 +73,7 @@ struct CalendarRow: View {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 20))
                             .frame(width: 30, height: 30)
+                            .foregroundColor(ThemeColor.mainColor)
                     }
                     .padding(5)
                 }
@@ -81,12 +82,12 @@ struct CalendarRow: View {
             HStack {
                 ForEach(dayOfWeekStr, id: \.self) { str in
                     Text(str)
-                        .font(.headline)
+                        .rowSubheadline()
                         .foregroundColor(.gray)
                         .frame(width: 40)
                 }
             }
-            .padding(.bottom, 5)
+            .padding(.bottom, 8)
             if isExpanded {
                 ForEach(1..<lineNum+1, id: \.self) { week in
                     CustomCalendarWeek(week: week, isExpanded: true, habit: habit, selectedDate: $selectedDate)
@@ -96,6 +97,17 @@ struct CalendarRow: View {
                 CustomCalendarWeek(week: selectedDate.weekNum, isExpanded: false, habit: habit, selectedDate: $selectedDate)
                     .padding(.bottom, 10)
             }
+            Button(action: {
+                withAnimation {
+                    self.isExpanded.toggle()
+                }
+            }) {
+                Image(systemName: isExpanded ? "chevron.compact.up" : "chevron.compact.down")
+                    .font(.system(size: 20))
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(ThemeColor.secondaryColor)
+            }
+            .padding(5)
         }
     }
 }

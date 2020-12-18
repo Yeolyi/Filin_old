@@ -19,14 +19,10 @@ struct Test4: View {
                 .padding(.bottom, 10)
                 .padding(.top, 70)
             Text("테마 색 설정")
-                .font(.system(size: 30, weight: .bold))
+                .title()
                 .padding(.bottom, 100)
-            HStack {
-                Text("색")
-                    .font(.system(size: 20, weight: .bold))
-                    .padding(.leading, 20)
-                Spacer()
-            }
+            Text("색")
+                .sectionText()
             ColorHorizontalPicker(selectedColor: $color)
             Spacer()
         }

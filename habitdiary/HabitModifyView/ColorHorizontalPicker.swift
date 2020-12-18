@@ -12,7 +12,7 @@ import SwiftUI
 struct ColorHorizontalPicker: View {
     
     @Binding var selectedColor: String
-    var colorList: [String] = ["#D95555", "#F2784B", "#A6886D", "#F2C335", "#50BF77", "#89C7B6", "#8DA6A3", "#1D79F2", "#737EBF", "#BF889C"]
+    var colorList: [String] = ["F7B0B6", "FBF595", "92AAD0", "A6ECF2", "9ED9A1", "CBCBCB", "F7A097", "B6A4CC", "#404040"]
     let rowButtonNum: Int
     let rowCount: Int
     let buttonSize: CGFloat = 40.0
@@ -74,16 +74,11 @@ struct ColorHorizontalPicker: View {
     }
     
     var body: some View {
-        HStack {
-            Spacer()
-            VStack(spacing: 0) {
-                ForEach(0..<rowCount, id: \.self) { rowNum in
-                    rowView(rowNum: rowNum)
-                }
+        VStack(spacing: 0) {
+            ForEach(0..<rowCount, id: \.self) { rowNum in
+                rowView(rowNum: rowNum)
             }
-            Spacer()
         }
-        .rowBackground()
         .padding([.leading, .trailing], 10)
     }
     

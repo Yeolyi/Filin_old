@@ -16,12 +16,10 @@
 		250823E42584E33A0005D7CE /* LinearProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823E32584E33A0005D7CE /* LinearProgressBar.swift */; };
 		2522916A2583849100869C51 /* RowBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252291692583849100869C51 /* RowBackground.swift */; };
 		2522916D258384A900869C51 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522916C258384A900869C51 /* ThemeColor.swift */; };
-		25229171258385EA00869C51 /* SectionText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25229170258385EA00869C51 /* SectionText.swift */; };
 		252883C5258640D7006483A4 /* Test3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252883C4258640D7006483A4 /* Test3.swift */; };
 		252883C925864695006483A4 /* Test4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252883C825864695006483A4 /* Test4.swift */; };
 		252C7D3F258365F900101484 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252C7D3E258365F900101484 /* ColorExtension.swift */; };
 		2550A5662583F4EE002E1906 /* DiaryModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A5652583F4EE002E1906 /* DiaryModal.swift */; };
-		2553CD0025851A6A00307268 /* DiaryExpanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2553CCFF25851A6A00307268 /* DiaryExpanded.swift */; };
 		2557F9362586568000697C48 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F9352586568000697C48 /* AppIcon.swift */; };
 		2557F93C2586719700697C48 /* ListOrderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F93B2586719700697C48 /* ListOrderManager.swift */; };
 		2557F93F2586721100697C48 /* AutoSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F93E2586721100697C48 /* AutoSave.swift */; };
@@ -52,6 +50,9 @@
 		25B73277258AAFC1003D9FD8 /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B73276258AAFC1003D9FD8 /* Background.swift */; };
 		25B7327A258AB055003D9FD8 /* RoundedCornerPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B73279258AB055003D9FD8 /* RoundedCornerPlus.swift */; };
 		25B7327D258B3C73003D9FD8 /* CustomDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B7327C258B3C73003D9FD8 /* CustomDivider.swift */; };
+		25B73282258B460A003D9FD8 /* FontsModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B73281258B460A003D9FD8 /* FontsModifiers.swift */; };
+		25B73286258B67BA003D9FD8 /* Parallelogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B73285258B67BA003D9FD8 /* Parallelogram.swift */; };
+		25B73289258BBE9E003D9FD8 /* NanumMyeongjo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25B73288258BBE9A003D9FD8 /* NanumMyeongjo.ttf */; };
 		25C574FD2583D3BD004BF07D /* HabitInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C574FB2583D3BD004BF07D /* HabitInfo+CoreDataClass.swift */; };
 		25C574FE2583D3BD004BF07D /* HabitInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C574FC2583D3BD004BF07D /* HabitInfo+CoreDataProperties.swift */; };
 		25C5A564258376BE00E864A5 /* HabitMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C5A563258376BE00E864A5 /* HabitMainView.swift */; };
@@ -72,12 +73,10 @@
 		250823E32584E33A0005D7CE /* LinearProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearProgressBar.swift; sourceTree = "<group>"; };
 		252291692583849100869C51 /* RowBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowBackground.swift; sourceTree = "<group>"; };
 		2522916C258384A900869C51 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
-		25229170258385EA00869C51 /* SectionText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionText.swift; sourceTree = "<group>"; };
 		252883C4258640D7006483A4 /* Test3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test3.swift; sourceTree = "<group>"; };
 		252883C825864695006483A4 /* Test4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test4.swift; sourceTree = "<group>"; };
 		252C7D3E258365F900101484 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		2550A5652583F4EE002E1906 /* DiaryModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModal.swift; sourceTree = "<group>"; };
-		2553CCFF25851A6A00307268 /* DiaryExpanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryExpanded.swift; sourceTree = "<group>"; };
 		2557F9352586568000697C48 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		2557F93B2586719700697C48 /* ListOrderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOrderManager.swift; sourceTree = "<group>"; };
 		2557F93E2586721100697C48 /* AutoSave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoSave.swift; sourceTree = "<group>"; };
@@ -111,6 +110,9 @@
 		25B73276258AAFC1003D9FD8 /* Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		25B73279258AB055003D9FD8 /* RoundedCornerPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornerPlus.swift; sourceTree = "<group>"; };
 		25B7327C258B3C73003D9FD8 /* CustomDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDivider.swift; sourceTree = "<group>"; };
+		25B73281258B460A003D9FD8 /* FontsModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsModifiers.swift; sourceTree = "<group>"; };
+		25B73285258B67BA003D9FD8 /* Parallelogram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parallelogram.swift; sourceTree = "<group>"; };
+		25B73288258BBE9A003D9FD8 /* NanumMyeongjo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumMyeongjo.ttf; sourceTree = "<group>"; };
 		25C574FB2583D3BD004BF07D /* HabitInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HabitInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		25C574FC2583D3BD004BF07D /* HabitInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HabitInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		25C5A563258376BE00E864A5 /* HabitMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMainView.swift; sourceTree = "<group>"; };
@@ -135,7 +137,6 @@
 		250823D12584A97D0005D7CE /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				250823CB2584958A0005D7CE /* CalendarRow.swift */,
 				250823D22584A98A0005D7CE /* CalendarUnit.swift */,
 				257D94A325851F28007D4CF1 /* CalendarWeek.swift */,
 			);
@@ -210,8 +211,6 @@
 			isa = PBXGroup;
 			children = (
 				2550A5652583F4EE002E1906 /* DiaryModal.swift */,
-				257D949E25851B7F007D4CF1 /* DiaryRow.swift */,
-				2553CCFF25851A6A00307268 /* DiaryExpanded.swift */,
 			);
 			path = Diary;
 			sourceTree = "<group>";
@@ -220,7 +219,6 @@
 			isa = PBXGroup;
 			children = (
 				252291692583849100869C51 /* RowBackground.swift */,
-				25229170258385EA00869C51 /* SectionText.swift */,
 				257D94AC25852EA6007D4CF1 /* ConditionalModifier.swift */,
 				25B73276258AAFC1003D9FD8 /* Background.swift */,
 				25B73279258AB055003D9FD8 /* RoundedCornerPlus.swift */,
@@ -286,6 +284,7 @@
 				250823E32584E33A0005D7CE /* LinearProgressBar.swift */,
 				257D94A825852154007D4CF1 /* CircleProgress.swift */,
 				25B7327C258B3C73003D9FD8 /* CustomDivider.swift */,
+				25B73285258B67BA003D9FD8 /* Parallelogram.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -293,7 +292,9 @@
 		25B7327F258B443C003D9FD8 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				25B73288258BBE9A003D9FD8 /* NanumMyeongjo.ttf */,
 				25037056258801B100443032 /* NanumBarunpenR.ttf */,
+				25B73281258B460A003D9FD8 /* FontsModifiers.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -304,6 +305,8 @@
 				25C5A563258376BE00E864A5 /* HabitMainView.swift */,
 				25CD8C9C258553AC00886F39 /* TodayHabit.swift */,
 				258B6AFB25828B440004BFE7 /* BottomBar.swift */,
+				257D949E25851B7F007D4CF1 /* DiaryRow.swift */,
+				250823CB2584958A0005D7CE /* CalendarRow.swift */,
 				257D949C25851B3D007D4CF1 /* Diary */,
 				250823D12584A97D0005D7CE /* Calendar */,
 			);
@@ -382,6 +385,7 @@
 				2563B5042582826B00731635 /* LaunchScreen.storyboard in Resources */,
 				2563B5012582826B00731635 /* Preview Assets.xcassets in Resources */,
 				25037057258801B100443032 /* NanumBarunpenR.ttf in Resources */,
+				25B73289258BBE9E003D9FD8 /* NanumMyeongjo.ttf in Resources */,
 				2563B4FE2582826B00731635 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -402,6 +406,7 @@
 				258B6B12258295660004BFE7 /* EditHabit.swift in Sources */,
 				2522916D258384A900869C51 /* ThemeColor.swift in Sources */,
 				258B6B1A25829B660004BFE7 /* MultilineTextField.swift in Sources */,
+				25B73282258B460A003D9FD8 /* FontsModifiers.swift in Sources */,
 				252883C5258640D7006483A4 /* Test3.swift in Sources */,
 				25FC602C258615CE006BCFBA /* Test1.swift in Sources */,
 				257D94A925852154007D4CF1 /* CircleProgress.swift in Sources */,
@@ -419,11 +424,10 @@
 				258B6AF4258289240004BFE7 /* MainList.swift in Sources */,
 				250823E42584E33A0005D7CE /* LinearProgressBar.swift in Sources */,
 				250823DA2584DF6B0005D7CE /* CoreDataManager.swift in Sources */,
+				25B73286258B67BA003D9FD8 /* Parallelogram.swift in Sources */,
 				258B6B0325828BFB0004BFE7 /* GaussianBlur.swift in Sources */,
-				25229171258385EA00869C51 /* SectionText.swift in Sources */,
 				258B6AF8258289C80004BFE7 /* DateProvider.swift in Sources */,
 				25FC6034258615EE006BCFBA /* AddHabit.swift in Sources */,
-				2553CD0025851A6A00307268 /* DiaryExpanded.swift in Sources */,
 				2522916A2583849100869C51 /* RowBackground.swift in Sources */,
 				25B73277258AAFC1003D9FD8 /* Background.swift in Sources */,
 				25B7327A258AB055003D9FD8 /* RoundedCornerPlus.swift in Sources */,

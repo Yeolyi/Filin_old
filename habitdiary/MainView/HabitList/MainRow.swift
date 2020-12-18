@@ -21,15 +21,15 @@ struct MainRow: View {
     var subTitle: String {
         var subTitleStr = ""
         if habit.habitType == HabitType.weekly.rawValue && habit.targetDays != nil {
+            subTitleStr = "매주 "
             for dayOfWeekInt16 in habit.targetDays! {
                 subTitleStr += "\(Date.dayOfTheWeekStr(Int(dayOfWeekInt16))), "
             }
             let _ = subTitleStr.popLast()
             let _ = subTitleStr.popLast()
         } else {
-            subTitleStr += "매일"
+            subTitleStr = "매일"
         }
-        subTitleStr += " \(habit.targetAmount)회"
         return subTitleStr
     }
     
@@ -43,7 +43,9 @@ struct MainRow: View {
                         .frame(width: 50, height: 60)
                         .onTapGesture {
                             if isExpanded {
-                                isExpanded = false
+                                withAnimation {
+                                    isExpanded = false
+                                }
                                 return
                             }
                             if habit.achieve[Date().dictKey] != nil {
@@ -60,33 +62,39 @@ struct MainRow: View {
                                 self.tapping = isPressing
                             },
                             perform: {
-                                self.isExpanded = true
+                                withAnimation {
+                                    self.isExpanded = true
+                                }
                                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                             }
                         )
                         .opacity(tapping ? 0.5 : 1.0)
                 }
-                Group {
+                ZStack {
                     HStack {
-                        ZStack {
+                        VStack {
                             HStack {
-                                VStack(alignment: .leading) {
-                                    Text(habit.name)
-                                        .font(.system(size: 20))
-                                    Text(subTitle)
-                                        .font(.system(size: 14, weight: .light))
-                                }
+                                Text(habit.name)
+                                    .rowHeadline()
                                 Spacer()
-                                LinearProgressBar(color: Color(hex: habit.color), progress: Double(habit.achieve[Date().dictKey] ?? 0)/Double(habit.targetAmount))
-                                    .frame(width: 150)
                             }
-                            NavigationLink(destination: HabitViewMain(habit: habit)) {
-                                Rectangle()
-                                    .opacity(0)
+                            HStack {
+                                Text(subTitle)
+                                    .rowSubheadline()
+                                Spacer()
                             }
                         }
+                        VStack(alignment: .trailing) {
+                            LinearProgressBar(color: Color(hex: habit.color), progress: Double(habit.achieve[Date().dictKey] ?? 0)/Double(habit.targetAmount))
+                                .frame(width: 150)
+                            Text("\(habit.achieve[Date().dictKey] ?? 0)회/\(habit.targetAmount)회")
+                                .rowSubheadline()
+                        }
                     }
-                    .frame(height: 60)
+                    NavigationLink(destination: HabitViewMain(habit: habit)) {
+                        Rectangle()
+                            .opacity(0)
+                    }
                 }
                 .padding([.leading], showAdd ? 5 : 10)
             }

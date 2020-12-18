@@ -8,31 +8,49 @@
 import SwiftUI
 
 struct AppIcon: View {
+    var progress: Double
+    let color: Color
+    let num: String?
+    let isUnderBar: Bool
+    let highlighted: Bool
+    let activated: Bool
+    
     var body: some View {
-        ZStack {
-        Circle()
-            .foregroundColor(Color(hex: "#f7ebad"))
-            .overlay(
+        GeometryReader { geo in
+            ZStack {
                 Circle()
-                    .trim(from: 0.0, to: 0.8)
-                    .stroke(style: StrokeStyle(lineWidth: 30.0, lineCap: .round, lineJoin: .round))
-                    .foregroundColor(Color(hex: "#f7ebad").darker(by: 0.15))
-                    .rotationEffect(Angle(degrees: 270.0))
-                    .animation(.linear)
-            )
-            .zIndex(0)
-            Text("✓")
-                .font(.system(size: 150, weight: .semibold))
-                .foregroundColor(.black)
-                .zIndex(1)
+                    .foregroundColor(.clear)
+                    .overlay(
+                        Circle()
+                            .trim(from: 0.0, to: CGFloat(self.progress))
+                            .stroke(style: StrokeStyle(lineWidth: 30, lineCap: .square, lineJoin: .bevel))
+                            .foregroundColor(color)
+                            .rotationEffect(Angle(degrees: 270.0))
+                            .animation(.linear)
+                    )
+                    .if(progress > 1){
+                        $0
+                        .overlay(
+                            Circle()
+                                .trim(from: 0.0, to: CGFloat(self.progress - 1))
+                                .stroke(style: StrokeStyle(lineWidth: 40, lineCap: .square, lineJoin: .bevel))
+                                .foregroundColor(color.darker(by: 0.2))
+                                .rotationEffect(Angle(degrees: 270.0))
+                                .animation(.linear)
+                        )
+                    }
+                    .zIndex(0)
+                Image(systemName: "pencil")
+                    .font(.system(size: 90, weight: .bold))
+                    .foregroundColor(ThemeColor.secondaryColor)
+            }
         }
-        .aspectRatio(1, contentMode: .fit)
-        .scaledToFit()
     }
 }
 
 struct AppIcon_Previews: PreviewProvider {
     static var previews: some View {
-        AppIcon()
+        AppIcon(progress: 0.8, color: ThemeColor.mainColor, num: "14", isUnderBar: true, highlighted: false, activated: true)
+            .frame(width: 210)
     }
 }
