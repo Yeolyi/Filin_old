@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State var showAddModal = false
     @State var editMode = false
-    @EnvironmentObject var sharedViewData: SharedViewData
+    @EnvironmentObject var sharedViewData: AppSetting
     @EnvironmentObject var listOrderManager: ListOrderManager
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.colorScheme) var colorScheme
     @FetchRequest(
         entity: HabitInfo.entity(),
         sortDescriptors: []
@@ -47,40 +47,45 @@ struct ContentView: View {
                 showAddModal = true
             }
         }
-        .accentColor(ThemeColor.mainColor)
+        .accentColor(ThemeColor.mainColor(colorScheme))
+        .navigationViewStyle(StackNavigationViewStyle())
     }
-    
     var listReorderButton: some View {
         HStack {
             Button(action: {
                 self.editMode.toggle()
             }) {
-                if editMode {
-                    Text("완료")
-                } else {
-                    Text("편집")
-                }
+                    if editMode {
+                        Text("완료")
+                    } else {
+                        Text("편집")
+                    }
             }
         }
     }
-    
     var habitPlusButton: some View {
         Button(action: {
-            self.showAddModal = true
+            if !editMode {
+                self.showAddModal = true
+            }
         }) {
             Image(systemName: "plus")
                 .font(.system(size: 25, weight: .light))
         }
+        .if(editMode) {
+            $0.hidden()
+        }
     }
-    
 }
 
+/*
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         ContentView()
             .environment(\.managedObjectContext, context)
-            .environmentObject(SharedViewData())
+            .environmentObject(AppSetting())
             .previewDevice(.init(stringLiteral: "iPhone 12 mini"))
     }
 }
+*/

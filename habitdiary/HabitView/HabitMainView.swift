@@ -15,49 +15,29 @@ enum ActiveSheet: Identifiable {
 }
 
 struct HabitViewMain: View {
-    
-    @EnvironmentObject var sharedViewData: SharedViewData
     @ObservedObject var habit: HabitInfo
     @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var listOrderManager: ListOrderManager
     @State var activeSheet: ActiveSheet?
     @State var selectedDate = Date()
-    
     init(habit: HabitInfo) {
         self.habit = habit
         if habit.habitType == HabitType.weekly.rawValue {
-            var dateIterate = Date()
-            guard let targetDays = habit.targetDays else {
-                return
-            }
-            while !targetDays.contains(Int16(dateIterate.dayOfTheWeek)) {
-                var dayComponent = DateComponents()
-                dayComponent.day = 1
-                let theCalendar = Calendar.current
-                dateIterate = theCalendar.date(byAdding: dayComponent, to: dateIterate)!
-            }
-            _selectedDate = State(initialValue: dateIterate)
+            _selectedDate = State(initialValue: Date().nearDayOfWeekDate((habit.targetDays ?? []).map {Int($0)}))
         }
     }
-    
     var body: some View {
             ScrollView {
-                VStack(spacing: 0) {
+                VStack(spacing: 10) {
                     Text("달력")
                         .sectionText()
                     CalendarRow(selectedDate: $selectedDate, habit: habit)
-                    .rowBackground()
-                    .padding([.leading, .trailing], 10)
                     Text("기록")
                         .sectionText()
                     TodayHabit(habit: habit, selectedDate: $selectedDate)
-                        .padding([.leading, .trailing], 10)
-                        .padding(.bottom, 20)
                     Text("일기")
                         .sectionText()
                     DiaryRow(activeSheet: $activeSheet, habit: habit, selectedDate: selectedDate)
-                        .padding([.leading, .trailing], 10)
-                        .padding(.bottom, 60)
                 }
             }
             .padding(.top, 1)
@@ -69,7 +49,7 @@ struct HabitViewMain: View {
                     }
             )
             .sheet(item: $activeSheet) { item in
-                switch(item) {
+                switch item {
                 case .diary:
                     DiaryModal(habit: habit, targetDate: selectedDate)
                         .allowAutoDismiss(false)
@@ -79,20 +59,10 @@ struct HabitViewMain: View {
                         .environmentObject(listOrderManager)
                 }
             }
-            .onAppear {
-                withAnimation {
-                    sharedViewData.inMainView = false
-                }
-            }
-            .onDisappear {
-                withAnimation {
-                    sharedViewData.inMainView = true
-                }
-            }
     }
 }
 
-
+/*
 struct HabitViewMain_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -100,4 +70,4 @@ struct HabitViewMain_Previews: PreviewProvider {
             .environment(\.managedObjectContext, context)
     }
 }
-
+*/

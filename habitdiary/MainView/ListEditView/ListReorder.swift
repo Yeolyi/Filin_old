@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ListReorder: View {
-    
     @FetchRequest(
         entity: HabitInfo.entity(),
         sortDescriptors: []
@@ -16,11 +15,17 @@ struct ListReorder: View {
     var habitInfos: FetchedResults<HabitInfo>
     @EnvironmentObject var listOrderManager: ListOrderManager
     @Environment(\.managedObjectContext) var managedObjectContext
-    
+    var habitList: [HabitInfo] {
+        ListOrderManager().habitOrder.map { orderInfo in
+            habitInfos.first(where: { habitInfo in
+                orderInfo.elementId == habitInfo.id
+            }) ?? HabitInfo(context: managedObjectContext)
+        }
+    }
     var body: some View {
         List {
-            ForEach(listOrderManager.habitOrder, id: \.self) { orderInfo in
-                Text((habitInfos.first(where: {$0.id == orderInfo.id}) ?? HabitInfo(context: managedObjectContext)).name)
+            ForEach(habitList, id: \.self) { habitInfo in
+                Text(habitInfo.name)
             }
             .onMove(perform: move)
             .onDelete(perform: remove)
@@ -28,33 +33,16 @@ struct ListReorder: View {
         .insetGroupedListStyle()
         .environment(\.editMode, .constant(EditMode.active))
     }
-    
     func move(from source: IndexSet, to destination: Int) {
         listOrderManager.habitOrder.move(fromOffsets: source, toOffset: destination)
     }
-    
     func remove(at offsets: IndexSet) {
         listOrderManager.habitOrder.remove(atOffsets: offsets)
     }
-    
 }
 
 struct ListReorder_Previews: PreviewProvider {
     static var previews: some View {
         ListReorder()
     }
-}
-
-extension List {
-  @ViewBuilder
-  func insetGroupedListStyle() -> some View {
-    if #available(iOS 14.0, *) {
-      self
-        .listStyle(InsetGroupedListStyle())
-    } else {
-      self
-        .listStyle(GroupedListStyle())
-        .environment(\.horizontalSizeClass, .regular)
-    }
-  }
 }

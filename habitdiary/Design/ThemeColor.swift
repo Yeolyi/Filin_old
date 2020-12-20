@@ -9,23 +9,17 @@ import SwiftUI
 
 /// Provides title and icon color based on ColorScheme.
 class ThemeColor: ObservableObject {
-    
-    static var mainColor = Color(hex: "#404040")
-    static var secondaryColor = Color(hex: "#BFBEBD")
-    
-    private var titleDark = Color(hex: "#6F77A6")
-    private var titleLight = Color(hex: "#3B568C")
-    
-    private var iconLight = Color(hex: "#3F4D59")
-    private var iconDark = Color(hex: "#7B848C")
-    
-    func icon(_ colorScheme: ColorScheme) -> Color {
-        iconLight
-        //colorScheme == .dark ? iconDark : iconLight
+    private static var mainLight = Color(hex: "#404040")
+    private static var mainDark = Color(hex: "#BFBFBF")
+    private static var subLight = Color(hex: "#BEBEBE")
+    private static var subDark = Color(hex: "#414141")
+    static var colorList: [String] = [
+        "CBCBCB", "#404040", "F7A097", "FBF595", "9ED9A1", "A6ECF2", "92AAD0", "B6A4CC", "F7B0B6"
+    ]
+    static func mainColor(_ colorScheme: ColorScheme) -> Color {
+        colorScheme == .light ? mainLight : mainDark
     }
-    
-    func title(_ colorScheme: ColorScheme) -> Color {
-        titleLight//colorScheme == .dark ? titleDark : titleLight
+    static func subColor(_ colorScheme: ColorScheme) -> Color {
+        colorScheme == .light ? subLight : subDark
     }
-    
 }

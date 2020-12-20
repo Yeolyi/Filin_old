@@ -8,69 +8,50 @@
 import SwiftUI
 
 struct MainList: View {
-    
     @FetchRequest(entity: HabitInfo.entity(), sortDescriptors: [])
     var habitInfos: FetchedResults<HabitInfo>
-    @EnvironmentObject var listOrderManager: ListOrderManager
-    @EnvironmentObject var sharedViewData: SharedViewData
+    @EnvironmentObject var sharedViewData: AppSetting
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.colorScheme) var colorScheme
     @State var searchWord = ""
-    
-    func showCheck(id: UUID) -> Bool {
-        let habit = habitInfos.first(where: {$0.id==id}) ?? HabitInfo(context: managedObjectContext)
-        let targetAmount = habit.targetAmount
-        let currentAmount = habit.achieve[Date().dictKey] ?? 0
-        return targetAmount <= currentAmount
+    var habitList: [HabitInfo] {
+        ListOrderManager().habitOrder.map { orderInfo in
+            habitInfos.first(where: { habitInfo in
+                orderInfo.elementId == habitInfo.id
+            }) ?? HabitInfo(context: managedObjectContext)
+        }
     }
-    
+    var isTodayEmpty: Bool { habitList.filter { $0.isTodayTodo }.isEmpty }
+    var isGeneralEmpty: Bool { habitInfos.count - habitList.filter { $0.isTodayTodo }.count == 0 }
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                    Text("오늘")
-                        .sectionText()
-                if listOrderManager.habitOrder.filter{($0.dayOfWeek == nil) || (($0.dayOfWeek?.contains(Date().dayOfTheWeek)) == true)}.isEmpty == false {
-                    ForEach(listOrderManager.habitOrder, id: \.self) { orderInfo in
-                        if ((orderInfo.dayOfWeek == nil) || ((orderInfo.dayOfWeek?.contains(Date().dayOfTheWeek)) == true)) {
-                            MainRow(
-                                habit: habitInfos.first(where: {$0.id==orderInfo.id}) ?? HabitInfo(context: managedObjectContext),
-                                showAdd: true,
-                                showCheck: showCheck(id: orderInfo.id)
-                            )
-                        } else {
-                            EmptyView()
-                        }
+                Text("오늘")
+                    .sectionText()
+                if !isTodayEmpty {
+                    ForEach(habitList.filter {$0.isTodayTodo}, id: \.self) { habitInfo in
+                        MainRow(habit: habitInfo, showAdd: true, showCheck: habitInfo.isComplete(at: Date()))
                     }
                 } else {
                     HStack {
                         Spacer()
                         Text("비어있음")
-                            .foregroundColor(.gray)
+                            .foregroundColor(ThemeColor.subColor(colorScheme))
                         Spacer()
                     }
                     .rowBackground()
                 }
-                
-                if !listOrderManager.habitOrder.filter{$0.dayOfWeek?.contains(Date().dayOfTheWeek) == false}.isEmpty {
-                        Text("전체")
-                            .sectionText()
+                if !isGeneralEmpty {
+                    Text("전체")
+                        .sectionText()
                 }
-                
-                ForEach(listOrderManager.habitOrder, id: \.self) { orderInfo in
-                    if ((orderInfo.dayOfWeek?.contains(Date().dayOfTheWeek)) == false) {
-                        MainRow(
-                            habit: habitInfos.first(where: {$0.id==orderInfo.id}) ?? HabitInfo(context: managedObjectContext),
-                            showAdd: false,
-                            showCheck: false
-                        )
-                    } else {
-                        EmptyView()
-                    }
+                ForEach(habitList.filter {!$0.isTodayTodo}, id: \.self) { habitInfo in
+                    MainRow(habit: habitInfo, showAdd: false, showCheck: false)
                 }
             }
         }
         .padding(.top, 1)
     }
-    
 }
 
 struct MainList_Previews: PreviewProvider {

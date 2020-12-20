@@ -10,9 +10,8 @@
         <attribute name="requiredSecond" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetAmount" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetDays" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int16]"/>
-        <attribute name="userOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="HabitInfo" positionX="-63" positionY="-18" width="128" height="179"/>
+        <element name="HabitInfo" positionX="-63" positionY="-18" width="128" height="164"/>
     </elements>
 </model>

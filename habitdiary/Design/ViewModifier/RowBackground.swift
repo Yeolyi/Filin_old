@@ -11,12 +11,11 @@ import SwiftUI
 struct RowBackground: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
     let corners: UIRectCorner
-    
     func body(content: Content) -> some View {
         Group {
             VStack {
-            content
-                .padding(8)
+                content
+                    .padding(8)
                 Divider()
             }
             .padding([.leading, .trailing], 10)

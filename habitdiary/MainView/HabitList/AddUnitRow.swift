@@ -8,43 +8,32 @@
 import SwiftUI
 
 struct AddUnitRow: View {
-    
-    let id: UUID
-    @EnvironmentObject var addUnit: AddUnit
-    
+    let habitID: UUID
+    @EnvironmentObject var addUnit: IncrementPerTap
+    func selectorButton(_ value: Int) -> some View {
+        Button(action: {
+            self.addUnit.addUnit[habitID] = value
+        }) {
+        Text("±\(value)")
+            .foregroundColor(addUnit.addUnit[habitID] == value ? .black : .gray)
+            .font(.system(size: 25, weight: .light))
+            .rowBackground()
+        }
+    }
     var body: some View {
         HStack(spacing: 3) {
             Spacer()
-            Button(action: {
-                self.addUnit.addUnit[id] = 1
-            }) {
-            Text("±1")
-                .foregroundColor(addUnit.addUnit[id] == 1 ? .black : .gray)
-                .font(.system(size: 25, weight: .light))
-                .rowBackground()
-            }
-            Button(action: {
-                self.addUnit.addUnit[id] = 5
-            }) {
-            Text("±5")
-                .foregroundColor(addUnit.addUnit[id] == 5 ? .black : .gray)
-                .font(.system(size: 25, weight: .light))
-                .rowBackground()
-            }
-            Button(action: {
-                self.addUnit.addUnit[id] = 10
-            }) {
-            Text("±10")
-                .foregroundColor(addUnit.addUnit[id] == 10 ? .black : .gray)
-                .font(.system(size: 25, weight: .light))
-                .rowBackground()
-            }
+            selectorButton(1)
+            selectorButton(5)
+            selectorButton(10)
+            selectorButton(20)
+            selectorButton(25)
         }
     }
 }
 
 struct AddUnitRow_Previews: PreviewProvider {
     static var previews: some View {
-        AddUnitRow(id: UUID())
+        AddUnitRow(habitID: UUID())
     }
 }

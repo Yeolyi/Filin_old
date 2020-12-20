@@ -9,15 +9,13 @@ import SwiftUI
 import AVFoundation
 
 struct MainRow: View {
-    
     @ObservedObject var habit: HabitInfo
     @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var addUnit: AddUnit
+    @EnvironmentObject var addUnit: IncrementPerTap
     @State var isExpanded = false
-    @State var tapping = false
+    @State var isTapping = false
     let showAdd: Bool
     let showCheck: Bool
-    
     var subTitle: String {
         var subTitleStr = ""
         if habit.habitType == HabitType.weekly.rawValue && habit.targetDays != nil {
@@ -25,50 +23,34 @@ struct MainRow: View {
             for dayOfWeekInt16 in habit.targetDays! {
                 subTitleStr += "\(Date.dayOfTheWeekStr(Int(dayOfWeekInt16))), "
             }
-            let _ = subTitleStr.popLast()
-            let _ = subTitleStr.popLast()
+            _ = subTitleStr.popLast()
+            _ = subTitleStr.popLast()
         } else {
             subTitleStr = "매일"
         }
         return subTitleStr
     }
-    
     var body: some View {
         VStack {
             HStack(spacing: 0) {
                 if showAdd {
-                    Image(systemName: isExpanded ? "xmark" : (showCheck ? "checkmark.circle.fill" : "circle"))
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundColor(Color(hex: "#404040"))
-                        .frame(width: 50, height: 60)
-                        .onTapGesture {
+                    LongPressButton(
+                        imageSystemName: isExpanded ? "xmark" : (showCheck ? "checkmark.circle.fill" : "circle"),
+                        onTapFunc: {
                             if isExpanded {
-                                withAnimation {
-                                    isExpanded = false
-                                }
+                                withAnimation { isExpanded = false }
                                 return
                             }
-                            if habit.achieve[Date().dictKey] != nil {
-                                habit.achieve[Date().dictKey]! += Int16(addUnit.addUnit[habit.id] ?? 1)
-                            } else {
-                                habit.achieve[Date().dictKey] = Int16(addUnit.addUnit[habit.id] ?? 1)
-                            }
+                            let addedVal = Int16(addUnit.addUnit[habit.id] ?? 1)
+                            habit.achieve[Date().dictKey] = (habit.achieve[Date().dictKey] ?? 0) + addedVal
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                             CoreDataManager.save(managedObjectContext)
+                        },
+                        longTapFunc: {
+                            withAnimation { self.isExpanded = true }
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         }
-                        .onLongPressGesture(
-                            minimumDuration: 0.4,
-                            pressing: { isPressing in
-                                self.tapping = isPressing
-                            },
-                            perform: {
-                                withAnimation {
-                                    self.isExpanded = true
-                                }
-                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                            }
-                        )
-                        .opacity(tapping ? 0.5 : 1.0)
+                    )
                 }
                 ZStack {
                     HStack {
@@ -85,7 +67,7 @@ struct MainRow: View {
                             }
                         }
                         VStack(alignment: .trailing) {
-                            LinearProgressBar(color: Color(hex: habit.color), progress: Double(habit.achieve[Date().dictKey] ?? 0)/Double(habit.targetAmount))
+                            LinearProgressBar(color: Color(hex: habit.color), progress: habit.progress(at: Date()))
                                 .frame(width: 150)
                             Text("\(habit.achieve[Date().dictKey] ?? 0)회/\(habit.targetAmount)회")
                                 .rowSubheadline()
@@ -96,15 +78,12 @@ struct MainRow: View {
                             .opacity(0)
                     }
                 }
-                .padding([.leading], showAdd ? 5 : 10)
+                .padding(.leading, 5)
             }
             .rowBackground()
             if isExpanded {
-                AddUnitRow(id: habit.id)
+                AddUnitRow(habitID: habit.id)
             }
         }
     }
 }
-
-
-

@@ -7,81 +7,83 @@
 
 import SwiftUI
 
-
-
 struct ColorHorizontalPicker: View {
-    
     @Binding var selectedColor: String
-    var colorList: [String] = ["F7B0B6", "FBF595", "92AAD0", "A6ECF2", "9ED9A1", "CBCBCB", "F7A097", "B6A4CC", "#404040"]
     let rowButtonNum: Int
     let rowCount: Int
     let buttonSize: CGFloat = 40.0
     let buttonPadding: CGFloat = 5.0
     let sidePadding: CGFloat = 40.0
-    
+    let accentColors = ThemeColor.colorList.sorted(by: {Color(hex: $0).uiColor().hue < Color(hex: $1).uiColor().hue})
     init(selectedColor: Binding<String>) {
         self._selectedColor = selectedColor
-        rowButtonNum = Int(Double((UIScreen.main.bounds.size.width - sidePadding*2 + buttonPadding)/(buttonSize+buttonPadding)))
-        rowCount = Int(ceil(Double(colorList.count) / Double(rowButtonNum)))
-        colorList = colorList.sorted(by: {Color(hex: $0).uiColor().hue < Color(hex: $1).uiColor().hue})
-        //print(colorList)
+        let pickerWidth = UIScreen.main.bounds.size.width - sidePadding*2 + buttonPadding
+        rowButtonNum = Int(pickerWidth/(buttonSize+buttonPadding))
+        rowCount = Int(ceil(Double(ThemeColor.colorList.count) / Double(rowButtonNum)))
+        print(accentColors)
     }
-    
-    func button(index: Int) -> AnyView {
-        
-        AnyView (
-            Button(action: {
-                self.selectedColor = colorList[index]
-            }) {
-                ZStack {
-                    Circle()
-                        .foregroundColor(Color(hex: colorList[index]))
-                        .frame(width: buttonSize, height: buttonSize)
-                        .padding(buttonPadding)
-                        .zIndex(0)
-                    if selectedColor == colorList[index] {
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(Color(hex: colorList[index]))
-                            .brightness(0.2)
-                            .zIndex(1)
-                    }
-                }
-            }
-        )
-    }
-    
-    func rowView(rowNum: Int) -> AnyView {
-        AnyView(
-            HStack(spacing: 0) {
-                if rowNum == rowCount - 1 {
-                    ForEach(0..<(colorList.count - rowButtonNum * rowNum), id: \.self) { columnNum in
-                        button(index: rowButtonNum*rowNum+columnNum)
-                    }
-                    ForEach(0..<(rowButtonNum - (colorList.count - rowButtonNum * rowNum)), id: \.self) { columnNum in
-                        Circle()
-                            .hidden()
-                            .frame(width: buttonSize, height: buttonSize)
-                            .padding(buttonPadding)
-                    }
-                } else {
-                    ForEach(0..<rowButtonNum, id: \.self) { columnNum in
-                        button(index: rowButtonNum*rowNum+columnNum)
-                    }
-                }
-            }
-        )
-    }
-    
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<rowCount, id: \.self) { rowNum in
-                rowView(rowNum: rowNum)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(accentColors, id: \.self) { color in
+                    Button(action: { self.selectedColor = color }) {
+                        ZStack {
+                            Circle()
+                                .foregroundColor(Color(hex: color))
+                                .frame(width: buttonSize, height: buttonSize)
+                                .padding(buttonPadding)
+                                .zIndex(0)
+                            if selectedColor == color {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(Color(hex: color))
+                                    .brightness(0.2)
+                                    .zIndex(1)
+                            }
+                        }
+                    }
+                }
             }
         }
-        .padding([.leading, .trailing], 10)
+        .rowBackground()
     }
-    
+    func button(index: Int) -> some View {
+        Button(action: { self.selectedColor = accentColors[index] }) {
+            ZStack {
+                Circle()
+                    .foregroundColor(Color(hex: accentColors[index]))
+                    .frame(width: buttonSize, height: buttonSize)
+                    .padding(buttonPadding)
+                    .zIndex(0)
+                if selectedColor == accentColors[index] {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(Color(hex: accentColors[index]))
+                        .brightness(0.2)
+                        .zIndex(1)
+                }
+            }
+        }
+    }
+    func rowView(rowNum: Int) -> some View {
+        HStack(spacing: 0) {
+            if rowNum != rowCount - 1 {
+                ForEach(0..<rowButtonNum, id: \.self) { columnNum in
+                    button(index: rowButtonNum*rowNum+columnNum)
+                }
+            } else {
+                ForEach(0..<(accentColors.count - rowButtonNum * rowNum), id: \.self) { columnNum in
+                    button(index: rowButtonNum*rowNum+columnNum)
+                }
+                ForEach(0..<(rowButtonNum - (accentColors.count - rowButtonNum * rowNum)), id: \.self) { _ in
+                    Circle()
+                        .hidden()
+                        .frame(width: buttonSize, height: buttonSize)
+                        .padding(buttonPadding)
+                }
+            }
+        }
+    }
 }
 
 struct ColorHorizontalPicker_Previews: PreviewProvider {
@@ -89,4 +91,3 @@ struct ColorHorizontalPicker_Previews: PreviewProvider {
         ColorHorizontalPicker(selectedColor: .constant(""))
     }
 }
-
