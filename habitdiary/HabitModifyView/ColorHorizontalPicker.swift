@@ -20,7 +20,7 @@ struct ColorHorizontalPicker: View {
         let pickerWidth = UIScreen.main.bounds.size.width - sidePadding*2 + buttonPadding
         rowButtonNum = Int(pickerWidth/(buttonSize+buttonPadding))
         rowCount = Int(ceil(Double(ThemeColor.colorList.count) / Double(rowButtonNum)))
-        print(accentColors)
+        //print(accentColors)
     }
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {

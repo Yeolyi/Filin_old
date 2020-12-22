@@ -8,44 +8,38 @@
 import SwiftUI
 
 struct CustomCalendarWeek: View {
+    @Environment(\.colorScheme) var colorScheme
     let week: Int
     let isExpanded: Bool
     let dateList: [Date]
-    let accentColor: Color
-    @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var habit: HabitInfo
+    let ringNum: Int
+    @ObservedObject var habits: CalendarHabitList
     @Binding var selectedDate: Date
     var body: some View {
         HStack {
             ForEach(dateList, id: \.self) { date in
                 if isButtonActive(at: date) {
                     Button(action: {selectedDate = date}) {
-                        CircleProgress(
-                            progress: percentAchieved(at: date),
-                            accentColor: (selectedDate.month == date.month) ?
-                                accentColor : ThemeColor.subColor(colorScheme)
-                        ) {
+                        CircleProgress(getRingTuple(at: date)) {
                             Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
                                 .foregroundColor(textColor(at: date))
                         }
-                        .frame(width: 40, height: 40)
                     }
                 } else {
-                    CircleProgress(progress: 0, accentColor: Color.gray.opacity(0.1)) {
+                    CircleProgress([nil]) {
                         Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
-                            .foregroundColor(ThemeColor.subColor(colorScheme))
+                            .subColor()
                     }
-                    .frame(width: 40, height: 40)
                 }
             }
         }
     }
-    init(week: Int, isExpanded: Bool, habit: HabitInfo, selectedDate: Binding<Date>) {
+    init(week: Int, isExpanded: Bool, habits: [Habit?], selectedDate: Binding<Date>) {
         self.week = week
         self.isExpanded = isExpanded
-        self.habit = habit
+        self.habits = CalendarHabitList(habits: habits)
         self._selectedDate = selectedDate
-        accentColor = Color(hex: habit.color)
+        self.ringNum = habits.compactMap {$0}.count
         var tempDateList: [Date] = []
         let firstDayOfWeek = selectedDate.wrappedValue.firstDayOfWeek ?? 1
         for diff in 1 - firstDayOfWeek ..< 8 - firstDayOfWeek {
@@ -58,16 +52,50 @@ struct CustomCalendarWeek: View {
         }
         dateList = tempDateList
     }
-    func percentAchieved(at date: Date) -> Double {
-        Double((habit.achieve[date.dictKey] ?? 0))/Double(habit.targetAmount)
+    func getRingTuple(at date: Date) -> [(Double, Color)?] {
+        var tempRingTuple: [(Double, Color)?] = []
+        for habit in habits.habits {
+            guard let habit = habit else {
+                tempRingTuple.append(nil)
+                continue
+            }
+            let progress = percentAchieved(at: date, habit: habit)
+            guard progress > 0 else {
+                tempRingTuple.append(nil)
+                continue
+            }
+            let color = (selectedDate.month == date.month) ? Color(hex: habit.color) : ThemeColor.subColor(colorScheme)
+            tempRingTuple.append((progress, color))
+        }
+        if ringNum > 1 && tempRingTuple.compactMap({$0}).isEmpty {
+            let colorInactive = ThemeColor.subColor(colorScheme).opacity(0.2)
+            tempRingTuple.append((1, colorInactive))
+        }
+        return tempRingTuple
+    }
+    func percentAchieved(at date: Date, habit: Habit) -> Double {
+        Double((habit.achievement[date.dictKey] ?? 0))/Double(habit.timesToComplete)
     }
     func isButtonActive(at date: Date) -> Bool {
-        habit.habitType == HabitType.daily.rawValue || habit.targetDays?.contains(Int16(date.dayOfTheWeek)) == true
+        if !isExpanded || ringNum == 0 || habits.habits.count > 1 {
+            return true
+        } else {
+            return habits.habits[0]?.type == HabitType.daily.rawValue
+                || habits.habits[0]?.dayOfWeek?.contains(Int16(date.dayOfTheWeek)) == true
+        }
     }
     func textColor(at date: Date) -> Color {
-        if selectedDate.month != date.month {
+        if selectedDate.month != date.month && isExpanded {
             return ThemeColor.subColor(colorScheme)
+        } else if ringNum == 0 {
+            return ThemeColor.mainColor(colorScheme)
+        } else if date.dictKey == selectedDate.dictKey {
+            if let colorHex = habits.habits[0]?.color {
+                return Color(hex: colorHex)
+            } else {
+                return ThemeColor.subColor(colorScheme)
+            }
         }
-        return date.dictKey == selectedDate.dictKey ? accentColor : ThemeColor.mainColor(colorScheme)
+        return ThemeColor.mainColor(colorScheme)
     }
 }

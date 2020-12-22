@@ -10,10 +10,10 @@ import SwiftUI
 struct TimesSection: View {
     @Binding var number: String
     var body: some View {
-        HabitAddBadgeView(title: "횟수 설정", imageName: "textformat.123") {
-            Text("횟수")
+        HabitAddBadgeView(title: "Times setting".localized, imageName: "textformat.123") {
+            Text("Times".localized)
                 .sectionText()
-            TextFieldWithEndButton("15회", text: $number)
+            TextFieldWithEndButton("15", text: $number)
                 .keyboardType(.numberPad)
             .padding([.leading, .trailing], 10)
         }

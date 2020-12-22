@@ -20,7 +20,7 @@ struct DayOfWeekSelector: View {
                         dayOfTheWeek.append(dayOfTheWeekInt)
                     }
                 }) {
-                    CircleProgress(progress: 0, accentColor: ThemeColor.mainColor(colorScheme)) {
+                    CircleProgress([(0, ThemeColor.mainColor(colorScheme))]) {
                         Text(Date.dayOfTheWeekStr(dayOfTheWeekInt))
                             .foregroundColor(
                                 dayOfTheWeek.contains(dayOfTheWeekInt) ?

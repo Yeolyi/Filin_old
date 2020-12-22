@@ -19,7 +19,7 @@ struct TextFieldWithEndButton: View {
         HStack {
             TextField(titleKey, text: $text)
             Button(action: {UIApplication.shared.endEditing()}) {
-                Text("확인")
+                Text("Done".localized)
                     .foregroundColor(ThemeColor.mainColor(colorScheme))
             }
         }

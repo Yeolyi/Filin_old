@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct MainRow: View {
-    @ObservedObject var habit: HabitInfo
+    @ObservedObject var habit: Habit
     @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var addUnit: IncrementPerTap
     @State var isExpanded = false
@@ -18,15 +18,15 @@ struct MainRow: View {
     let showCheck: Bool
     var subTitle: String {
         var subTitleStr = ""
-        if habit.habitType == HabitType.weekly.rawValue && habit.targetDays != nil {
-            subTitleStr = "매주 "
-            for dayOfWeekInt16 in habit.targetDays! {
+        if habit.type == HabitType.weekly.string && habit.dayOfWeek != nil {
+            subTitleStr = "\("Every week".localized) "
+            for dayOfWeekInt16 in habit.dayOfWeek! {
                 subTitleStr += "\(Date.dayOfTheWeekStr(Int(dayOfWeekInt16))), "
             }
             _ = subTitleStr.popLast()
             _ = subTitleStr.popLast()
         } else {
-            subTitleStr = "매일"
+            subTitleStr = "Every day".localized
         }
         return subTitleStr
     }
@@ -42,7 +42,9 @@ struct MainRow: View {
                                 return
                             }
                             let addedVal = Int16(addUnit.addUnit[habit.id] ?? 1)
-                            habit.achieve[Date().dictKey] = (habit.achieve[Date().dictKey] ?? 0) + addedVal
+                            withAnimation {
+                                habit.achievement[Date().dictKey] = (habit.achievement[Date().dictKey] ?? 0) + addedVal
+                            }
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                             CoreDataManager.save(managedObjectContext)
                         },
@@ -69,7 +71,7 @@ struct MainRow: View {
                         VStack(alignment: .trailing) {
                             LinearProgressBar(color: Color(hex: habit.color), progress: habit.progress(at: Date()))
                                 .frame(width: 150)
-                            Text("\(habit.achieve[Date().dictKey] ?? 0)회/\(habit.targetAmount)회")
+                            Text("\(habit.achievement[Date().dictKey] ?? 0)\(" times".localized)/\(habit.timesToComplete)\(" times".localized)")
                                 .rowSubheadline()
                         }
                     }

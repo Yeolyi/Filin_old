@@ -11,8 +11,8 @@ import CoreData
 enum HabitType: String, PickerUsable {
     var string: String {
         switch self {
-        case .daily: return "매일"
-        case .weekly: return "매주"
+        case .daily: return "Every day".localized
+        case .weekly: return "Every week".localized
         }
     }
     case daily = "매일"

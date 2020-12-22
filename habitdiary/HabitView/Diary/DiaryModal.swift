@@ -8,34 +8,34 @@
 import SwiftUI
 
 struct DiaryModal: View {
-    @State var memo = "탭하여 쓰기"
-    let habit: HabitInfo
+    @State var memo = ""
+    let habit: Habit
     let targetDate: Date
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.presentationMode) var presentationMode
-    init(habit: HabitInfo, targetDate: Date) {
+    init(habit: Habit, targetDate: Date) {
         self.habit = habit
         self.targetDate = targetDate
-        self._memo = State(initialValue: habit.diary[targetDate.dictKey] ?? "")
+        self._memo = State(initialValue: habit.memo[targetDate.dictKey] ?? "")
     }
     var body: some View {
         VStack {
             InlineNavigationBar(
-                title: "\(Date().month)월 \(Date().day)일 일기",
+                title: Date().localizedMonthDay,
                 button1: {
                     Button(action: {
-                        habit.diary[targetDate.dictKey] = memo == "" ? nil : memo
+                        habit.memo[targetDate.dictKey] = memo == "" ? nil : memo
                         saveContext()
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                        Text("저장")
+                        Text("Save".localized)
                             .headerButton()
                     }
                 }, button2: {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                        Text("취소")
+                        Text("Cancel".localized)
                             .headerButton()
                     }
                 }

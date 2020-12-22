@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="HabitInfo" representedClassName="HabitInfo" syncable="YES">
-        <attribute name="achieve" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String:Int16]"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Habit" representedClassName=".Habit" syncable="YES">
+        <attribute name="achievement" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String:Int16]"/>
         <attribute name="color" optional="YES" attributeType="String" customClassName="UIColor"/>
-        <attribute name="diary" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String:String]"/>
-        <attribute name="habitType" attributeType="String" customClassName="HabitType"/>
+        <attribute name="dayOfWeek" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int16]"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="memo" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String:String]"/>
         <attribute name="name" attributeType="String" customClassName="[String]"/>
         <attribute name="requiredSecond" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="targetAmount" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="targetDays" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int16]"/>
+        <attribute name="timesToComplete" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="type" attributeType="String" customClassName="HabitType"/>
     </entity>
     <elements>
-        <element name="HabitInfo" positionX="-63" positionY="-18" width="128" height="164"/>
+        <element name="Habit" positionX="160" positionY="192" width="128" height="164"/>
     </elements>
 </model>

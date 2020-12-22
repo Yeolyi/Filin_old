@@ -30,6 +30,7 @@ struct InlineNavigationBar<Content1: View, Content2: View>: View {
                 }
                 Divider()
             }
+            .padding(.top, 30)
     }
 }
 

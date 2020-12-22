@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodayHabit: View {
-    @ObservedObject var habit: HabitInfo
+    @ObservedObject var habit: Habit
     @Binding var selectedDate: Date
     @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var addUnit: IncrementPerTap
@@ -20,15 +20,15 @@ struct TodayHabit: View {
             HStack(spacing: 0) {
                 moveButton(isAdd: false)
                 VStack {
-                    Text("\(habit.targetAmount)회 중 \(habit.achieve[selectedDate.dictKey] ?? 0)회")
+                    Text("\(habit.timesToComplete)\(" out of".localized) \(habit.achievement[selectedDate.dictKey] ?? 0)\(" times".localized)")
                         .rowHeadline()
                     Text("""
-\(selectedDate.month)월 \(selectedDate.day)일\(selectedDate.dictKey == Date().dictKey ? "(오늘)" : "")
+\(selectedDate.localizedMonthDay)\(selectedDate.dictKey == Date().dictKey ? "(\("Today".localized))" : "")
 """)
                         .rowSubheadline()
                     LinearProgressBar(
                         color: Color(hex: habit.color),
-                        progress: Double(habit.achieve[selectedDate.dictKey] ?? 0)/Double(habit.targetAmount)
+                        progress: Double(habit.achievement[selectedDate.dictKey] ?? 0)/Double(habit.timesToComplete)
                     )
                     .padding([.trailing, .leading], 5)
                     .frame(maxWidth: 400)
@@ -57,18 +57,22 @@ struct TodayHabit: View {
                     return
                 }
                 let addVal = Int16(addUnit.addUnit[habit.id] ?? 1)
-                if isAdd {
-                    habit.achieve[selectedDate.dictKey] =
-                        (habit.achieve[selectedDate.dictKey] ?? 0) + addVal
-                } else {
-                    habit.achieve[selectedDate.dictKey] =
-                        max(0, (habit.achieve[selectedDate.dictKey] ?? 0) - addVal)
+                withAnimation {
+                    if isAdd {
+                        habit.achievement[selectedDate.dictKey] =
+                            (habit.achievement[selectedDate.dictKey] ?? 0) + addVal
+                    } else {
+                        habit.achievement[selectedDate.dictKey] =
+                            max(0, (habit.achievement[selectedDate.dictKey] ?? 0) - addVal)
+                    }
                 }
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 CoreDataManager.save(managedObjectContext)
             }, longTapFunc: {
-                self.isExpanded = true
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                withAnimation {
+                    self.isExpanded = true
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                }
             }
         )
     }

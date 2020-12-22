@@ -13,7 +13,7 @@ struct SearchBar: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-            TextField("검색", text: $searchWord)
+            TextField("Search", text: $searchWord)
             // When text exists, show delete button.
             if searchWord != "" {
                 Image(systemName: "xmark.circle.fill")

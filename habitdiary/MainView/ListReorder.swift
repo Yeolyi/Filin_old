@@ -9,17 +9,17 @@ import SwiftUI
 
 struct ListReorder: View {
     @FetchRequest(
-        entity: HabitInfo.entity(),
+        entity: Habit.entity(),
         sortDescriptors: []
     )
-    var habitInfos: FetchedResults<HabitInfo>
-    @EnvironmentObject var listOrderManager: ListOrderManager
+    var habitInfos: FetchedResults<Habit>
+    @EnvironmentObject var listOrderManager: DisplayManager
     @Environment(\.managedObjectContext) var managedObjectContext
-    var habitList: [HabitInfo] {
-        ListOrderManager().habitOrder.map { orderInfo in
+    var habitList: [Habit] {
+        DisplayManager().habitOrder.map { orderInfo in
             habitInfos.first(where: { habitInfo in
-                orderInfo.elementId == habitInfo.id
-            }) ?? HabitInfo(context: managedObjectContext)
+                orderInfo == habitInfo.id
+            }) ?? Habit(context: managedObjectContext)
         }
     }
     var body: some View {
@@ -28,16 +28,12 @@ struct ListReorder: View {
                 Text(habitInfo.name)
             }
             .onMove(perform: move)
-            .onDelete(perform: remove)
         }
         .insetGroupedListStyle()
         .environment(\.editMode, .constant(EditMode.active))
     }
     func move(from source: IndexSet, to destination: Int) {
         listOrderManager.habitOrder.move(fromOffsets: source, toOffset: destination)
-    }
-    func remove(at offsets: IndexSet) {
-        listOrderManager.habitOrder.remove(atOffsets: offsets)
     }
 }
 

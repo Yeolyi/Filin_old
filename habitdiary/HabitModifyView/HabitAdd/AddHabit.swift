@@ -12,13 +12,13 @@ struct AddHabit: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.verticalSizeClass) var sizeClass
-    @EnvironmentObject var listOrderManager: ListOrderManager
+    @EnvironmentObject var listOrderManager: DisplayManager
     @EnvironmentObject var sharedViewData: AppSetting
     @FetchRequest(
-        entity: HabitInfo.entity(),
+        entity: Habit.entity(),
         sortDescriptors: []
     )
-    var habitInfos: FetchedResults<HabitInfo>
+    var habitInfos: FetchedResults<Habit>
     @State var currentPage = 1
     let totalPage = 4
     @State var habitName = ""
@@ -64,7 +64,7 @@ struct AddHabit: View {
         Button(action: {
             withAnimation { self.currentPage = max(self.currentPage - 1, 1) }
         }) {
-            Text("이전으로")
+            Text("previous".localized)
                 .fixedSize()
                 .foregroundColor(ThemeColor.mainColor(colorScheme))
                 .padding(.leading, 10)
@@ -85,7 +85,7 @@ struct AddHabit: View {
         }) {
             HStack {
                 Spacer()
-                Text(currentPage == totalPage ? "완료": "다음 (\(currentPage)/\(totalPage))")
+                Text(currentPage == totalPage ? "Done".localized: "\("Next".localized) (\(currentPage)/\(totalPage))")
                     .font(.system(size: 18, weight: .medium))
                     .fixedSize()
                     .foregroundColor(.white)
@@ -99,18 +99,18 @@ struct AddHabit: View {
     }
     func saveAndQuit() {
         dayOfTheWeek = dayOfTheWeek.sorted(by: <)
-        let newHabit = HabitInfo(context: managedObjectContext)
+        let newHabit = Habit(context: managedObjectContext)
         let habitID = UUID()
         newHabit.name = habitName
         newHabit.color = selectedColor
-        newHabit.habitType = habitType.rawValue
-        newHabit.targetDays = dayOfTheWeek.map({Int16($0)})
+        newHabit.type = habitType.rawValue
+        newHabit.dayOfWeek = dayOfTheWeek.map({Int16($0)})
         newHabit.id = habitID
-        newHabit.targetAmount = Int16(number) ?? 1
-        newHabit.achieve = [:]
+        newHabit.timesToComplete = Int16(number) ?? 1
+        newHabit.achievement = [:]
         newHabit.requiredSecond = 0
         CoreDataManager.save(managedObjectContext)
-        listOrderManager.habitOrder.append(OrderInfo(elementId: habitID))
+        listOrderManager.habitOrder.append(habitID)
         self.presentationMode.wrappedValue.dismiss()
     }
 }

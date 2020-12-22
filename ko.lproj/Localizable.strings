@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  habitdiary
+
+  Created by SEONG YEOL YI on 2020/12/21.
+  
+*/
+
+"List" = "목록";
+"Summary" = "요약";
+"Edit" = "편집";
+"Calendar" = "달력";
+"Empty" = "비어있음";
+"Done" = "완료";
+"Today" = "오늘";
+"Goals" = "목표";
+"Every week" = "매주";
+"Every day" = "매일";
+" times" = "회";
+"previous" = "이전";
+"Next" = "다음";
+"Make first goal" = "첫번째 목표 만들기";
+"Make new goal" = "새로운 목표 만들기";
+"Name" = "이름";
+"Drink water" = "물 마시기";
+"Cycle" = "주기";
+"Cycle setting" = "주기 설정";
+"Times setting" = "횟수 설정";
+"Times" = "횟수";
+"Theme setting" = "테마 설정";
+"Color" = "색";
+"Save" = "저장";
+"Cancel" = "취소";
+"Delete" = "삭제";
+"Delete %@?" = "%@를 삭제하시겠습니까?";
+"Data" = "정보";
+"Note" = "노트";
+" out of" = "회 중";
+"Tap to open note" = "탭하여 노트 열기";
+"Search" = "검색";
+"Note" = "노트";
+"Summary Setting" = "요약 설정";
+"First ring" = "첫번째 링";
+"Second ring" = "두번째 링";
+"Third ring" = "세번째 링";
+"Preview" = "미리보기";
+"None" = "없음";

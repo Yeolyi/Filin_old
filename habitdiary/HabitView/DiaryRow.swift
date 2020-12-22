@@ -9,15 +9,15 @@ import SwiftUI
 
 struct DiaryRow: View {
     @Binding var activeSheet: ActiveSheet?
-    @ObservedObject var habit: HabitInfo
+    @ObservedObject var habit: Habit
     @Environment(\.colorScheme) var colorScheme
     let selectedDate: Date
     var body: some View {
         Button(action: { self.activeSheet = ActiveSheet.diary }) {
             VStack {
-                if habit.diary[selectedDate.dictKey] != nil {
+                if habit.memo[selectedDate.dictKey] != nil {
                     HStack {
-                        Text(habit.diary[selectedDate.dictKey]!)
+                        Text(habit.memo[selectedDate.dictKey]!)
                             .font(.custom("NanumMyeongjoBold", size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineSpacing(3)
@@ -26,7 +26,7 @@ struct DiaryRow: View {
                     }
                 } else {
                     HStack {
-                        Text("탭하여 일기 쓰기")
+                        Text("Tap to open note".localized)
                             .font(.custom("NanumMyeongjoBold", size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineSpacing(3)

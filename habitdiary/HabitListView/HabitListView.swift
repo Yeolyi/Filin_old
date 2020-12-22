@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct HabitListView: View {
     @State var showAddModal = false
     @State var editMode = false
     @EnvironmentObject var sharedViewData: AppSetting
-    @EnvironmentObject var listOrderManager: ListOrderManager
+    @EnvironmentObject var listOrderManager: DisplayManager
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.colorScheme) var colorScheme
     @FetchRequest(
-        entity: HabitInfo.entity(),
+        entity: Habit.entity(),
         sortDescriptors: []
     )
-    var habitInfos: FetchedResults<HabitInfo>
+    var habitInfos: FetchedResults<Habit>
 
     var body: some View {
         NavigationView {
@@ -29,7 +29,7 @@ struct ContentView: View {
                     MainList()
                 }
             }
-            .navigationBarTitle("\(Date().month)월 \(Date().day)일 목표")
+            .navigationBarTitle(Date().localizedMonthDay)
             .navigationBarItems(
                 leading: listReorderButton,
                 trailing: habitPlusButton
@@ -43,7 +43,7 @@ struct ContentView: View {
         }
         .zIndex(0)
         .onAppear {
-            if sharedViewData.isFirstRun {
+            if sharedViewData.isFirstRun && habitInfos.isEmpty {
                 showAddModal = true
             }
         }
@@ -56,9 +56,9 @@ struct ContentView: View {
                 self.editMode.toggle()
             }) {
                     if editMode {
-                        Text("완료")
+                        Text("Done".localized)
                     } else {
-                        Text("편집")
+                        Text("Edit".localized)
                     }
             }
         }
@@ -70,7 +70,7 @@ struct ContentView: View {
             }
         }) {
             Image(systemName: "plus")
-                .font(.system(size: 25, weight: .light))
+                .font(.system(size: 25))
         }
         .if(editMode) {
             $0.hidden()

@@ -57,24 +57,12 @@ extension Date {
         return Calendar.current.date(from: components)
     }
     static func dayOfTheWeekStr(_ num: Int) -> String {
-        switch num {
-        case 1:
-            return "일"
-        case 2:
-            return "월"
-        case 3:
-            return "화"
-        case 4:
-            return "수"
-        case 5:
-            return "목"
-        case 6:
-            return "금"
-        case 7:
-            return "토"
-        default:
-            return ""
-        }
+        var dateCursor = Date()
+        let currentDayOfWeek = dateCursor.dayOfTheWeek
+        dateCursor = dateCursor.addDate(num-currentDayOfWeek)!
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E"
+        return dateFormatter.string(from: dateCursor)
     }
     var dictKey: String {
         let dateFormatter = DateFormatter()
@@ -85,7 +73,7 @@ extension Date {
         var dayComponent = DateComponents()
         dayComponent.day = num
         let calendar = Calendar.current
-        return calendar.date(byAdding: dayComponent, to: Date())
+        return calendar.date(byAdding: dayComponent, to: self)
     }
     func nearDayOfWeekDate(_ dayOfWeeks: [Int]) -> Date {
         var dateIterate = self
@@ -96,5 +84,17 @@ extension Date {
             dateIterate = theCalendar.date(byAdding: dayComponent, to: dateIterate)!
         }
         return dateIterate
+    }
+    var localizedYearMonth: String {
+        let df = DateFormatter()
+        let userFormat = DateFormatter.dateFormat(fromTemplate: "yyyyMMM", options: 0, locale: Locale.current) ?? "yyyyMMM"
+        df.setLocalizedDateFormatFromTemplate(userFormat)
+        return df.string(from: self)
+    }
+    var localizedMonthDay: String {
+        let df = DateFormatter()
+        let userFormat = DateFormatter.dateFormat(fromTemplate: "MMMd", options: 0, locale: Locale.current) ?? "MMMd"
+        df.setLocalizedDateFormatFromTemplate(userFormat)
+        return df.string(from: self)
     }
 }

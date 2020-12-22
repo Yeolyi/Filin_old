@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct MainList: View {
-    @FetchRequest(entity: HabitInfo.entity(), sortDescriptors: [])
-    var habitInfos: FetchedResults<HabitInfo>
+    @FetchRequest(entity: Habit.entity(), sortDescriptors: [])
+    var habitInfos: FetchedResults<Habit>
     @EnvironmentObject var sharedViewData: AppSetting
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.colorScheme) var colorScheme
     @State var searchWord = ""
-    var habitList: [HabitInfo] {
-        ListOrderManager().habitOrder.map { orderInfo in
+    var habitList: [Habit] {
+        DisplayManager().habitOrder.map { orderInfo in
             habitInfos.first(where: { habitInfo in
-                orderInfo.elementId == habitInfo.id
-            }) ?? HabitInfo(context: managedObjectContext)
+                orderInfo == habitInfo.id
+            }) ?? Habit(context: managedObjectContext)
         }
     }
     var isTodayEmpty: Bool { habitList.filter { $0.isTodayTodo }.isEmpty }
@@ -26,7 +26,7 @@ struct MainList: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                Text("오늘")
+                Text("Today".localized)
                     .sectionText()
                 if !isTodayEmpty {
                     ForEach(habitList.filter {$0.isTodayTodo}, id: \.self) { habitInfo in
@@ -35,14 +35,14 @@ struct MainList: View {
                 } else {
                     HStack {
                         Spacer()
-                        Text("비어있음")
+                        Text("Empty".localized)
                             .foregroundColor(ThemeColor.subColor(colorScheme))
                         Spacer()
                     }
                     .rowBackground()
                 }
                 if !isGeneralEmpty {
-                    Text("전체")
+                    Text("Goals".localized)
                         .sectionText()
                 }
                 ForEach(habitList.filter {!$0.isTodayTodo}, id: \.self) { habitInfo in

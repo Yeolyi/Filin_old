@@ -11,8 +11,8 @@ struct DateSection: View {
     @Binding var habitType: HabitType
     @Binding var dayOfTheWeek: [Int]
     var body: some View {
-        HabitAddBadgeView(title: "주기 설정", imageName: "calendar") {
-            Text("주기")
+        HabitAddBadgeView(title: "Cycle setting".localized, imageName: "calendar") {
+            Text("Cycle".localized)
                 .sectionText()
             CheckPicker(options: [HabitType.daily, HabitType.weekly], selected: $habitType)
                 .padding(8)

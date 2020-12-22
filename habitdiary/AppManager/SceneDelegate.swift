@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let sharedViewData = AppSetting()
         let addUnit = IncrementPerTap()
         sharedViewData.runCount += 1
-        let listOrderManager = ListOrderManager()
+        let listOrderManager = DisplayManager()
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
         let contentView =

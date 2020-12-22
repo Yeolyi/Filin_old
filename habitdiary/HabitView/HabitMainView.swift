@@ -15,27 +15,27 @@ enum ActiveSheet: Identifiable {
 }
 
 struct HabitViewMain: View {
-    @ObservedObject var habit: HabitInfo
+    @ObservedObject var habit: Habit
     @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var listOrderManager: ListOrderManager
+    @EnvironmentObject var listOrderManager: DisplayManager
     @State var activeSheet: ActiveSheet?
     @State var selectedDate = Date()
-    init(habit: HabitInfo) {
+    init(habit: Habit) {
         self.habit = habit
-        if habit.habitType == HabitType.weekly.rawValue {
-            _selectedDate = State(initialValue: Date().nearDayOfWeekDate((habit.targetDays ?? []).map {Int($0)}))
+        if habit.type == HabitType.weekly.rawValue {
+            _selectedDate = State(initialValue: Date().nearDayOfWeekDate((habit.dayOfWeek ?? []).map {Int($0)}))
         }
     }
     var body: some View {
             ScrollView {
                 VStack(spacing: 10) {
-                    Text("달력")
+                    Text("Calendar".localized)
                         .sectionText()
-                    CalendarRow(selectedDate: $selectedDate, habit: habit)
-                    Text("기록")
+                    CalendarRow(selectedDate: $selectedDate, habits: [habit])
+                    Text("Data".localized)
                         .sectionText()
                     TodayHabit(habit: habit, selectedDate: $selectedDate)
-                    Text("일기")
+                    Text("Note".localized)
                         .sectionText()
                     DiaryRow(activeSheet: $activeSheet, habit: habit, selectedDate: selectedDate)
                 }
@@ -45,7 +45,7 @@ struct HabitViewMain: View {
             .navigationBarItems(
                 trailing:
                     Button(action: { activeSheet = ActiveSheet.edit }) {
-                        Text("편집")
+                        Text("Edit".localized)
                     }
             )
             .sheet(item: $activeSheet) { item in

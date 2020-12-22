@@ -7,11 +7,24 @@
 
 import SwiftUI
 
+class CalendarHabitList: ObservableObject {
+    @Published var habits: [Habit?] = []
+    init(habits: [Habit?]) {
+        self.habits = habits
+    }
+}
+
 struct CalendarRow: View {
     @Binding var selectedDate: Date
-    @ObservedObject var habit: HabitInfo
+    @ObservedObject var habits: CalendarHabitList
     @State var isExpanded = false
     @Environment(\.colorScheme) var colorScheme
+    let isCapture = false
+    init(selectedDate: Binding<Date>, habits: [Habit?], isCapture: Bool = false) {
+        self._selectedDate = selectedDate
+        let calendarHabitList = CalendarHabitList(habits: habits)
+        self.habits = calendarHabitList
+    }
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
@@ -19,9 +32,9 @@ struct CalendarRow: View {
                     Spacer()
                     Group {
                         if isExpanded {
-                            Text("\(String(selectedDate.year))년 \(selectedDate.month)월")
+                            Text(selectedDate.localizedYearMonth)
                         } else {
-                            Text("\(selectedDate.month)월 \(selectedDate.day)일")
+                            Text(Date().localizedMonthDay)
                         }
                     }
                     .rowHeadline()
@@ -36,8 +49,8 @@ struct CalendarRow: View {
             }
             .padding(.bottom, 15)
             HStack {
-                ForEach(["일", "월", "화", "수", "목", "금", "토"], id: \.self) { str in
-                    Text(str)
+                ForEach(1...7, id: \.self) { dayOfWeek in
+                    Text(Date.dayOfTheWeekStr(dayOfWeek))
                         .rowSubheadline()
                         .foregroundColor(.gray)
                         .frame(width: 40)
@@ -46,12 +59,12 @@ struct CalendarRow: View {
             .padding(.bottom, 8)
             if isExpanded {
                 ForEach(1..<(selectedDate.weekInMonth ?? 2) + 1, id: \.self) { week in
-                    CustomCalendarWeek(week: week, isExpanded: true, habit: habit, selectedDate: $selectedDate)
+                    CustomCalendarWeek(week: week, isExpanded: true, habits: habits.habits, selectedDate: $selectedDate)
                         .padding(.bottom, 10)
                 }
             } else {
                 CustomCalendarWeek(
-                    week: selectedDate.weekNum, isExpanded: false, habit: habit, selectedDate: $selectedDate
+                    week: selectedDate.weekNum, isExpanded: false, habits: habits.habits, selectedDate: $selectedDate
                 )
                 .padding(.bottom, 10)
             }
@@ -68,38 +81,43 @@ struct CalendarRow: View {
             Image(systemName: isExpanded ? "chevron.compact.up" : "chevron.compact.down")
                 .font(.system(size: 20))
                 .frame(width: 30, height: 30)
-                .foregroundColor(ThemeColor.subColor(colorScheme))
+                .subColor()
         }
         .padding(5)
     }
     func moveButton(isAdd: Bool) -> some View {
         Button(action: {
+            let habit = habits.habits.compactMap({$0}).first
             withAnimation {
                 if isExpanded {
-                    if habit.habitType == HabitType.weekly.rawValue {
-                        let calendar = Calendar.current //2025 4/30
-                        let currentWeekNum = selectedDate.weekNum //5
-                        let nextMonth = isAdd ? calendar.date(byAdding: .month, value: 1, to: selectedDate)!
-                        : calendar.date(byAdding: .month, value: -1, to: selectedDate)!
-                        let nextMonthWeeknum = nextMonth.weekNum //6
-                        var nextMonthStartDay = nextMonth.firstDayOfMonth! // 3/1
-                        while nextMonthStartDay.dayOfTheWeek != selectedDate.dayOfTheWeek {
-                            nextMonthStartDay = calendar.date(byAdding: .day, value: 1, to: nextMonthStartDay)!
-                        }
-                        let nextMonthStartWeekNum = nextMonthStartDay.weekNum //1
-                        var targetWeekNum = currentWeekNum
-                        if nextMonthWeeknum < currentWeekNum {
-                            targetWeekNum = nextMonthWeeknum
-                        }
-                        if currentWeekNum < nextMonthStartWeekNum {
-                            selectedDate =
-                                calendar.date(byAdding: .weekOfMonth, value: isAdd ? 1 : -1, to: selectedDate)!
-                            targetWeekNum = nextMonthStartWeekNum
-                        }
-                        repeat {
+                    guard let habit = habit else {
                         selectedDate =
-                            Calendar.current.date(byAdding: .weekOfMonth, value: isAdd ? 1 : -1, to: selectedDate)!
-                        } while selectedDate.weekNum != targetWeekNum
+                            Calendar.current.date(byAdding: .month, value: isAdd ? 1 : -1, to: selectedDate) ?? Date()
+                        return
+                    }
+                    if habit.type == HabitType.weekly.rawValue {
+                        var plusCursor = Calendar.current.date(
+                            byAdding: .month, value: isAdd ? 1 : -1, to: selectedDate
+                        )!
+                        var minusCursor = plusCursor
+                        var plusCount = 0
+                        var minusCount = 0
+                        while habit.dayOfWeek?.contains(Int16(plusCursor.dayOfTheWeek)) == false {
+                            plusCursor = plusCursor.addDate(1)!
+                            plusCount += 1
+                        }
+                        while habit.dayOfWeek?.contains(Int16(minusCursor.dayOfTheWeek)) == false {
+                            minusCursor = minusCursor.addDate(-1)!
+                            minusCount += 1
+                        }
+                        let calendar = Calendar.current
+                        if calendar.dateComponents([.month], from: selectedDate, to: plusCursor).month ?? 10 >= 2 {
+                            selectedDate = minusCursor
+                        }
+                        if calendar.dateComponents([.month], from: selectedDate, to: minusCursor).month ?? 10 >= 2 {
+                            selectedDate = plusCursor
+                        }
+                        selectedDate = plusCount > minusCount ? minusCursor : plusCursor
                     } else {
                         selectedDate =
                             Calendar.current.date(byAdding: .month, value: isAdd ? 1 : -1, to: selectedDate) ?? Date()

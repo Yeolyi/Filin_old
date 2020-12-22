@@ -11,18 +11,18 @@ struct NameSection: View {
     @Binding var name: String
     @EnvironmentObject var sharedViewData: AppSetting
     @FetchRequest(
-        entity: HabitInfo.entity(),
+        entity: Habit.entity(),
         sortDescriptors: []
     )
-    var habitInfos: FetchedResults<HabitInfo>
+    var habitInfos: FetchedResults<Habit>
     var body: some View {
         HabitAddBadgeView(
-            title: "\(sharedViewData.isFirstRun && habitInfos.isEmpty ? "첫번째" : "새로운") 목표 만들기",
+            title: sharedViewData.isFirstRun && habitInfos.isEmpty ? "Make first goal".localized : "Make new goal".localized,
             imageName: "text.badge.checkmark"
         ) {
-            Text("제목")
+            Text("Name".localized)
                 .sectionText()
-            TextFieldWithEndButton("물 마시기", text: $name)
+            TextFieldWithEndButton("Drink water".localized, text: $name)
         }
     }
 }
