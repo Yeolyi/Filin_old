@@ -37,9 +37,3 @@ struct CheckPicker<Option: PickerUsable>: View {
         }
     }
 }
-
-struct CheckPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        CheckPicker(options: [HabitType.daily, HabitType.weekly], selected: .constant(HabitType.weekly))
-    }
-}

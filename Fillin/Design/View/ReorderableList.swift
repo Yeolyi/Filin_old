@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReorderableList<Value: Hashable, Content: View>: View {
+    
     struct RowData: Hashable {
         var id = UUID()
         var name: Value
@@ -17,13 +18,16 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
             self.yPosition = yPosition
         }
     }
-    @State var list: [Value]
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    @State var list: [Value] 
     @State var locationList: [RowData] = []
     @State var locationBackup: [RowData] = []
     @State var locationBackupVibration: [RowData] = []
     @State var onTapIndex: Int?
-    let rowHeight: CGFloat = 30
-    let padding: CGFloat = 30
+    let rowHeight: CGFloat = 60
+    let padding: CGFloat = 10
     let save: ([Value]) -> Void
     let view: (Value) -> Content
     init(value: [Value], save: @escaping ([Value]) -> Void, view: @escaping (Value) -> Content) {
@@ -54,7 +58,7 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
     func rowDrag(index: Int) -> some Gesture {
         DragGesture()
             .onChanged { value in
-                if locationBackupVibration.sorted(by: {$0.yPosition < $1.yPosition}).map{$0.id} != locationList.sorted(by: {$0.yPosition < $1.yPosition}).map{$0.id} {
+                if locationBackupVibration.sorted(by: {$0.yPosition < $1.yPosition}).map({$0.id}) != locationList.sorted(by: {$0.yPosition < $1.yPosition}).map({$0.id}) {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
                 locationBackupVibration = locationList
@@ -65,7 +69,7 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
                 var tempList = locationList.sorted(by: {$0.yPosition < $1.yPosition})
                 var temp: CGFloat = 0
                 for index in tempList.indices {
-                    tempList[index].yPosition = (rowHeight + 20) * temp
+                    tempList[index].yPosition = (rowHeight + padding) * temp
                     temp += 1
                 }
                 for index in locationList.indices {
@@ -74,7 +78,7 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
                 }
                 self.onTapIndex = nil
                 locationBackup = locationList
-                list = locationList.map {$0.name}
+                list = locationList.sorted(by: {$0.yPosition < $1.yPosition}).map {$0.name}
                 save(locationList.sorted(by: {$0.yPosition < $1.yPosition}).map {$0.name})
             }
     }
@@ -88,19 +92,25 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
                         HStack {
                             view(locationList[index].name)
                             Spacer()
-                            Image(systemName: "circle")
-                                .font(.system(size: 20))
+                            Image(systemName: "pause")
+                                .rotationEffect(.degrees(-90))
+                                .mainColor()
+                                .font(.system(size: 25))
                                 .gesture(
                                     rowDrag(index: index)
                                 )
                         }
-                        .rowBackground()
-                        .contentShape(Rectangle())
-                        .background(Color.white.shadow(radius: onTapIndex == index ? 3 : 0))
-                        .zIndex(onTapIndex == index ? 1 : 0)
+                        .padding([.leading, .trailing], 20)
                         .frame(height: rowHeight)
+                        .background(
+                            Rectangle()
+                                .foregroundColor(colorScheme == .light ? .white : .black)
+                        )
+                        .compositingGroup()
+                        .shadow(radius: onTapIndex == index ? 2 : 0)
                         .position(x: geo.size.width/2, y: 30 + locationList[index].yPosition)
                         .offset(y: getOffset(index: index))
+                        .zIndex(onTapIndex == index ? 1 : 0)
                     }
                 }
             }
