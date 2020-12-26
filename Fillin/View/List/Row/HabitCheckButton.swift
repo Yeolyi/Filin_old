@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct HabitCheckButton: View {
     @Binding var isExpanded: Bool
@@ -29,6 +30,12 @@ struct HabitCheckButton: View {
                     withAnimation {
                         habit.achievement[date.dictKey] = (habit.achievement[date.dictKey] ?? 0) + addedVal
                     }
+                    /*
+                    if habit.progress(at: date) == 1.0 {
+                        let systemSoundID: SystemSoundID = 1016
+                        AudioServicesPlaySystemSound (systemSoundID)
+                    }
+ */
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     Habit.coreDataSave(managedObjectContext)
                 },

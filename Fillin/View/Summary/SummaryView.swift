@@ -14,6 +14,11 @@ struct SummaryView: View {
         sortDescriptors: []
     )
     var habitInfos: FetchedResults<Habit>
+    @FetchRequest(
+        entity: Summary.entity(),
+        sortDescriptors: []
+    )
+    var summaryProfile: FetchedResults<Summary>
     @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var displayManager: DisplayManager
     @State var updated = false
@@ -26,7 +31,7 @@ struct SummaryView: View {
                     Group {
                         Text("Calendar".localized)
                             .sectionText()
-                        if !displayManager.summaryProfile.isEmpty {
+                        if !summaryProfile.isEmpty {
                             CalendarRow(selectedDate: $selectedDate, habits: firstThreeElements())
                             TodaySummary(selectedDate: $selectedDate)
                         } else {
@@ -74,10 +79,10 @@ struct SummaryView: View {
     }
     func firstThreeElements() -> [Habit?] {
         var tempArray: [Habit?] = []
-        if displayManager.summaryProfile.isEmpty {
+        if summaryProfile.isEmpty {
             return []
         }
-        for id in displayManager.summaryProfile[0].idArray {
+        for id in summaryProfile[0].idArray {
             if id == nil {
                 tempArray.append(nil)
                 continue

@@ -15,6 +15,7 @@ struct HabitTimer: View {
     let seconds: Int
     let habit: Habit
     let date: Date
+    
     @State private var timeRemaining = 0
     @State var isCounting = false
     var isComplete: Bool {

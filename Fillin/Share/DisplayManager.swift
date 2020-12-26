@@ -15,16 +15,4 @@ class DisplayManager: ObservableObject {
             objectWillChange.send()
         }
     }
-    @AutoSave("summaryProfile", defaultValue: [])
-    var summaryProfile: [SummaryProfile] {
-        didSet {
-            objectWillChange.send()
-        }
-    }
-    @AutoSave("routineProfile", defaultValue: [])
-    var routineProfile: [RoutineProfile] {
-        didSet {
-            objectWillChange.send()
-        }
-    }
 }

@@ -30,7 +30,6 @@ struct SettingView: View {
                                 Text("Change default tab".localized)
                                     .rowHeadline()
                                 Spacer()
-                                Image(systemName: "chevron.right")
                             }
                             .rowBackground()
                         }
@@ -42,7 +41,6 @@ struct SettingView: View {
                             Text("Change list order".localized)
                                 .rowHeadline()
                             Spacer()
-                            Image(systemName: "chevron.right")
                         }
                         .rowBackground()
                     }

@@ -9,10 +9,10 @@ import SwiftUI
 
 struct HabitListView: View {
     @State var isAddSheet = false
-    @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var displayManager: DisplayManager
     @EnvironmentObject var appSetting: AppSetting
+    @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(
         entity: Habit.entity(),
         sortDescriptors: []

@@ -22,17 +22,27 @@ struct ListReorderSheet: View {
             }) ?? Habit(context: managedObjectContext)
         }
     }
+    @State var listData = ListData<UUID>(values: [], save: {_ in})
     var body: some View {
-        VStack {
-            ReorderableList(value: displayManager.habitOrder, save: { newList in
-                displayManager.habitOrder = newList
-            }, view: { id in
-                Text(habitInfos.first(where: {$0.id == id})?.name ?? "")
-                    .rowHeadline()
-            })
-            Spacer()
+        NavigationView {
+            VStack {
+                ReorderableList(
+                    listData: listData,
+                    view: { id in
+                        Text(habitInfos.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "")
+                            .rowHeadline()
+                    })
+                    .padding(8)
+                    .padding([.leading, .trailing], 10)
+                Spacer()
+            }
+            .navigationBarTitle(Text("Change list order".localized))
         }
-        .navigationBarTitle(Text("Change list order".localized))
+        .onAppear {
+            self.listData = ListData(values: displayManager.habitOrder, save: { newList in
+                displayManager.habitOrder = newList
+            })
+        }
     }
     func move(from source: IndexSet, to destination: Int) {
         displayManager.habitOrder.move(fromOffsets: source, toOffset: destination)

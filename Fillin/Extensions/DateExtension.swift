@@ -17,11 +17,29 @@ extension Date {
     var day: Int {
         Calendar.current.component(.day, from: self)
     }
+    var hour: Int {
+        Calendar.current.component(.hour, from: self)
+    }
+    var minute: Int {
+        Calendar.current.component(.minute, from: self)
+    }
     var dayOfTheWeek: Int {
         Calendar.current.component(.weekday, from: self)
     }
     var weekNum: Int {
         Calendar.current.component(.weekOfMonth, from: self)
+    }
+    var hourAndMinuteStr: String {
+        "\(hour)-\(minute)"
+    }
+    init(hourAndMinuteStr: String) {
+        let split = hourAndMinuteStr.split(separator: "-").map{Int($0)!}
+        guard split.count == 2 else {
+            assertionFailure()
+            self = Date()
+            return
+        }
+        self = Calendar.current.date(bySettingHour: split[0], minute: split[1], second: 0, of: Date())!
     }
     var monthLength: Int {
         let dateComponents = DateComponents(year: year, month: month)

@@ -14,14 +14,19 @@ struct TodaySummary: View {
     )
     var habitInfos: FetchedResults<Habit>
     @Binding var selectedDate: Date
-    @EnvironmentObject var displayManager: DisplayManager
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(
+        entity: Summary.entity(),
+        sortDescriptors: []
+    )
+    var summaryProfile: FetchedResults<Summary>
     var habit: [Habit] = []
     var body: some View {
         VStack {
             Text("Data".localized)
                 .sectionText()
-            if !displayManager.summaryProfile.isEmpty {
-                ForEach(displayManager.summaryProfile[0].idArray.compactMap({$0}).uniqueValues, id: \.self) { habitID in
+            if !summaryProfile.isEmpty {
+                ForEach(summaryProfile[0].idArray.compactMap({$0}).uniqueValues, id: \.self) { habitID in
                     idToRow(id: habitID)
                 }
             }

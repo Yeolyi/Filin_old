@@ -46,12 +46,7 @@ struct EditHabit: View {
                 button1: {
                     saveButton
                 }, button2: {
-                    Button(action: {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("Cancel".localized)
-                            .headerButton()
-                    }
+                    EmptyView()
                 }
             )
             ScrollView {

@@ -7,7 +7,34 @@
 
 import SwiftUI
 
+struct TempRingManager {
+    var name: String
+    var first: UUID?
+    var second: UUID?
+    var third: UUID?
+    mutating func setByNumber(_ num: Int, id: UUID?) {
+        switch num {
+        case 1: first = id
+        case 2: second = id
+        case 3: third = id
+        default:
+            assertionFailure()
+        }
+    }
+    func getByNumber(_ num: Int) -> UUID? {
+        switch num {
+        case 1: return first
+        case 2: return second
+        case 3: return third
+        default:
+            assertionFailure()
+            return first
+        }
+    }
+}
+
 struct ProfileSettingView: View {
+    
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var displayManager: DisplayManager
     @FetchRequest(
@@ -15,7 +42,15 @@ struct ProfileSettingView: View {
         sortDescriptors: []
     )
     var habitInfos: FetchedResults<Habit>
-    @State var localSummaryProfile = SummaryProfile(name: "기본")
+    @FetchRequest(
+        entity: Summary.entity(),
+        sortDescriptors: []
+    )
+    var summaryProfile: FetchedResults<Summary>
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
+    @State var localSummaryProfile = TempRingManager(name: "Default")
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -41,8 +76,10 @@ struct ProfileSettingView: View {
             .navigationBarHidden(true)
         }
         .onAppear {
-            if !displayManager.summaryProfile.isEmpty {
-                localSummaryProfile = displayManager.summaryProfile[0]
+            if !summaryProfile.isEmpty {
+                localSummaryProfile.first = summaryProfile[0].first
+                localSummaryProfile.second = summaryProfile[0].second
+                localSummaryProfile.third = summaryProfile[0].third
             }
         }
     }
@@ -81,7 +118,18 @@ struct ProfileSettingView: View {
         .rowBackground()
     }
     func saveAndExit() {
-        displayManager.summaryProfile = [localSummaryProfile]
+        if summaryProfile.isEmpty {
+            Summary.saveSummary(
+                id: UUID(), name: localSummaryProfile.name,
+                first: localSummaryProfile.first, second: localSummaryProfile.second,
+                third: localSummaryProfile.third, managedObjectContext: managedObjectContext
+            )
+        } else {
+            summaryProfile[0].edit(
+                first: localSummaryProfile.first, second: localSummaryProfile.second,
+                third: localSummaryProfile.third, managedObjectContext: managedObjectContext
+            )
+        }
         self.presentationMode.wrappedValue.dismiss()
     }
 }
@@ -90,12 +138,12 @@ struct SetHabitForRing: View {
     let position: Int
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @Binding var localSummaryProfile: SummaryProfile
     @FetchRequest(
         entity: Habit.entity(),
         sortDescriptors: []
     )
     var habitInfos: FetchedResults<Habit>
+    @Binding var localSummaryProfile: TempRingManager
     var body: some View {
         ScrollView {
             VStack {
