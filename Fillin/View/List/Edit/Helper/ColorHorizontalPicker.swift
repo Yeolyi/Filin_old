@@ -23,29 +23,27 @@ struct ColorHorizontalPicker: View {
         //print(accentColors)
     }
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(accentColors, id: \.self) { color in
-                    Button(action: { self.selectedColor = color }) {
-                        ZStack {
-                            Circle()
+        //ScrollView(.horizontal, showsIndicators: false) {
+        HStack {
+            ForEach(accentColors, id: \.self) { color in
+                Button(action: { self.selectedColor = color }) {
+                    ZStack {
+                        Circle()
+                            .foregroundColor(Color(hex: color))
+                            .frame(width: 40, height: 40)
+                            .zIndex(0)
+                        if selectedColor == color {
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 20, weight: .bold))
                                 .foregroundColor(Color(hex: color))
-                                .frame(width: buttonSize, height: buttonSize)
-                                .padding(buttonPadding)
-                                .zIndex(0)
-                            if selectedColor == color {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 20, weight: .bold))
-                                    .foregroundColor(Color(hex: color))
-                                    .brightness(0.2)
-                                    .zIndex(1)
-                            }
+                                .brightness(0.2)
+                                .zIndex(1)
                         }
                     }
                 }
             }
         }
-        .rowBackground()
+        .padding([.leading, .trailing], 10)
     }
     func button(index: Int) -> some View {
         Button(action: { self.selectedColor = accentColors[index] }) {

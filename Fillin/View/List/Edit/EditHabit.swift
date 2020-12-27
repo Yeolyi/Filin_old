@@ -10,15 +10,16 @@ import SwiftUI
 struct EditHabit: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var displayManager: DisplayManager
-    let targetHabit: Habit
+    @ObservedObject var targetHabit: Habit
     
     @State var name: String
-    @State var habitType: HabitCycleType
     @State var dayOfTheWeek: [Int]
     @State var numberOfTimes: String
     @State var colorHex: String
-    @State var requiredSecond: String
+    @State var minute: Int
+    @State var second: Int
     
     @State var isDeleteAlert = false
     @State var isRequiredTime = false
@@ -26,55 +27,117 @@ struct EditHabit: View {
     init(targetHabit: Habit) {
         self.targetHabit = targetHabit
         self._name = State(initialValue: targetHabit.name)
-        self._dayOfTheWeek = State(initialValue: targetHabit.dayOfWeek?.map {Int($0)} ?? [])
+        self._dayOfTheWeek = State(initialValue: targetHabit.dayOfWeek.map {Int($0)})
         self._numberOfTimes = State(initialValue: String(targetHabit.numberOfTimes))
         self._colorHex = State(initialValue: targetHabit.colorHex)
-        self._requiredSecond = State(initialValue: String(targetHabit.requiredSecond))
-        
-        self._habitType = State(initialValue: targetHabit.cycleType)
+        self._minute = State(initialValue: Int(targetHabit.requiredSecond)/60)
+        self._second = State(initialValue: Int(targetHabit.requiredSecond)%60)
         self._isRequiredTime = State(initialValue: targetHabit.requiredSecond != 0)
     }
     
     var isSaveAvailable: Bool {
-        name != "" && !(habitType == .weekly && dayOfTheWeek.isEmpty) && Int(numberOfTimes) ?? 0 > 0
+        name != "" && !dayOfTheWeek.isEmpty && Int(numberOfTimes) ?? 0 > 0
     }
     
     var body: some View {
-        VStack {
-            InlineNavigationBar(
-                title: "\(targetHabit.name)",
-                button1: {
-                    saveButton
-                }, button2: {
-                    EmptyView()
+        if targetHabit.isFault {
+            EmptyView()
+        } else {
+            VStack {
+                InlineNavigationBar(
+                    title: "\(targetHabit.name)",
+                    button1: {
+                        saveButton
+                    }, button2: {
+                        EmptyView()
+                    }
+                )
+                ScrollView {
+                    VStack(spacing: 35) {
+                        HStack {
+                            Text("Name".localized)
+                                .rowHeadline()
+                                .padding(.leading, 10)
+                            TextFieldWithEndButton("Drink water".localized, text: $name)
+                        }
+                        HStack {
+                            Text("Times".localized)
+                                .rowHeadline()
+                                .padding(.leading, 10)
+                            TextFieldWithEndButton("15", text: $numberOfTimes)
+                                .keyboardType(.numberPad)
+                        }
+                        VStack {
+                            Toggle("", isOn: $isRequiredTime)
+                                .toggleStyle(
+                                    ColoredToggleStyle(
+                                        label: "Timer".localized,
+                                        onColor: ThemeColor.mainColor(colorScheme)
+                                    )
+                                )
+                                .padding(.horizontal, 10)
+                                .if(!isRequiredTime) {
+                                    $0.padding(.bottom, 20)
+                                }
+                            if isRequiredTime {
+                                GeometryReader { geo in
+                                    HStack {
+                                        VStack {
+                                            Picker(selection: $minute, label: EmptyView(), content: {
+                                                ForEach(0...59, id: \.self) { minute in
+                                                    Text(String(minute))
+                                                        .rowHeadline()
+                                                }
+                                            })
+                                            .frame(height: 170)
+                                            .frame(maxWidth: geo.size.width/2 - 10)
+                                            .clipped()
+                                            Text("Minute")
+                                                .rowSubheadline()
+                                        }
+                                        VStack {
+                                            Picker(selection: $second, label: EmptyView(), content: {
+                                                ForEach(0...59, id: \.self) { second in
+                                                    Text(String(second))
+                                                        .rowHeadline()
+                                                }
+                                            })
+                                            .frame(height: 170)
+                                            .frame(maxWidth: geo.size.width/2 - 10)
+                                            .clipped()
+                                            Text("Second")
+                                                .rowSubheadline()
+                                        }
+                                    }
+                                    .padding(.horizontal, 10)
+                                }
+                                .frame(height: 200)
+                            }
+                            VStack {
+                                HStack {
+                                    Text("Repeat".localized)
+                                        .rowHeadline()
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 10)
+                                DayOfWeekSelector(dayOfTheWeek: $dayOfTheWeek)
+                                    .rowBackground()
+                            }
+                            VStack {
+                                HStack {
+                                    Text("Color".localized)
+                                        .rowHeadline()
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 10)
+                                ColorHorizontalPicker(selectedColor: $colorHex)
+                                    .rowBackground()
+                            }
+                            deleteButton
+                        }
+                        .padding(.top, 10)
+                    }
                 }
-            )
-            ScrollView {
-                Group {
-                    Text("Name".localized)
-                        .sectionText()
-                    TextFieldWithEndButton("Drink water".localized, text: $name)
-                    Text("Cycle".localized)
-                        .sectionText()
-                    CheckPicker(options: [HabitCycleType.daily, HabitCycleType.weekly], selected: $habitType)
-                        .padding(8)
-                        .padding([.leading, .trailing], 10)
-                    if habitType == .weekly { DayOfWeekSelector(dayOfTheWeek: $dayOfTheWeek) }
-                }
-                Text("Times".localized)
-                    .sectionText()
-                TextFieldWithEndButton("15", text: $numberOfTimes)
-                    .keyboardType(.numberPad)
-                Toggle("Required time", isOn: $isRequiredTime)
-                    .sectionText()
-                if isRequiredTime {
-                    TextFieldWithEndButton("15", text: $requiredSecond)
-                        .keyboardType(.numberPad)
-                }
-                Text("Color".localized)
-                    .sectionText()
-                ColorHorizontalPicker(selectedColor: $colorHex)
-                deleteButton
             }
         }
     }
@@ -83,8 +146,8 @@ struct EditHabit: View {
             guard isSaveAvailable else { return }
             targetHabit.edit(
                 name: name, colorHex: colorHex,
-                dayOfWeek: habitType == .daily ? [] : dayOfTheWeek, numberOfTimes: numberOfTimes,
-                requiredSecond: requiredSecond, managedObjectContext
+                dayOfWeek: dayOfTheWeek, numberOfTimes: numberOfTimes,
+                requiredSecond: isRequiredTime ? minute * 60 + second : 0, managedObjectContext
             )
             self.presentationMode.wrappedValue.dismiss()
         }) {
@@ -119,8 +182,12 @@ struct EditHabit: View {
                 } else {
                     assertionFailure()
                 }
-                targetHabit.delete(managedObjectContext)
-                presentationMode.wrappedValue.dismiss()
+                managedObjectContext.delete(targetHabit)
+                do {
+                    self.presentationMode.wrappedValue.dismiss()
+                } catch {
+                    print(error)
+                }
             }))
     }
 }

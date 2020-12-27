@@ -14,7 +14,7 @@ struct TextView: UIViewRepresentable {
         //textView.autocapitalizationType = .sentences
         //textView.isSelectable = true
         //textView.isUserInteractionEnabled = true
-        textView.font = UIFont(name: "NanumMyeongjoBold", size: 18)
+        textView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 18)
         textView.backgroundColor = .clear
         textView.delegate = context.coordinator
         textView.becomeFirstResponder()

@@ -60,7 +60,10 @@ struct RoutineSetList: View {
                             .mainColor()
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                listData.add(value: habit.id)
+                                guard let id = habit.id else {
+                                    return
+                                }
+                                listData.add(value: id)
                             }
                     }
                     .padding(8)

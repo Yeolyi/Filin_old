@@ -21,7 +21,26 @@ struct HabitListView: View {
     
     var body: some View {
         NavigationView {
-            HabitList()
+            Group {
+                if habitInfos.isEmpty {
+                    ScrollView {
+                        MainRow(habit: sampleHabit(name: "A ten-minute walk".localized, dayOfWeek: [1, 3, 5, 7], seconds: 600, count: 3), showAdd: true)
+                            .opacity(0.5)
+                            .disabled(true)
+                        MainRow(habit: sampleHabit(name: "Stretching".localized), showAdd: true)
+                            .opacity(0.5)
+                            .disabled(true)
+                        Text("Set goals and execute them.")
+                            .rowHeadline()
+                            .padding(.top, 20)
+                            .padding(.bottom, 10)
+                        ListEmptyButton(action: { isAddSheet = true }, str: "Add new goal".localized)
+                    }
+                    .padding(.top, 1)
+                } else {
+                    HabitList()
+                }
+            }
                 .navigationBarTitle(Date().localizedMonthDay)
                 .navigationBarItems(
                     trailing: habitPlusButton
@@ -30,6 +49,7 @@ struct HabitListView: View {
                     AddHabit()
                         .environment(\.managedObjectContext, managedObjectContext)
                         .environmentObject(displayManager)
+                        .environmentObject(appSetting)
                 }
         }
         .onAppear {

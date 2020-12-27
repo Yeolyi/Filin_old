@@ -23,10 +23,13 @@ struct HabitDetailView: View {
     init(habit: Habit) {
         self.habit = habit
         if habit.cycleType == HabitCycleType.weekly {
-            _selectedDate = State(initialValue: Date().nearDayOfWeekDate((habit.dayOfWeek ?? []).map {Int($0)}))
+            _selectedDate = State(initialValue: Date().nearDayOfWeekDate((habit.dayOfWeek).map {Int($0)}))
         }
     }
     var body: some View {
+        if habit.isFault {
+            EmptyView()
+        } else {
             ScrollView {
                 VStack(spacing: 10) {
                     Text("Calendar".localized)
@@ -59,6 +62,7 @@ struct HabitDetailView: View {
                         .environmentObject(listOrderManager)
                 }
             }
+        }
     }
 }
 

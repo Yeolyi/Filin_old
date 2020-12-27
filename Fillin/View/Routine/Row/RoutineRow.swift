@@ -14,6 +14,25 @@ struct RoutineRow: View {
     @Environment(\.managedObjectContext) var context
     @EnvironmentObject var displayManager: DisplayManager
     
+    var subTitle: String {
+        var subTitleStr = ""
+        if routine.dayOfWeek.count != 7 {
+            for dayOfWeekInt16 in routine.dayOfWeek {
+                subTitleStr += "\(Date.dayOfTheWeekStr(Int(dayOfWeekInt16))), "
+            }
+            _ = subTitleStr.popLast()
+            _ = subTitleStr.popLast()
+        } else {
+            subTitleStr = "Every day".localized
+        }
+        if let time = routine.time {
+            let timeStr = Date(hourAndMinuteStr: time)
+            subTitleStr += " \(timeStr.localizedHourMinute)"
+        }
+        subTitleStr += ", \(String(format: NSLocalizedString("%d goals", comment: ""), routine.list.count))"
+        return subTitleStr
+    }
+    
     var body: some View {
         HStack {
             VStack {
@@ -23,7 +42,7 @@ struct RoutineRow: View {
                     Spacer()
                 }
                 HStack {
-                    Text("\(routine.list.count)개의 목표로 구성됨")
+                    Text(subTitle)
                         .rowSubheadline()
                     Spacer()
                 }

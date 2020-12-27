@@ -19,6 +19,15 @@ struct SummaryView: View {
         sortDescriptors: []
     )
     var summaryProfile: FetchedResults<Summary>
+    var isSummaryExist: Bool {
+        if summaryProfile.isEmpty {
+            return false
+        } else if summaryProfile[0].isEmpty {
+            return false
+        } else {
+            return true
+        }
+    }
     @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var displayManager: DisplayManager
     @State var updated = false
@@ -28,29 +37,37 @@ struct SummaryView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    Group {
+                    if isSummaryExist {
                         Text("Calendar".localized)
                             .sectionText()
-                        if !summaryProfile.isEmpty {
-                            CalendarRow(selectedDate: $selectedDate, habits: firstThreeElements())
-                            TodaySummary(selectedDate: $selectedDate)
-                        } else {
-                            HStack {
-                                Spacer()
-                                Text("Empty".localized)
-                                    .foregroundColor(ThemeColor.subColor(colorScheme))
-                                Spacer()
-                            }
-                            .rowBackground()
-                        }
+                        CalendarRow(selectedDate: $selectedDate, habits: firstThreeElements())
+                        TodaySummary(selectedDate: $selectedDate)
+                    } else {
+                        CalendarRow(
+                            selectedDate: .constant(Date()),
+                            habits: [sampleHabit(name: ""), sampleHabit(name: "")]
+                        )
+                            .opacity(0.5)
+                            .disabled(true)
+                        Text("See information of goals at once.")
+                            .rowHeadline()
+                            .padding(.top, 20)
+                            .padding(.bottom, 10)
+                        ListEmptyButton(
+                            action: { isSettingSheet = true },
+                            str: "Select goals".localized
+                        )
+                        .padding(.top, 5)
                     }
                 }
             }
             .padding(.top, 1)
             .navigationBarTitle("Summary".localized)
-            .navigationBarItems(
-                trailing: editButton
-            )
+            .if(isSummaryExist) {
+                $0.navigationBarItems(
+                    trailing: editButton
+                )
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(isPresented: $isSettingSheet) {

@@ -46,23 +46,26 @@ struct RunRoutine: View {
                 VStack {
                     ForEach(0...currentListIndex - 1, id: \.self) { index in
                         Text(habitList[index].name)
+                            .subColor()
                             .rowHeadline()
                     }
                 }
             }
-            ZStack {
-                ForEach(0...habitList.count - 1, id: \.self) { index in
-                    VStack {
-                        Text(habitList[index].name)
-                            .title()
-                    }
-                    .opacity(currentListIndex == index ? 1 : 0)
-                }
+            VStack {
+                Text(habitList[currentListIndex].name)
+                    .title()
+                LinearProgressBar(
+                    color: ThemeColor.mainColor(colorScheme),
+                    progress: habitList[currentListIndex].progress(at: Date()) ?? 0
+                )
+                .frame(width: 200)
             }
+            .padding(10)
             if currentListIndex < habitList.count - 1 {
                 VStack {
                     ForEach(currentListIndex + 1...habitList.count - 1, id: \.self) { index in
                         Text(habitList[index].name)
+                            .subColor()
                             .rowHeadline()
                     }
                 }
@@ -72,7 +75,9 @@ struct RunRoutine: View {
                 .padding(.bottom, 50)
                 .onReceive(timer) { _ in
                     guard isCounting else { return }
-                    self.timeRemaining = max(0, self.timeRemaining - 1)
+                    withAnimation {
+                        self.timeRemaining = max(0, self.timeRemaining - 1)
+                    }
                 }
                 .onReceive(NotificationCenter.default.publisher(
                             for: UIApplication.willResignActiveNotification)
@@ -100,19 +105,27 @@ struct RunRoutine: View {
                 }
                 isCounting.toggle()
                 return
-            }
-            if currentListIndex == habitList.count - 1 {
-                presentationMode.wrappedValue.dismiss()
             } else {
                 self.timer.upstream.connect().cancel()
                 isCounting = false
-                let addedVal = Int16(incrementPerTap.addUnit[habitList[currentListIndex].id] ?? 1)
+                guard let id = habitList[currentListIndex].id else {
+                    return
+                }
+                let addedVal = Int16(incrementPerTap.addUnit[id] ?? 1)
                 withAnimation {
                     habitList[currentListIndex].achievement[Date().dictKey]
                         = (habitList[currentListIndex].achievement[Date().dictKey] ?? 0) + addedVal
                 }
-                currentListIndex += 1
-                timeRemaining = Int(habitList[currentListIndex].requiredSecond)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                    if currentListIndex == habitList.count - 1 {
+                        presentationMode.wrappedValue.dismiss()
+                        return
+                    }
+                    withAnimation {
+                        currentListIndex += 1
+                    }
+                    timeRemaining = Int(habitList[currentListIndex].requiredSecond)
+                }
             }
         }) {
             ZStack {

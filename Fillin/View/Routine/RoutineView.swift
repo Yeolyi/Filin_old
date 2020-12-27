@@ -14,7 +14,7 @@ enum RoutineSheet: Identifiable {
         switch self {
         case .add:
             return 0
-        case .edit(_):
+        case .edit:
             return 1
         }
     }
@@ -25,6 +25,7 @@ struct RoutineView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var displayManager: DisplayManager
+    @Environment(\.presentationMode) var presentationMode
     @FetchRequest(entity: Routine.entity(), sortDescriptors: [])
     var routines: FetchedResults<Routine>
     
@@ -33,27 +34,52 @@ struct RoutineView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                Text("List".localized)
-                    .sectionText()
                 VStack(spacing: 0) {
-                    ForEach(routines, id: \.self) { routine in
-                        RoutineRow(routine: routine, isSheet: $isAddSheet)
+                    if !routines.isEmpty {
+                        Text("List".localized)
+                            .sectionText()
+                        VStack(spacing: 0) {
+                            ForEach(routines, id: \.self) { routine in
+                                RoutineRow(routine: routine, isSheet: $isAddSheet)
+                            }
+                        }
+                    } else {
+                        ForEach([
+                            sampleRoutine(name: "After wake up".localized, dayOfTheWeek: [], time: "07-00"),
+                            sampleRoutine(name: "Before bed".localized, dayOfTheWeek: [], time: "23-30")
+                        ], id: \.self) { routine in
+                            RoutineRow(routine: routine, isSheet: $isAddSheet)
+                        }
+                        .opacity(0.5)
+                        .disabled(true)
+                        Text("Group and repeat goals to make them a habit.".localized)
+                            .rowHeadline()
+                            .padding(.top, 20)
+                            .padding(.bottom, 10)
+                        ListEmptyButton(action: {
+                            isAddSheet = .add
+                        }, str: "Add routine".localized)
+                        .padding(.top, 5)
                     }
                 }
-            }
-            .padding(.top, 1)
-            .navigationBarTitle("Routine".localized)
-            .navigationBarItems(
-                trailing: addRoutineButton
-            )
-            .sheet(item: $isAddSheet) { sheetType in
-                switch sheetType {
-                case RoutineSheet.add:
-                    AddRoutine()
-                        .environment(\.managedObjectContext, managedObjectContext)
-                        .environmentObject(displayManager)
-                case RoutineSheet.edit(let routine):
-                    EditRoutine(routine: routine)
+                .padding(.top, 1)
+                .navigationBarTitle("Routine".localized)
+                .if(!routines.isEmpty) {
+                    $0.navigationBarItems(
+                        trailing: addRoutineButton
+                    )
+                }
+                .sheet(item: $isAddSheet) { sheetType in
+                    switch sheetType {
+                    case RoutineSheet.add:
+                        AddRoutine()
+                            .environment(\.managedObjectContext, managedObjectContext)
+                            .environmentObject(displayManager)
+                            .allowAutoDismiss(false)
+                    case RoutineSheet.edit(let routine):
+                        EditRoutine(routine: routine)
+                            .allowAutoDismiss(false)
+                    }
                 }
             }
         }

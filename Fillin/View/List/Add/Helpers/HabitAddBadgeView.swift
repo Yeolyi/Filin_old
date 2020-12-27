@@ -26,7 +26,7 @@ struct HabitAddBadgeView<Content: View>: View {
                 .padding(.top, 30)
             Text(title)
                 .title()
-            Spacer()
+                .padding(.bottom, 30)
             content
             Spacer()
         }

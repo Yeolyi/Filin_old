@@ -38,8 +38,8 @@ struct TodayInformation: View {
                 moveButton(isAdd: true)
             }
             .rowBackground()
-            if isExpanded {
-                AddUnitRow(habitID: habit.id)
+            if let id = habit.id, isExpanded {
+                AddUnitRow(habitID: id)
             }
         }
     }
@@ -56,7 +56,10 @@ struct TodayInformation: View {
                     isExpanded = false
                     return
                 }
-                let addVal = Int16(incrementPerTap.addUnit[habit.id] ?? 1)
+                guard let id = habit.id else {
+                    return
+                }
+                let addVal = Int16(incrementPerTap.addUnit[id] ?? 1)
                 withAnimation {
                     if isAdd {
                         habit.achievement[selectedDate.dictKey] =

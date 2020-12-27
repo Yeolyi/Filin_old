@@ -12,7 +12,7 @@ struct RowHeadline: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.system(size: 18, weight: .semibold))
-            .foregroundColor(ThemeColor.mainColor(colorScheme))
+            .mainColor()
     }
 }
 

@@ -9,21 +9,16 @@ import SwiftUI
 
 struct TimesSection: View {
     @Binding var number: String
-    @Binding var requiredTime: String
-    @State var isRequiredTime = false
+
     var body: some View {
-        HabitAddBadgeView(title: "Times setting".localized, imageName: "textformat.123") {
-            Text("Times".localized)
-                .sectionText()
+        HabitAddBadgeView(title: "Number of times".localized, imageName: "clock.arrow.2.circlepath") {
+            Text("How many times do you want to achieve your goal in a day?".localized)
+                .rowHeadline()
+                .padding(.horizontal, 10)
+                .multilineTextAlignment(.center)
             TextFieldWithEndButton("15", text: $number)
                 .keyboardType(.numberPad)
                 .padding([.leading, .trailing], 10)
-            Toggle("Required time", isOn: $isRequiredTime)
-                .sectionText()
-            if isRequiredTime {
-                TextFieldWithEndButton("15", text: $requiredTime)
-                    .keyboardType(.numberPad)
-            }
         }
         //.keyboardTouchAreaBackground()
     }
@@ -31,6 +26,6 @@ struct TimesSection: View {
 
 struct Test3_Previews: PreviewProvider {
     static var previews: some View {
-        TimesSection(number: .constant("15"), requiredTime: .constant("5"))
+        TimesSection(number: .constant("15"))
     }
 }

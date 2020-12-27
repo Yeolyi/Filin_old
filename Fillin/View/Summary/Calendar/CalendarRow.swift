@@ -34,7 +34,7 @@ struct CalendarRow: View {
                         if isExpanded {
                             Text(selectedDate.localizedYearMonth)
                         } else {
-                            Text(Date().localizedMonthDay)
+                            Text(selectedDate.localizedMonthDay)
                         }
                     }
                     .rowHeadline()
@@ -88,43 +88,26 @@ struct CalendarRow: View {
     func moveButton(isAdd: Bool) -> some View {
         Button(action: {
             let habit = habits.habits.compactMap({$0}).first
+            let addedValue = isAdd ?  1 : -1
             withAnimation {
                 if isExpanded {
                     guard let habit = habit else {
                         selectedDate =
-                            Calendar.current.date(byAdding: .month, value: isAdd ? 1 : -1, to: selectedDate) ?? Date()
+                            Calendar.current.date(byAdding: .month, value: addedValue, to: selectedDate) ?? Date()
                         return
                     }
                     if habit.cycleType == HabitCycleType.weekly {
-                        var plusCursor = Calendar.current.date(
-                            byAdding: .month, value: isAdd ? 1 : -1, to: selectedDate
-                        )!
-                        var minusCursor = plusCursor
-                        var plusCount = 0
-                        var minusCount = 0
-                        while habit.dayOfWeek?.contains(Int16(plusCursor.dayOfTheWeek)) == false {
-                            plusCursor = plusCursor.addDate(1)!
-                            plusCount += 1
-                        }
-                        while habit.dayOfWeek?.contains(Int16(minusCursor.dayOfTheWeek)) == false {
-                            minusCursor = minusCursor.addDate(-1)!
-                            minusCount += 1
-                        }
-                        let calendar = Calendar.current
-                        if calendar.dateComponents([.month], from: selectedDate, to: plusCursor).month ?? 10 >= 2 {
-                            selectedDate = minusCursor
-                        }
-                        if calendar.dateComponents([.month], from: selectedDate, to: minusCursor).month ?? 10 >= 2 {
-                            selectedDate = plusCursor
-                        }
-                        selectedDate = plusCount > minusCount ? minusCursor : plusCursor
+                        selectedDate = selectedDate.monthShift(contains: habit.dayOfWeek, isAdd: isAdd)
+                        return
                     } else {
                         selectedDate =
-                            Calendar.current.date(byAdding: .month, value: isAdd ? 1 : -1, to: selectedDate) ?? Date()
+                            Calendar.current.date(byAdding: .month, value: addedValue, to: selectedDate) ?? Date()
+                        return
                     }
                 } else {
                     selectedDate =
-                        Calendar.current.date(byAdding: .weekOfMonth, value: isAdd ? 1 : -1, to: selectedDate) ?? Date()
+                        Calendar.current.date(byAdding: .weekOfMonth, value: addedValue, to: selectedDate) ?? Date()
+                    return
                 }
             }
         }) {

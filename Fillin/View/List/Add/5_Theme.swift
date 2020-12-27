@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct ThemeSection: View {
+    
     @Binding var color: String
+    
     var body: some View {
-        HabitAddBadgeView(title: "Theme setting".localized, imageName: "paintbrush") {
+        HabitAddBadgeView(title: "Theme".localized, imageName: "paintpalette") {
             Text("Color".localized)
                 .sectionText()
             ColorHorizontalPicker(selectedColor: $color)

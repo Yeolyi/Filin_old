@@ -20,25 +20,30 @@ struct DayOfWeekSelector: View {
                         dayOfTheWeek.append(dayOfTheWeekInt)
                     }
                 }) {
-                    CircleProgress([(0, ThemeColor.mainColor(colorScheme))]) {
-                        Text(Date.dayOfTheWeekStr(dayOfTheWeekInt))
-                            .foregroundColor(
-                                dayOfTheWeek.contains(dayOfTheWeekInt) ?
-                                    ThemeColor.mainColor(colorScheme) : ThemeColor.subColor(colorScheme)
-                            )
+                    ZStack {
+                        if dayOfTheWeek.contains(dayOfTheWeekInt) {
+                            Circle()
+                                .foregroundColor(.clear)
+                                .overlay(
+                                    Circle()
+                                        .foregroundColor(ThemeColor.mainColor(colorScheme))
+                                )
+                        }
+                        Text(Date.dayOfTheWeekShortStr(dayOfTheWeekInt))
+                            .foregroundColor(dayOfTheWeek.contains(dayOfTheWeekInt) ? .white : .black)
                     }
                     .frame(width: 40, height: 40)
                     .zIndex(0)
                 }
             }
         }
-        .rowBackground()
+        .padding([.leading, .trailing], 10)
     }
 }
 /*
-struct DayOfWeekSelector_Previews: PreviewProvider {
-    static var previews: some View {
-        DayOfWeekSelector()
-    }
-}
-*/
+ struct DayOfWeekSelector_Previews: PreviewProvider {
+ static var previews: some View {
+ DayOfWeekSelector()
+ }
+ }
+ */

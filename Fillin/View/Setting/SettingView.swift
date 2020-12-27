@@ -15,6 +15,12 @@ struct SettingView: View {
     @Environment(\.managedObjectContext) var context
     @State var isReorderSheet = false
     @State var isDefaultTabExpanded = false
+    var appVersion: String {
+        (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
+    }
+    var build: String {
+        (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? ""
+    }
     var body: some View {
         NavigationView {
             ScrollView {
@@ -44,6 +50,22 @@ struct SettingView: View {
                         }
                         .rowBackground()
                     }
+                    Text("Info".localized)
+                        .sectionText()
+                    HStack {
+                        Text("App Version".localized)
+                            .rowHeadline()
+                        Spacer()
+                        Text("\(appVersion)")
+                    }
+                    .rowBackground()
+                    HStack {
+                        Text("Build".localized)
+                            .rowHeadline()
+                        Spacer()
+                        Text("\(build)")
+                    }
+                    .rowBackground()
                 }
             }
             .padding(.top, 1)

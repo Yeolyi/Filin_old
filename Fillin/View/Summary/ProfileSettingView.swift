@@ -88,13 +88,13 @@ struct ProfileSettingView: View {
         let targetID: UUID?
         switch num {
         case 1:
-            numToStr = "First ring".localized
+            numToStr = "Habit 1(Outermost ring)".localized
             targetID = localSummaryProfile.first
         case 2:
-            numToStr = "Second ring".localized
+            numToStr = "Habit 2".localized
             targetID = localSummaryProfile.second
         case 3:
-            numToStr = "Third ring".localized
+            numToStr = "Habit 3(Innermost ring)".localized
             targetID = localSummaryProfile.third
         default:
             assertionFailure()

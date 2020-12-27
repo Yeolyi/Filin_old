@@ -42,8 +42,8 @@ struct HabitTimer: View {
                             .animation(.linear)
                     )
                 Button(action: {
-                    guard isComplete else { return }
-                    let addedVal = Int16(addUnit.addUnit[habit.id] ?? 1)
+                    guard let id = habit.id, isComplete else { return }
+                    let addedVal = Int16(addUnit.addUnit[id] ?? 1)
                     withAnimation {
                         habit.achievement[date.dictKey] = (habit.achievement[date.dictKey] ?? 0) + addedVal
                     }

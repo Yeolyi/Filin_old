@@ -12,17 +12,27 @@ struct EditRoutine: View {
     @ObservedObject var routine: Routine
     @Environment(\.managedObjectContext) var context
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.colorScheme) var colorScheme
     @State var name = ""
     @State var habitList: [UUID]
+    @State var isReminderUsed: Bool
     @State var reminderTime: Date
     @State var isDeleteAlert = false
+    @State var dayOfWeek: [Int]
     @ObservedObject var listData: ListData<UUID>
     
     init(routine: Routine) {
         self.routine = routine
         _name = State(initialValue: routine.name)
         _habitList = State(initialValue: routine.list)
-        _reminderTime = State(initialValue: Date(hourAndMinuteStr: routine.reminderTimes[0]))
+        _dayOfWeek = State(initialValue: routine.dayOfWeek.map(Int.init))
+        if let time = routine.time {
+            _isReminderUsed = State(initialValue: true)
+            _reminderTime = State(initialValue: Date(hourAndMinuteStr: time))
+        } else {
+            _isReminderUsed = State(initialValue: true)
+            _reminderTime = State(initialValue: Date())
+        }
         listData = ListData<UUID>(values: routine.list, save: {_ in})
     }
     
@@ -35,34 +45,79 @@ struct EditRoutine: View {
                         Button(action: {
                             routine.edit(
                                 name: name, list: listData.sortedValue,
-                                reminderTimes: [reminderTime.hourAndMinuteStr], context: context
-                            )
+                                time: isReminderUsed ? reminderTime.hourAndMinuteStr : nil,
+                                dayOfWeek: dayOfWeek,
+                                context: context
+                            ) { _ in
+                                
+                            }
                             presentationMode.wrappedValue.dismiss()
                         }) {
                             Text("Save".localized)
                                 .headerButton()
                         }
                     }, button2: {
-                        EmptyView()
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            Text("Cancel".localized)
+                                .headerButton()
+                        }
                     }
                 )
                 ScrollView {
-                    Text("Name".localized)
-                        .sectionText()
-                    TextFieldWithEndButton("Drink water".localized, text: $name)
-                    Text("List".localized)
-                        .sectionText()
-                    NavigationLink(destination:
-                                    RoutineSetList(listData: listData)
-                    ) {
+                    VStack(spacing: 35) {
                         HStack {
-                            Text("Change list")
+                            Text("Name".localized)
                                 .rowHeadline()
+                                .padding(.leading, 18)
+                            TextFieldWithEndButton("Drink water".localized, text: $name)
+                        }
+                        NavigationLink(destination: RoutineSetList(listData: listData)) {
+                            HStack {
+                                Text("Change habit list")
+                                    .rowHeadline()
+                                Spacer()
+                            }
                             Spacer()
+                            Image(systemName: "chevron.right")
+                                .mainColor()
                         }
                         .rowBackground()
+                        VStack {
+                            HStack {
+                                Text("Repeat")
+                                    .rowHeadline()
+                                    .padding(.leading, 18)
+                                Spacer()
+                            }
+                            DayOfWeekSelector(dayOfTheWeek: $dayOfWeek)
+                                .rowBackground()
+                        }
+                        VStack {
+                            Toggle("", isOn: $isReminderUsed)
+                                .toggleStyle(
+                                    ColoredToggleStyle(
+                                        label: "Use reminder".localized,
+                                        onColor: ThemeColor.mainColor(colorScheme)
+                                    )
+                                )
+                                .padding(.horizontal, 18)
+                            if isReminderUsed {
+                                HStack {
+                                    Text("Reminder time".localized)
+                                        .rowSubheadline()
+                                        .padding(.leading, 10)
+                                    Spacer()
+                                    DatePicker("", selection: $reminderTime, displayedComponents: .hourAndMinute)
+                                        .labelsHidden()
+                                        .accentColor(ThemeColor.mainColor(colorScheme))
+                                }
+                                .rowBackground()
+                            }
+                        }
+                        deleteButton
                     }
-                    deleteButton
                 }
             }
             .navigationBarTitle("")

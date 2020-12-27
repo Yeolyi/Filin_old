@@ -22,8 +22,8 @@ struct NameSection: View {
                 "Make first goal".localized : "Make new goal".localized,
             imageName: "text.badge.checkmark"
         ) {
-            Text("Name".localized)
-                .sectionText()
+            Text("What is the name of the goal?".localized)
+                .rowHeadline()
             TextFieldWithEndButton("Drink water".localized, text: $name)
         }
     }

@@ -27,6 +27,10 @@ class ListData<Value: Hashable>: ObservableObject {
     var locationBackupVibration: [RowData] = []
     var onTapIndex: Int?
     
+    @Published var dragHeight: CGFloat = 0
+    @Published var scrollPosition: CGFloat = 0
+    var contentHeight: CGFloat = 0
+    
     let rowHeight: CGFloat = 50
     let padding: CGFloat = 5
     let save: ([Value]) -> Void
@@ -51,7 +55,7 @@ class ListData<Value: Hashable>: ObservableObject {
     }
     
     var sortedValue: [Value] {
-        list.sorted(by: {$0.yPosition < $1.yPosition}).map{$0.value}
+        list.sorted(by: {$0.yPosition < $1.yPosition}).map {$0.value}
     }
     
     func internalIDToValue(_ id: UUID) -> Value {
@@ -73,6 +77,12 @@ class ListData<Value: Hashable>: ObservableObject {
         locationList = list
         locationBackup = locationList
         locationBackupVibration = locationList
+        print(totalHeight)
+        print(contentHeight)
+        print(scrollPosition)
+        if contentHeight < totalHeight && -scrollPosition > totalHeight - contentHeight {
+            scrollPosition = contentHeight - totalHeight
+        }
     }
     func yPosition(id: UUID) -> CGFloat {
         locationList[locationIndex(id)].yPosition
@@ -128,6 +138,9 @@ class ListData<Value: Hashable>: ObservableObject {
                 save(sortedValue)
             }
     }
+    func listDragEnded() {
+        
+    }
 }
 
 struct ReorderableList<Value: Hashable, Content: View>: View {
@@ -136,8 +149,6 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
     let view: (UUID) -> Content
     @ObservedObject var listData: ListData<Value>
     var maxHeight: CGFloat?
-    @State var dragHeight: CGFloat = 0
-    @State var scrollPosition: CGFloat = 0
     
     init(listData: ListData<Value>, maxHeight: CGFloat? = nil, view: @escaping (UUID) -> Content) {
         self.listData = listData
@@ -173,23 +184,26 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
                     .zIndex(listData.onTap(id: listElement.id) ? 1 : 0)
                 }
             }
-            .offset(y: scrollPosition + dragHeight)
+            .onAppear {
+                listData.contentHeight = maxHeight ?? geo.size.height
+            }
+            .offset(y: listData.scrollPosition + listData.dragHeight)
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        dragHeight = (value.location.y - value.startLocation.y)/2
+                        listData.dragHeight = (value.location.y - value.startLocation.y)/2
                     }
                     .onEnded { _ in
                         withAnimation {
-                            dragHeight += scrollPosition
-                            if -dragHeight > listData.totalHeight - (maxHeight ?? geo.size.height) {
-                                dragHeight = (maxHeight ?? geo.size.height) - listData.totalHeight
+                            listData.dragHeight += listData.scrollPosition
+                            if -listData.dragHeight > listData.totalHeight - (maxHeight ?? geo.size.height) {
+                                listData.dragHeight = (maxHeight ?? geo.size.height) - listData.totalHeight
                             }
-                            if dragHeight > 0 {
-                                dragHeight = 0
+                            if listData.dragHeight > 0 {
+                                listData.dragHeight = 0
                             }
-                            scrollPosition = dragHeight
-                            dragHeight = 0
+                            listData.scrollPosition = listData.dragHeight
+                            listData.dragHeight = 0
                         }
                     }
             )

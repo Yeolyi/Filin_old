@@ -23,6 +23,9 @@ extension Date {
     var minute: Int {
         Calendar.current.component(.minute, from: self)
     }
+    var second: Int {
+        Calendar.current.component(.second, from: self)
+    }
     var dayOfTheWeek: Int {
         Calendar.current.component(.weekday, from: self)
     }
@@ -33,9 +36,9 @@ extension Date {
         "\(hour)-\(minute)"
     }
     init(hourAndMinuteStr: String) {
-        let split = hourAndMinuteStr.split(separator: "-").map{Int($0)!}
+        let split = hourAndMinuteStr.split(separator: "-").map {Int($0)!}
         guard split.count == 2 else {
-            assertionFailure()
+            //assertionFailure()
             self = Date()
             return
         }
@@ -82,6 +85,14 @@ extension Date {
         dateFormatter.dateFormat = "E"
         return dateFormatter.string(from: dateCursor)
     }
+    static func dayOfTheWeekShortStr(_ num: Int) -> String {
+        var dateCursor = Date()
+        let currentDayOfWeek = dateCursor.dayOfTheWeek
+        dateCursor = dateCursor.addDate(num-currentDayOfWeek)!
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEEE"
+        return dateFormatter.string(from: dateCursor)
+    }
     var dictKey: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -105,7 +116,9 @@ extension Date {
     }
     var localizedYearMonth: String {
         let df = DateFormatter()
-        let userFormat = DateFormatter.dateFormat(fromTemplate: "yyyyMMM", options: 0, locale: Locale.current) ?? "yyyyMMM"
+        let userFormat = DateFormatter.dateFormat(
+            fromTemplate: "yyyyMMM", options: 0, locale: Locale.current
+        ) ?? "yyyyMMM"
         df.setLocalizedDateFormatFromTemplate(userFormat)
         return df.string(from: self)
     }
@@ -114,5 +127,35 @@ extension Date {
         let userFormat = DateFormatter.dateFormat(fromTemplate: "MMMd", options: 0, locale: Locale.current) ?? "MMMd"
         df.setLocalizedDateFormatFromTemplate(userFormat)
         return df.string(from: self)
+    }
+    var localizedHourMinute: String {
+        let df = DateFormatter()
+        let userFormat = DateFormatter.dateFormat(fromTemplate: "hh:mm a", options: 0, locale: Locale.current) ?? "MMMd"
+        df.setLocalizedDateFormatFromTemplate(userFormat)
+        return df.string(from: self)
+    }
+    func monthShift(contains dayOfWeek: [Int16], isAdd: Bool) -> Date {
+        var plusCursor = Calendar.current.date(
+            byAdding: .month, value: isAdd ? 1 : -1, to: self
+        )!
+        var minusCursor = plusCursor
+        var plusCount = 0
+        var minusCount = 0
+        while dayOfWeek.contains(Int16(plusCursor.dayOfTheWeek)) == false {
+            plusCursor = plusCursor.addDate(1)!
+            plusCount += 1
+        }
+        while dayOfWeek.contains(Int16(minusCursor.dayOfTheWeek)) == false {
+            minusCursor = minusCursor.addDate(-1)!
+            minusCount += 1
+        }
+        let calendar = Calendar.current
+        if calendar.dateComponents([.month], from: self, to: plusCursor).month ?? 10 >= 2 {
+            return minusCursor
+        }
+        if calendar.dateComponents([.month], from: self, to: minusCursor).month ?? 10 >= 2 {
+            return plusCursor
+        }
+        return plusCount > minusCount ? minusCursor : plusCursor
     }
 }

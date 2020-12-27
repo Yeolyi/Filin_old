@@ -30,7 +30,11 @@ struct HabitList: View {
                     .sectionText()
                 if !isTodayEmpty {
                     ForEach(habitList.filter {$0.isTodayTodo}, id: \.self) { habitInfo in
-                        MainRow(habit: habitInfo, showAdd: true)
+                        if habitInfo.isFault {
+                            EmptyView()
+                        } else {
+                            MainRow(habit: habitInfo, showAdd: true)
+                        }
                     }
                 } else {
                     HStack {
@@ -46,7 +50,11 @@ struct HabitList: View {
                         .sectionText()
                 }
                 ForEach(habitList.filter {!$0.isTodayTodo}, id: \.self) { habitInfo in
-                    MainRow(habit: habitInfo, showAdd: false)
+                    if habitInfo.isFault {
+                        EmptyView()
+                    } else {
+                        MainRow(habit: habitInfo, showAdd: false)
+                    }
                 }
             }
         }

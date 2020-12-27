@@ -12,6 +12,7 @@ struct MainRow: View {
     @ObservedObject var habit: Habit
     let date: Date
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var addUnit: IncrementPerTap
     @State var isExpanded = false
     @State var isTapping = false
@@ -27,7 +28,7 @@ struct MainRow: View {
     var subTitle: String {
         var subTitleStr = ""
         if habit.cycleType == HabitCycleType.weekly {
-            for dayOfWeekInt16 in habit.dayOfWeek ?? [] {
+            for dayOfWeekInt16 in habit.dayOfWeek {
                 subTitleStr += "\(Date.dayOfTheWeekStr(Int(dayOfWeekInt16))), "
             }
             _ = subTitleStr.popLast()
@@ -72,8 +73,8 @@ struct MainRow: View {
                 .padding(.leading, 5)
             }
             .rowBackground()
-            if isExpanded {
-                AddUnitRow(habitID: habit.id)
+            if let id = habit.id, isExpanded {
+                AddUnitRow(habitID: id)
             }
         }
     }

@@ -12,7 +12,9 @@ struct AddRoutine: View {
     @State var name = ""
     @State var currentPage = 1
     @State var routineTime = Date()
-    let totalPage = 3
+    @State var dayOfWeek: [Int] = [1,2,3,4,5,6,7]
+    @State var isReminder = true
+    let totalPage = 4
     
     @ObservedObject var listData = ListData<UUID>(values: [], save: {_ in })
     @Environment(\.managedObjectContext) var context
@@ -26,6 +28,8 @@ struct AddRoutine: View {
             return !listData.list.isEmpty
         } else if currentPage == 3 {
             return true
+        } else if currentPage == 4 {
+            return true
         } else {
             assertionFailure()
             return true
@@ -33,7 +37,26 @@ struct AddRoutine: View {
     }
     
     var body: some View {
-        VStack {
+        ZStack {
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("Cancel".localized)
+                            .headerButton()
+                    }
+                }
+                .padding(.top, 15)
+                Spacer()
+                HStack {
+                    previousButton
+                    Spacer()
+                }
+                nextButton
+            }
+            .zIndex(1)
             if currentPage == 1 {
                 HabitAddBadgeView(title: "Add routine".localized, imageName: "square.stack.3d.down.forward") {
                     Text("Name".localized)
@@ -45,14 +68,11 @@ struct AddRoutine: View {
                 RoutineSetList(listData: listData)
             }
             if currentPage == 3 {
-                RoutineTime(routineTime: $routineTime)
+                RoutineDate(dayOfTheWeek: $dayOfWeek)
             }
-            Spacer()
-            HStack {
-                previousButton
-                Spacer()
+            if currentPage == 4 {
+                RoutineTime(routineTime: $routineTime, isTimer: $isReminder)
             }
-            nextButton
         }
         .padding(.bottom, 30)
     }
@@ -76,8 +96,14 @@ struct AddRoutine: View {
             if currentPage == totalPage {
                 Routine.save(
                     name: name, list: listData.sortedValue,
-                    reminderTimes: [routineTime.hourAndMinuteStr], context: context
-                )
+                    time: isReminder ? routineTime.hourAndMinuteStr : nil,
+                    dayOfWeek: dayOfWeek,
+                    context: context
+                ) { isSuccess in
+                    if !isSuccess {
+                        print("Failed")
+                    }
+                }
                 presentationMode.wrappedValue.dismiss()
                 return
             }

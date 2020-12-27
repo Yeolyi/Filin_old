@@ -77,7 +77,7 @@ struct CustomCalendarWeek: View {
             return true
         } else {
             return habits.habits[0]?.cycleType == HabitCycleType.daily
-                || habits.habits[0]?.dayOfWeek?.contains(Int16(date.dayOfTheWeek)) == true
+                || habits.habits[0]?.dayOfWeek.contains(Int16(date.dayOfTheWeek)) == true
         }
     }
     func textColor(at date: Date) -> Color {

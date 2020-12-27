@@ -18,7 +18,7 @@ struct MemoRow: View {
                 if habit.memo[selectedDate.dictKey] != nil {
                     HStack {
                         Text(habit.memo[selectedDate.dictKey]!)
-                            .font(.custom("NanumMyeongjoBold", size: 18))
+                            .font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineSpacing(3)
                             .foregroundColor(ThemeColor.mainColor(colorScheme))
@@ -27,7 +27,7 @@ struct MemoRow: View {
                 } else {
                     HStack {
                         Text("Tap to open note".localized)
-                            .font(.custom("NanumMyeongjoBold", size: 18))
+                            .font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineSpacing(3)
                             .foregroundColor(ThemeColor.mainColor(colorScheme))

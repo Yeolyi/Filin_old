@@ -26,7 +26,10 @@ struct HabitCheckButton: View {
                         withAnimation { isExpanded = false }
                         return
                     }
-                    let addedVal = Int16(incrementPerTap.addUnit[habit.id] ?? 1)
+                    guard let id = habit.id else {
+                        return
+                    }
+                    let addedVal = Int16(incrementPerTap.addUnit[id] ?? 1)
                     withAnimation {
                         habit.achievement[date.dictKey] = (habit.achievement[date.dictKey] ?? 0) + addedVal
                     }
@@ -44,6 +47,7 @@ struct HabitCheckButton: View {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }
             )
+            .foregroundColor(habit.color)
         } else {
             NavigationLink(
                 destination:
@@ -51,7 +55,7 @@ struct HabitCheckButton: View {
             ) {
                 Image(systemName: showCheck ? "clock.fill" : "clock")
                     .font(.system(size: 22, weight: .semibold))
-                    .mainColor()
+                    .foregroundColor(habit.color)
                     .frame(width: 50, height: 60)
             }
         }

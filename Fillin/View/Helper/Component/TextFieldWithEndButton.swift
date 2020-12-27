@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TextFieldWithEndButton: View {
     let titleKey: String
+    @State var isEditing = false
     @Binding var text: String
     @Environment(\.colorScheme) var colorScheme
     init(_ titleKey: String, text: Binding<String>) {
@@ -17,10 +18,23 @@ struct TextFieldWithEndButton: View {
     }
     var body: some View {
         HStack {
-            TextField(titleKey, text: $text)
-            Button(action: {UIApplication.shared.endEditing()}) {
-                Text("Done".localized)
-                    .foregroundColor(ThemeColor.mainColor(colorScheme))
+            TextField(titleKey, text: $text, onEditingChanged: { (changed) in
+                if changed {
+                    isEditing = true
+                } else {
+                    isEditing = false
+                }
+            }) {
+                isEditing = false
+            }
+            if isEditing {
+                Button(action: {
+                    UIApplication.shared.endEditing()
+                    isEditing = false
+                }) {
+                    Text("Done".localized)
+                        .foregroundColor(ThemeColor.mainColor(colorScheme))
+                }
             }
         }
         .rowBackground()

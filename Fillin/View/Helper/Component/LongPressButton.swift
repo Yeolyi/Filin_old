@@ -17,13 +17,11 @@ struct LongPressButton: View {
             Button(action: onTapFunc) {
                 Image(systemName: imageSystemName)
                     .font(.system(size: 22, weight: .semibold))
-                    .mainColor()
                     .frame(width: 50, height: 60)
             }
         } else {
             Image(systemName: imageSystemName)
                 .font(.system(size: 22, weight: .semibold))
-                .mainColor()
                 .frame(width: 50, height: 60)
                 .onTapGesture {
                    onTapFunc()

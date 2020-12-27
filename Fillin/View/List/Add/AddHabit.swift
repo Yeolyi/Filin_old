@@ -19,14 +19,16 @@ struct AddHabit: View {
     var habitInfos: FetchedResults<Habit>
     
     @State var currentPage = 1
-    let totalPage = 4
+    let totalPage = 5
     
     @State var habitName = ""
     @State var habitType = HabitCycleType.daily
-    @State var dayOfTheWeek: [Int] = []
-    @State var number = "1"
+    @State var dayOfTheWeek = [1, 2, 3, 4, 5, 6, 7]
+    @State var number = "10"
     @State var selectedColor = "#404040"
-    @State var requiredSecond = "0"
+    @State var minute = 1
+    @State var second = 30
+    @State var isRequiredSecond = false
     
     init() {
         _selectedColor = State(initialValue: colorScheme == .light ? "#404040" : "#BFBFBF")
@@ -37,11 +39,16 @@ struct AddHabit: View {
         case 1: return habitName != ""
         case 2: return habitType == .daily ? true : !dayOfTheWeek.isEmpty
         case 3: return Int(number) ?? 0 > 0
-        case 4: return true
+        case 4: return !isRequiredSecond || (isRequiredSecond && dateToSecond > 0)
+        case 5: return true
         default:
             assertionFailure()
             return true
         }
+    }
+    
+    var dateToSecond: Int {
+        minute * 60 + second
     }
     
     var body: some View {
@@ -53,9 +60,12 @@ struct AddHabit: View {
                 DateSection(habitType: $habitType, dayOfTheWeek: $dayOfTheWeek)
             }
             if currentPage == 3 {
-                TimesSection(number: $number, requiredTime: $requiredSecond)
+                TimesSection(number: $number)
             }
             if currentPage == 4 {
+                TimerSection(minute: $minute, second: $second, isRequiredTime: $isRequiredSecond)
+            }
+            if currentPage == 5 {
                 ThemeSection(color: $selectedColor)
             }
             Spacer()
@@ -71,7 +81,7 @@ struct AddHabit: View {
         Button(action: {
             withAnimation { self.currentPage = max(self.currentPage - 1, 1) }
         }) {
-            Text("previous".localized)
+            Text("Previous".localized)
                 .fixedSize()
                 .foregroundColor(ThemeColor.mainColor(colorScheme))
                 .padding(.leading, 10)
@@ -107,8 +117,8 @@ struct AddHabit: View {
     func saveAndQuit() {
         let id = UUID()
         Habit.saveHabit(
-            id: id, name: habitName, color: selectedColor, dayOfWeek: habitType == .daily ? [] :dayOfTheWeek,
-            numberOfTimes: number, requiredSecond: requiredSecond, managedObjectContext
+            id: id, name: habitName, color: selectedColor, dayOfWeek: dayOfTheWeek,
+            numberOfTimes: number, requiredSecond: isRequiredSecond ? dateToSecond : 0, managedObjectContext
         )
         displayManager.habitOrder.append(id)
         self.presentationMode.wrappedValue.dismiss()

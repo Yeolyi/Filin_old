@@ -6,6 +6,7 @@
   
 */
 
+/*
 "List" = "목록";
 "Summary" = "요약";
 "Edit" = "편집";
@@ -58,3 +59,8 @@
 "Required time" = "소요 시간";
 "Add routine" = "루틴 추가";
 "Added" = "추가됨";
+"Set calendar rings" = "링 설정";
+"%d goals" = "%d개의 목표";
+"Repeat" = "반복";
+"Duration" = "지속 시간";
+*/
