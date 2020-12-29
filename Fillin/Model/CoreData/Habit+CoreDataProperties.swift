@@ -21,6 +21,7 @@ extension Habit {
     @NSManaged public var id: UUID?
     @NSManaged public var name: String
     @NSManaged public var numberOfTimes: Int16
+    @NSManaged public var dailyEmoji: [String: String]
     @NSManaged public var memo: [String: String]
     @NSManaged public var requiredSecond: Int16
     func isComplete(at date: Date) -> Bool {
@@ -85,6 +86,7 @@ extension Habit {
         newHabit.numberOfTimes = Int16(numberOfTimes) ?? 0
         newHabit.achievement = [:]
         newHabit.requiredSecond = Int16(requiredSecond)
+        newHabit.dailyEmoji = [:]
         newHabit.memo = [:]
         do {
             try managedObjectContext.save()

@@ -29,7 +29,7 @@ struct DefaultTabSetting: View {
             .rowBackground()
             Spacer()
         }
-        .navigationBarTitle(Text("Change default tab".localized))
+        .navigationBarTitle(Text("Change Default Tab".localized))
     }
 }
 

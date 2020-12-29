@@ -61,7 +61,7 @@ struct AddRoutine: View {
                 HabitAddBadgeView(title: "Add routine".localized, imageName: "square.stack.3d.down.forward") {
                     Text("Name".localized)
                         .sectionText()
-                    TextFieldWithEndButton("Morning wakeup".localized, text: $name)
+                    TextFieldWithEndButton("After wakeup".localized, text: $name)
                 }
             }
             if currentPage == 2 {
@@ -80,7 +80,7 @@ struct AddRoutine: View {
         Button(action: {
             withAnimation { self.currentPage = max(self.currentPage - 1, 1) }
         }) {
-            Text("previous".localized)
+            Text("Previous".localized)
                 .fixedSize()
                 .mainColor()
                 .padding(.leading, 10)

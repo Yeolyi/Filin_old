@@ -170,7 +170,7 @@ struct SetHabitForRing: View {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
                     HStack {
-                        Text("None".localized)
+                        Text("Empty".localized)
                             .mainColor()
                             .rowHeadline()
                         Spacer()

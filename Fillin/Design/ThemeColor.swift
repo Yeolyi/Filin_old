@@ -14,7 +14,7 @@ class ThemeColor: ObservableObject {
     private static var subLight = Color(hex: "#BEBEBE")
     private static var subDark = Color(hex: "#414141")
     static var colorList: [String] = [
-        "#f07264", "#f5ad60", "#83d378", "#5996f8", "#b57ddf", "#a5a5a5", "FCAFC0"
+        "#f07264", "#f5ad60", "#83d378", "#5996f8", "#b57ddf", "FCAFC0"
     ]
     static func mainColor(_ colorScheme: ColorScheme) -> Color {
         colorScheme == .light ? mainLight : mainDark

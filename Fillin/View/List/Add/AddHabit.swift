@@ -25,14 +25,10 @@ struct AddHabit: View {
     @State var habitType = HabitCycleType.daily
     @State var dayOfTheWeek = [1, 2, 3, 4, 5, 6, 7]
     @State var number = "10"
-    @State var selectedColor = "#404040"
+    @State var selectedColor = "#a5a5a5"
     @State var minute = 1
     @State var second = 30
     @State var isRequiredSecond = false
-    
-    init() {
-        _selectedColor = State(initialValue: colorScheme == .light ? "#404040" : "#BFBFBF")
-    }
     
     var isNextAvailable: Bool {
         switch currentPage {

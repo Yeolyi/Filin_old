@@ -30,6 +30,7 @@ struct HabitTimer: View {
     }
     var body: some View {
         VStack {
+            Spacer()
             ZStack {
                 Circle()
                     .foregroundColor(.clear)
@@ -68,7 +69,7 @@ struct HabitTimer: View {
             }
             .frame(width: 200, height: 200)
             .padding(.bottom, 60)
-            .padding(.top, 100)
+            Spacer()
             Button(action: {
                 if isCounting {
                     self.timer.upstream.connect().cancel()

@@ -31,7 +31,7 @@ func sampleHabit(name: String, dayOfWeek: [Int] = [1, 2, 3, 4, 5, 6, 7], seconds
     habit.achievement = tempAchievement
     habit.colorHex = "#a5a5a5"
     habit.dayOfWeek = dayOfWeek.map {Int16($0)}
-    habit.memo = [:]
+    habit.dailyEmoji = [:]
     habit.numberOfTimes = Int16(count)
     habit.requiredSecond = Int16(seconds)
     return habit

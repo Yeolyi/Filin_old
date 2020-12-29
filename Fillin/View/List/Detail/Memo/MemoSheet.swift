@@ -16,7 +16,7 @@ struct MemoSheet: View {
     init(habit: Habit, targetDate: Date) {
         self.habit = habit
         self.targetDate = targetDate
-        self._memo = State(initialValue: habit.memo[targetDate.dictKey] ?? "")
+        self._memo = State(initialValue: habit.dailyEmoji[targetDate.dictKey] ?? "")
     }
     var body: some View {
         VStack {
@@ -24,7 +24,7 @@ struct MemoSheet: View {
                 title: Date().localizedMonthDay,
                 button1: {
                     Button(action: {
-                        habit.memo[targetDate.dictKey] = memo == "" ? nil : memo
+                        habit.dailyEmoji[targetDate.dictKey] = memo == "" ? nil : memo
                         saveContext()
                         presentationMode.wrappedValue.dismiss()
                     }) {

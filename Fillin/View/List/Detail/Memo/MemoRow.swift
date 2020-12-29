@@ -15,9 +15,9 @@ struct MemoRow: View {
     var body: some View {
         Button(action: { self.activeSheet = DetailViewActiveSheet.diary }) {
             VStack {
-                if habit.memo[selectedDate.dictKey] != nil {
+                if habit.dailyEmoji[selectedDate.dictKey] != nil {
                     HStack {
-                        Text(habit.memo[selectedDate.dictKey]!)
+                        Text(habit.dailyEmoji[selectedDate.dictKey]!)
                             .font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineSpacing(3)

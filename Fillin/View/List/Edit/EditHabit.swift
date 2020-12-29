@@ -84,7 +84,7 @@ struct EditHabit: View {
                                     HStack {
                                         VStack {
                                             Picker(selection: $minute, label: EmptyView(), content: {
-                                                ForEach(0...59, id: \.self) { minute in
+                                                ForEach(0...500, id: \.self) { minute in
                                                     Text(String(minute))
                                                         .rowHeadline()
                                                 }

@@ -36,7 +36,7 @@ struct ListReorderSheet: View {
                     .padding([.leading, .trailing], 10)
                 Spacer()
             }
-            .navigationBarTitle(Text("Change list order".localized))
+            .navigationBarTitle(Text("Change List Order".localized))
         }
         .onAppear {
             self.listData = ListData(values: displayManager.habitOrder, save: { newList in

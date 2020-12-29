@@ -30,7 +30,7 @@ struct HabitListView: View {
                         MainRow(habit: sampleHabit(name: "Stretching".localized), showAdd: true)
                             .opacity(0.5)
                             .disabled(true)
-                        Text("Set goals and execute them.")
+                        Text("Set goals and execute them.".localized)
                             .rowHeadline()
                             .padding(.top, 20)
                             .padding(.bottom, 10)

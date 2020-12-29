@@ -12,7 +12,7 @@ struct DateSection: View {
     @Binding var dayOfTheWeek: [Int]
     var body: some View {
         HabitAddBadgeView(title: "Repeat".localized, imageName: "calendar") {
-            Text("Choose the day of the week to proceed with the goal".localized)
+            Text("Choose the day of the week to proceed with the goal.".localized)
                 .rowHeadline()
                 .padding(.horizontal, 10)
                 .multilineTextAlignment(.center)

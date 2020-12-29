@@ -45,8 +45,8 @@ struct RoutineView: View {
                         }
                     } else {
                         ForEach([
-                            sampleRoutine(name: "After wake up".localized, dayOfTheWeek: [], time: "07-00"),
-                            sampleRoutine(name: "Before bed".localized, dayOfTheWeek: [], time: "23-30")
+                            sampleRoutine(name: "After wake up".localized, dayOfTheWeek: [1, 2, 3, 4, 5, 6, 7], time: "07-00"),
+                            sampleRoutine(name: "Before bed".localized, dayOfTheWeek: [1, 2, 3, 4, 5, 6, 7], time: "23-30")
                         ], id: \.self) { routine in
                             RoutineRow(routine: routine, isSheet: $isAddSheet)
                         }

@@ -46,7 +46,7 @@ struct HabitList: View {
                     .rowBackground()
                 }
                 if !isGeneralEmpty {
-                    Text("Goals".localized)
+                    Text("Others".localized)
                         .sectionText()
                 }
                 ForEach(habitList.filter {!$0.isTodayTodo}, id: \.self) { habitInfo in

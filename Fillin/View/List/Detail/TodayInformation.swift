@@ -20,7 +20,7 @@ struct TodayInformation: View {
             HStack(spacing: 0) {
                 moveButton(isAdd: false)
                 VStack {
-                    Text("\(habit.numberOfTimes)\(" out of".localized) \(habit.achievement[selectedDate.dictKey] ?? 0)\(" times".localized)")
+                    Text("\(habit.achievement[selectedDate.dictKey] ?? 0)\(" times".localized)/\(habit.numberOfTimes)\(" times".localized)")
                         .rowHeadline()
                     Text("""
 \(selectedDate.localizedMonthDay)\(selectedDate.dictKey == Date().dictKey ? "(\("Today".localized))" : "")

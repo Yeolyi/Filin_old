@@ -40,10 +40,10 @@ struct SummaryView: View {
                     if isSummaryExist {
                         Text("Calendar".localized)
                             .sectionText()
-                        CalendarRow(selectedDate: $selectedDate, habits: firstThreeElements())
+                        RingRow(selectedDate: $selectedDate, habits: firstThreeElements())
                         TodaySummary(selectedDate: $selectedDate)
                     } else {
-                        CalendarRow(
+                        RingRow(
                             selectedDate: .constant(Date()),
                             habits: [sampleHabit(name: ""), sampleHabit(name: "")]
                         )
@@ -79,7 +79,7 @@ struct SummaryView: View {
     }
     var shareButton: some View {
         Button(action: {
-            let image = CalendarRow(selectedDate: $selectedDate, habits: firstThreeElements(), isExpanded: true).asImage().pngData()!
+            let image = RingRow(selectedDate: $selectedDate, habits: firstThreeElements(), isExpanded: true).asImage().pngData()!
             SharingHandler.instagramStory(imageData: image)
         }) {
             Image(systemName: "square.and.arrow.up")

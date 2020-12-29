@@ -77,9 +77,6 @@ class ListData<Value: Hashable>: ObservableObject {
         locationList = list
         locationBackup = locationList
         locationBackupVibration = locationList
-        print(totalHeight)
-        print(contentHeight)
-        print(scrollPosition)
         if contentHeight < totalHeight && -scrollPosition > totalHeight - contentHeight {
             scrollPosition = contentHeight - totalHeight
         }

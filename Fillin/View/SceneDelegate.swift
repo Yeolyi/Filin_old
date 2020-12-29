@@ -26,6 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
             fatalError()
         }
+        let displayManager = DisplayManager()
+        
         let appSetting = AppSetting()
         appSetting.runCount += 1
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
@@ -33,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let contentView =
             ContentView(defaultTap: appSetting.defaultTap)
             .environment(\.managedObjectContext, context)
-            .environmentObject(DisplayManager())
+            .environmentObject(displayManager)
             .environmentObject(IncrementPerTap())
             .environmentObject(appSetting)
         /*

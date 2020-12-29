@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		25037057258801B100443032 /* NanumBarunpenR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25037056258801B100443032 /* NanumBarunpenR.ttf */; };
 		250823C52583F93A0005D7CE /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823C42583F93A0005D7CE /* KeyboardController.swift */; };
-		250823CC2584958A0005D7CE /* CalendarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823CB2584958A0005D7CE /* CalendarRow.swift */; };
+		250823CC2584958A0005D7CE /* RingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823CB2584958A0005D7CE /* RingRow.swift */; };
 		250823DE2584E0F70005D7CE /* ListReorderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823DD2584E0F70005D7CE /* ListReorderSheet.swift */; };
 		250823E42584E33A0005D7CE /* LinearProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250823E32584E33A0005D7CE /* LinearProgressBar.swift */; };
 		2522916A2583849100869C51 /* RowBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252291692583849100869C51 /* RowBackground.swift */; };
@@ -20,6 +20,7 @@
 		252C7D3F258365F900101484 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252C7D3E258365F900101484 /* ColorExtension.swift */; };
 		2532DC762598F49D006DBA25 /* 3_RoutineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2532DC752598F49D006DBA25 /* 3_RoutineDate.swift */; };
 		2532DC7F2598F70B006DBA25 /* RoutineNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2532DC7E2598F70B006DBA25 /* RoutineNotification.swift */; };
+		2532DC8425991D34006DBA25 /* CalendarWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2532DC8325991D34006DBA25 /* CalendarWeek.swift */; };
 		2550A5662583F4EE002E1906 /* MemoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A5652583F4EE002E1906 /* MemoSheet.swift */; };
 		2557F93C2586719700697C48 /* DisplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F93B2586719700697C48 /* DisplayManager.swift */; };
 		2557F93F2586721100697C48 /* AutoSaveWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557F93E2586721100697C48 /* AutoSaveWrapper.swift */; };
@@ -41,7 +42,7 @@
 		25740159259663AE00AD8A3C /* Summary+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25740158259663AE00AD8A3C /* Summary+CoreDataProperties.swift */; };
 		2574015C259663AF00AD8A3C /* Summary+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2574015B259663AF00AD8A3C /* Summary+CoreDataClass.swift */; };
 		257D949F25851B7F007D4CF1 /* MemoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257D949E25851B7F007D4CF1 /* MemoRow.swift */; };
-		257D94A425851F28007D4CF1 /* CalendarWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257D94A325851F28007D4CF1 /* CalendarWeek.swift */; };
+		257D94A425851F28007D4CF1 /* RingWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257D94A325851F28007D4CF1 /* RingWeek.swift */; };
 		257D94A925852154007D4CF1 /* CircleProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257D94A825852154007D4CF1 /* CircleProgress.swift */; };
 		257D94AD25852EA6007D4CF1 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257D94AC25852EA6007D4CF1 /* ConditionalModifier.swift */; };
 		258388332597241F008A8F99 /* RunRoutine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258388322597241F008A8F99 /* RunRoutine.swift */; };
@@ -84,6 +85,11 @@
 		25CD88562597CBBC002270E9 /* ColoredToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CD88552597CBBC002270E9 /* ColoredToggle.swift */; };
 		25CD885925987937002270E9 /* 4_Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CD885825987937002270E9 /* 4_Timer.swift */; };
 		25CD8C9D258553AC00886F39 /* TodayInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CD8C9C258553AC00886F39 /* TodayInformation.swift */; };
+		25E16354259920990082A87A /* CalendarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E16353259920990082A87A /* CalendarRow.swift */; };
+		25E1635A259929E70082A87A /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E16359259929E70082A87A /* EmojiPicker.swift */; };
+		25E1635E2599AD720082A87A /* HabitCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E1635D2599AD710082A87A /* HabitCalendar.swift */; };
+		25E163632599C0F80082A87A /* EmojiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E163622599C0F80082A87A /* EmojiManager.swift */; };
+		25E163672599CBAA0082A87A /* EmojiListEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E163662599CBAA0082A87A /* EmojiListEdit.swift */; };
 		25F04EF42594995C000BA9C5 /* ReorderableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F04EF32594995C000BA9C5 /* ReorderableList.swift */; };
 		25F212762591B97400E259EC /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F212752591B97400E259EC /* SettingView.swift */; };
 		25F2127A2591E90B00E259EC /* SharingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F212792591E90B00E259EC /* SharingHandler.swift */; };
@@ -108,7 +114,7 @@
 /* Begin PBXFileReference section */
 		25037056258801B100443032 /* NanumBarunpenR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBarunpenR.ttf; sourceTree = "<group>"; };
 		250823C42583F93A0005D7CE /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
-		250823CB2584958A0005D7CE /* CalendarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRow.swift; sourceTree = "<group>"; };
+		250823CB2584958A0005D7CE /* RingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingRow.swift; sourceTree = "<group>"; };
 		250823DD2584E0F70005D7CE /* ListReorderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListReorderSheet.swift; sourceTree = "<group>"; };
 		250823E32584E33A0005D7CE /* LinearProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearProgressBar.swift; sourceTree = "<group>"; };
 		252291692583849100869C51 /* RowBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowBackground.swift; sourceTree = "<group>"; };
@@ -119,6 +125,7 @@
 		252C7D3E258365F900101484 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		2532DC752598F49D006DBA25 /* 3_RoutineDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3_RoutineDate.swift; sourceTree = "<group>"; };
 		2532DC7E2598F70B006DBA25 /* RoutineNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineNotification.swift; sourceTree = "<group>"; };
+		2532DC8325991D34006DBA25 /* CalendarWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarWeek.swift; sourceTree = "<group>"; };
 		2550A5652583F4EE002E1906 /* MemoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoSheet.swift; sourceTree = "<group>"; };
 		2557F93B2586719700697C48 /* DisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManager.swift; sourceTree = "<group>"; };
 		2557F93E2586721100697C48 /* AutoSaveWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoSaveWrapper.swift; sourceTree = "<group>"; };
@@ -142,7 +149,7 @@
 		25740158259663AE00AD8A3C /* Summary+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Summary+CoreDataProperties.swift"; path = "/Users/seongyeolyi/Desktop/Fillin/Fillin/Fillin/Model/CoreData/Summary+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		2574015B259663AF00AD8A3C /* Summary+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Summary+CoreDataClass.swift"; path = "/Users/seongyeolyi/Desktop/Fillin/Fillin/Fillin/Model/CoreData/Summary+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		257D949E25851B7F007D4CF1 /* MemoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoRow.swift; sourceTree = "<group>"; };
-		257D94A325851F28007D4CF1 /* CalendarWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarWeek.swift; sourceTree = "<group>"; };
+		257D94A325851F28007D4CF1 /* RingWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingWeek.swift; sourceTree = "<group>"; };
 		257D94A825852154007D4CF1 /* CircleProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgress.swift; sourceTree = "<group>"; };
 		257D94AC25852EA6007D4CF1 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
 		258388322597241F008A8F99 /* RunRoutine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRoutine.swift; sourceTree = "<group>"; };
@@ -185,6 +192,11 @@
 		25CD88552597CBBC002270E9 /* ColoredToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredToggle.swift; sourceTree = "<group>"; };
 		25CD885825987937002270E9 /* 4_Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 4_Timer.swift; sourceTree = "<group>"; };
 		25CD8C9C258553AC00886F39 /* TodayInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayInformation.swift; sourceTree = "<group>"; };
+		25E16353259920990082A87A /* CalendarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRow.swift; sourceTree = "<group>"; };
+		25E16359259929E70082A87A /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
+		25E1635D2599AD710082A87A /* HabitCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCalendar.swift; sourceTree = "<group>"; };
+		25E163622599C0F80082A87A /* EmojiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
+		25E163662599CBAA0082A87A /* EmojiListEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiListEdit.swift; sourceTree = "<group>"; };
 		25F04EF32594995C000BA9C5 /* ReorderableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReorderableList.swift; sourceTree = "<group>"; };
 		25F212752591B97400E259EC /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		25F212792591E90B00E259EC /* SharingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingHandler.swift; sourceTree = "<group>"; };
@@ -233,8 +245,8 @@
 		250823D12584A97D0005D7CE /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				250823CB2584958A0005D7CE /* CalendarRow.swift */,
-				257D94A325851F28007D4CF1 /* CalendarWeek.swift */,
+				250823CB2584958A0005D7CE /* RingRow.swift */,
+				257D94A325851F28007D4CF1 /* RingWeek.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -413,11 +425,23 @@
 		25C5A5622583766200E864A5 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				25E163612599C0EE0082A87A /* Model */,
 				25C5A563258376BE00E864A5 /* HabitDetailView.swift */,
 				25CD8C9C258553AC00886F39 /* TodayInformation.swift */,
+				25E1635D2599AD710082A87A /* HabitCalendar.swift */,
+				25E16359259929E70082A87A /* EmojiPicker.swift */,
+				25E163662599CBAA0082A87A /* EmojiListEdit.swift */,
 				259E630F2594DAEF00F29FDD /* Memo */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		25E163612599C0EE0082A87A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				25E163622599C0F80082A87A /* EmojiManager.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		25F04F002594BE8B000BA9C5 /* Model */ = {
@@ -516,6 +540,8 @@
 				25F04EF32594995C000BA9C5 /* ReorderableList.swift */,
 				25AF7E8B25975F090097BF4D /* ListEmptyButton.swift */,
 				25CD88552597CBBC002270E9 /* ColoredToggle.swift */,
+				2532DC8325991D34006DBA25 /* CalendarWeek.swift */,
+				25E16353259920990082A87A /* CalendarRow.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -730,7 +756,7 @@
 				25FD50D325966A8E002780EA /* Routine+CoreDataProperties.swift in Sources */,
 				2563B4FC2582826900731635 /* habitdiary.xcdatamodeld in Sources */,
 				25C5A56725837A0200E864A5 /* AppSetting.swift in Sources */,
-				250823CC2584958A0005D7CE /* CalendarRow.swift in Sources */,
+				250823CC2584958A0005D7CE /* RingRow.swift in Sources */,
 				25C574FE2583D3BD004BF07D /* Habit+CoreDataProperties.swift in Sources */,
 				25C9FA23259075180046C523 /* TodaySummary.swift in Sources */,
 				258B6B12258295660004BFE7 /* EditHabit.swift in Sources */,
@@ -738,10 +764,12 @@
 				258B6B1A25829B660004BFE7 /* MultilineTextField.swift in Sources */,
 				25B73282258B460A003D9FD8 /* RowSubheadline.swift in Sources */,
 				252883C5258640D7006483A4 /* 3_Time.swift in Sources */,
+				25E163672599CBAA0082A87A /* EmojiListEdit.swift in Sources */,
 				25CD885925987937002270E9 /* 4_Timer.swift in Sources */,
 				25FC602C258615CE006BCFBA /* 1_Name.swift in Sources */,
 				25A564D9258F972C00239CF6 /* ContentView.swift in Sources */,
 				257D94A925852154007D4CF1 /* CircleProgress.swift in Sources */,
+				25E1635A259929E70082A87A /* EmojiPicker.swift in Sources */,
 				25B7326C2588FC73003D9FD8 /* AddUnitRow.swift in Sources */,
 				2563B4F52582826900731635 /* AppDelegate.swift in Sources */,
 				25F4F47E2596FD44007E5BCF /* 4_RoutineTime.swift in Sources */,
@@ -763,6 +791,7 @@
 				25F887FA259509B300BC2D6A /* AddRoutine.swift in Sources */,
 				250823C52583F93A0005D7CE /* KeyboardController.swift in Sources */,
 				255C1178258F41CA00E0F740 /* CheckPicker.swift in Sources */,
+				2532DC8425991D34006DBA25 /* CalendarWeek.swift in Sources */,
 				258E02F6258E1139006DAFAC /* SectionText.swift in Sources */,
 				25A564D2258F8C5F00239CF6 /* OSDetector.swift in Sources */,
 				258B6B152582965F0004BFE7 /* CustomModal.swift in Sources */,
@@ -787,7 +816,7 @@
 				25F04EF42594995C000BA9C5 /* ReorderableList.swift in Sources */,
 				25F888252596201600BC2D6A /* 2_ListSet.swift in Sources */,
 				2557F93C2586719700697C48 /* DisplayManager.swift in Sources */,
-				257D94A425851F28007D4CF1 /* CalendarWeek.swift in Sources */,
+				257D94A425851F28007D4CF1 /* RingWeek.swift in Sources */,
 				2574015C259663AF00AD8A3C /* Summary+CoreDataClass.swift in Sources */,
 				259E63032594D45D00F29FDD /* PreviewCoreDataContext.swift in Sources */,
 				25FC6030258615D7006BCFBA /* 2_Date.swift in Sources */,
@@ -796,10 +825,13 @@
 				258B6B0725828CC70004BFE7 /* MainRow.swift in Sources */,
 				25F4F4882597030D007E5BCF /* RoutineRow.swift in Sources */,
 				257D94AD25852EA6007D4CF1 /* ConditionalModifier.swift in Sources */,
+				25E16354259920990082A87A /* CalendarRow.swift in Sources */,
 				25F4F482259702E4007E5BCF /* RoutineDetailView.swift in Sources */,
+				25E163632599C0F80082A87A /* EmojiManager.swift in Sources */,
 				25C9FA2925907CEA0046C523 /* ImageSaver.swift in Sources */,
 				25CD8C9D258553AC00886F39 /* TodayInformation.swift in Sources */,
 				255C1174258F38E200E0F740 /* DayOfWeekSelector.swift in Sources */,
+				25E1635E2599AD720082A87A /* HabitCalendar.swift in Sources */,
 				2557F93F2586721100697C48 /* AutoSaveWrapper.swift in Sources */,
 				258B6B0A25828CD60004BFE7 /* HabitCycleType.swift in Sources */,
 				258B6B232583573B0004BFE7 /* ColorHorizontalPicker.swift in Sources */,
@@ -958,7 +990,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Fillin/Fillin.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Fillin/Preview Content\"";
 				DEVELOPMENT_TEAM = 4954Z45396;
 				ENABLE_PREVIEWS = YES;
@@ -985,7 +1017,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Fillin/Fillin.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Fillin/Preview Content\"";
 				DEVELOPMENT_TEAM = 4954Z45396;
 				ENABLE_PREVIEWS = YES;

@@ -7,17 +7,16 @@
 
 import SwiftUI
 
-struct CustomCalendarWeek: View {
+struct RingWeek: View {
     @Environment(\.colorScheme) var colorScheme
     let week: Int
-    let isExpanded: Bool
-    let dateList: [Date]
+    @Binding var isExpanded: Bool
     let ringNum: Int
     @ObservedObject var habits: CalendarHabitList
     @Binding var selectedDate: Date
     var body: some View {
-        HStack {
-            ForEach(dateList, id: \.self) { date in
+        CalendarWeek(week: week, selectedDate: $selectedDate) { date in
+            Group {
                 if isButtonActive(at: date) {
                     Button(action: {selectedDate = date}) {
                         CircleProgress(getRingTuple(at: date)) {
@@ -34,23 +33,12 @@ struct CustomCalendarWeek: View {
             }
         }
     }
-    init(week: Int, isExpanded: Bool, habits: [Habit?], selectedDate: Binding<Date>) {
+    init(week: Int, isExpanded: Binding<Bool>, habits: [Habit?], selectedDate: Binding<Date>) {
         self.week = week
-        self.isExpanded = isExpanded
+        self._isExpanded = isExpanded
         self.habits = CalendarHabitList(habits: habits)
         self._selectedDate = selectedDate
         self.ringNum = habits.compactMap {$0}.count
-        var tempDateList: [Date] = []
-        let firstDayOfWeek = selectedDate.wrappedValue.firstDayOfWeek ?? 1
-        for diff in 1 - firstDayOfWeek ..< 8 - firstDayOfWeek {
-            let newDate = Calendar.current.date(
-                byAdding: .day,
-                value: diff + 7 * (week - 1),
-                to: selectedDate.wrappedValue.firstDayOfMonth ?? Date()
-            ) ?? Date()
-            tempDateList.append(newDate)
-        }
-        dateList = tempDateList
     }
     func getRingTuple(at date: Date) -> [(Double, Color)?] {
         var tempRingTuple: [(Double, Color)?] = []
@@ -73,7 +61,7 @@ struct CustomCalendarWeek: View {
         return tempRingTuple
     }
     func isButtonActive(at date: Date) -> Bool {
-        if !isExpanded || ringNum == 0 || habits.habits.count > 1 {
+        if ringNum == 0 || habits.habits.count > 1 {
             return true
         } else {
             return habits.habits[0]?.cycleType == HabitCycleType.daily
