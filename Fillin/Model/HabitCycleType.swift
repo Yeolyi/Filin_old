@@ -8,13 +8,7 @@
 import SwiftUI
 import CoreData
 
-enum HabitCycleType: String, PickerUsable {
-    var string: String {
-        switch self {
-        case .daily: return "Every day".localized
-        case .weekly: return "Every week".localized
-        }
-    }
+enum HabitCycleType: String {
     case daily = "매일"
     case weekly = "매주"
 }

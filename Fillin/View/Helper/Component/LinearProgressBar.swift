@@ -19,14 +19,14 @@ struct LinearProgressBar: View {
     var body: some View {
         GeometryReader { geo in
             Rectangle()
-                .frame(width: CGFloat(progress) * geo.size.width, height: 15)
+                .frame(width: CGFloat(progress) * geo.size.width, height: 24)
                 .foregroundColor(color)
                 .offset(x: 2, y: 4)
                 .if(isAnimation) {
                     $0.animation(.default)
                 }
         }
-        .frame(height: 15)
+        .frame(height: 24)
         .overlay(
             Rectangle()
                 .stroke(ThemeColor.mainColor(colorScheme), lineWidth: 1.5)

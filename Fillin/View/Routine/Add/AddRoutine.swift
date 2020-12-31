@@ -35,33 +35,19 @@ struct AddRoutine: View {
             return true
         }
     }
-    
     var body: some View {
-        ZStack {
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("Cancel".localized)
-                            .headerButton()
-                    }
-                }
-                .padding(.top, 15)
-                Spacer()
-                HStack {
-                    previousButton
-                    Spacer()
-                }
-                nextButton
-            }
-            .zIndex(1)
+        VStack(spacing: 0) {
             if currentPage == 1 {
                 HabitAddBadgeView(title: "Add routine".localized, imageName: "square.stack.3d.down.forward") {
-                    Text("Name".localized)
-                        .sectionText()
-                    TextFieldWithEndButton("After wakeup".localized, text: $name)
+                    VStack {
+                        HStack {
+                            Text("Name".localized)
+                                .bodyText()
+                            Spacer()
+                        }
+                        TextFieldWithEndButton("After wakeup".localized, text: $name)
+                    }
+                    .rowBackground()
                 }
             }
             if currentPage == 2 {
@@ -73,18 +59,23 @@ struct AddRoutine: View {
             if currentPage == 4 {
                 RoutineTime(routineTime: $routineTime, isTimer: $isReminder)
             }
+            HStack {
+                previousButton
+                Spacer()
+            }
+            nextButton
         }
-        .padding(.bottom, 30)
+        .padding(.bottom, 20)
     }
     var previousButton: some View {
         Button(action: {
             withAnimation { self.currentPage = max(self.currentPage - 1, 1) }
         }) {
             Text("Previous".localized)
+                .bodyText()
                 .fixedSize()
-                .mainColor()
-                .padding(.leading, 10)
-                .padding(.bottom, 3)
+                .padding(.leading, 20)
+                .padding(.bottom, 8)
         }
         .if(currentPage == 1) {
             $0.hidden()

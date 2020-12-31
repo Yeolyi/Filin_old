@@ -28,49 +28,46 @@ struct RoutineSetList: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Added".localized)
-                .sectionText()
-            ReorderableList(listData: listData, maxHeight: 250, view: { id in
-                HStack {
-                    Image(systemName: "minus.circle")
-                        .font(.system(size: 20))
-                        .mainColor()
-                        .contentShape(Rectangle())
-                        .padding(.trailing, 5)
-                        .onTapGesture {
-                            listData.delete(id: id)
-                        }
-                    Text(habitList.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "Test")
-                        .rowHeadline()
-                }
-            })
-            .rowBackground()
-            
-            Text("List".localized)
-                .sectionText()
-            ScrollView {
-                ForEach(habitList) { habit in
-                    HStack {
-                        Text(habit.name)
-                            .rowHeadline()
-                        Spacer()
-                        Image(systemName: "plus.circle")
-                            .font(.system(size: 20))
-                            .mainColor()
-                            .contentShape(Rectangle())
-                            .onTapGesture {
+        VStack(spacing: 0) {
+            VStack(spacing: 0) {
+                Text("Add the desired goal to the routine. Duplicates are also possible.".localized)
+                    .bodyText()
+                    .padding(.bottom, 5)
+                ScrollView {
+                    ForEach(habitList) { habit in
+                        HStack {
+                            Text(habit.name)
+                                .bodyText()
+                            Spacer()
+                            BasicButton("plus") {
                                 guard let id = habit.id else {
                                     return
                                 }
                                 listData.add(value: id)
                             }
+                        }
                     }
-                    .padding(8)
-                    .padding([.leading, .trailing], 10)
                 }
             }
+            .rowBackground()
+            .padding(.bottom, 8)
+            VStack(spacing: 0) {
+                HStack {
+                    Text("Routine List".localized)
+                        .headline()
+                    Spacer()
+                }
+                ReorderableList(listData: listData, maxHeight: 250, view: { id in
+                    HStack {
+                        BasicButton("minus") {
+                            listData.delete(id: id)
+                        }
+                        Text(habitList.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "Test")
+                            .bodyText()
+                    }
+                })
+            }
+            .padding(.horizontal, 20)
         }
-        .padding(.top, 10)
     }
 }

@@ -59,8 +59,10 @@ struct ProfileSettingView: View {
                     button1: {
                         Button(action: saveAndExit) {
                             Text("Save".localized)
-                                .headerButton()
+                                .font(.system(size: 18, weight: .semibold))
                         }
+                        .frame(width: 44, height: 44)
+                        .padding(.trailing, 20)
                     },
                     button2: {
                         EmptyView()
@@ -104,11 +106,12 @@ struct ProfileSettingView: View {
         return ZStack {
             HStack {
                 Text(numToStr)
-                    .rowHeadline()
+                    .bodyText()
                     .mainColor()
                 Spacer()
                 Text(habitInfos.first(where: {$0.id == targetID})?.name ?? "Empty".localized)
-                    .mainColor()
+                    .subColor()
+                    .bodyText()
             }
             NavigationLink(destination: SetHabitForRing(position: num, localSummaryProfile: $localSummaryProfile)) {
                 Rectangle()
@@ -155,11 +158,12 @@ struct SetHabitForRing: View {
                         HStack {
                             Text(habit.name)
                                 .mainColor()
-                                .rowHeadline()
+                                .bodyText()
                             Spacer()
                             if localSummaryProfile.getByNumber(position) == habit.id {
                                 Image(systemName: "checkmark")
                                     .mainColor()
+                                    .bodyText()
                             }
                         }
                     }
@@ -172,7 +176,7 @@ struct SetHabitForRing: View {
                     HStack {
                         Text("Empty".localized)
                             .mainColor()
-                            .rowHeadline()
+                            .bodyText()
                         Spacer()
                     }
                     .rowBackground()

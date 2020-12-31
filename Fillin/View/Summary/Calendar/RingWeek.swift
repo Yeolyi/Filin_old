@@ -18,20 +18,24 @@ struct RingWeek: View {
         CalendarWeek(week: week, selectedDate: $selectedDate) { date in
             Group {
                 if isButtonActive(at: date) {
-                    Button(action: {selectedDate = date}) {
-                        CircleProgress(getRingTuple(at: date)) {
-                            Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
-                                .foregroundColor(textColor(at: date))
-                        }
+                    CircleProgress(getRingTuple(at: date)) {
+                        Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
+                            .foregroundColor(textColor(at: date))
+                            .bodyText()
+                    }
+                    .onTapGesture {
+                        selectedDate = date
                     }
                 } else {
                     CircleProgress([nil]) {
                         Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
                             .subColor()
+                            .bodyText()
                     }
                 }
             }
         }
+        .padding(.bottom, 10)
     }
     init(week: Int, isExpanded: Binding<Bool>, habits: [Habit?], selectedDate: Binding<Date>) {
         self.week = week

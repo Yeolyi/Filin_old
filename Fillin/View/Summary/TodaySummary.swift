@@ -22,9 +22,7 @@ struct TodaySummary: View {
     var summaryProfile: FetchedResults<Summary>
     var habit: [Habit] = []
     var body: some View {
-        VStack {
-            Text("Data".localized)
-                .sectionText()
+        VStack(spacing: 0) {
             if !summaryProfile.isEmpty {
                 ForEach(summaryProfile[0].idArray.compactMap({$0}).uniqueValues, id: \.self) { habitID in
                     idToRow(id: habitID)

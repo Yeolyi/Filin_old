@@ -29,7 +29,6 @@ struct RoutineRow: View {
             let timeStr = Date(hourAndMinuteStr: time)
             subTitleStr += " \(timeStr.localizedHourMinute)"
         }
-        subTitleStr += ", \(String(format: NSLocalizedString("%d goals", comment: ""), routine.list.count))"
         return subTitleStr
     }
     
@@ -37,13 +36,18 @@ struct RoutineRow: View {
         HStack {
             VStack {
                 HStack {
+                    Text(String(format: NSLocalizedString("%d goals", comment: ""), routine.list.count))
+                        .bodyText()
+                    Spacer()
+                }
+                HStack {
                     Text(routine.name)
-                        .rowHeadline()
+                        .headline()
                     Spacer()
                 }
                 HStack {
                     Text(subTitle)
-                        .rowSubheadline()
+                        .bodyText()
                     Spacer()
                 }
             }

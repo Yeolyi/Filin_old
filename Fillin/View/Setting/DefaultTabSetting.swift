@@ -17,7 +17,7 @@ struct DefaultTabSetting: View {
                 }) {
                     HStack {
                         Text(tapName.string)
-                            .rowHeadline()
+                            .headline()
                         Spacer()
                         if tapName.rawValue == appSetting.defaultTap {
                             Image(systemName: "checkmark")

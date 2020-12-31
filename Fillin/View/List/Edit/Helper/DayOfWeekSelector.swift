@@ -11,7 +11,7 @@ struct DayOfWeekSelector: View {
     @Binding var dayOfTheWeek: [Int]
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             ForEach(1..<8) { dayOfTheWeekInt in
                 Button(action: {
                     if dayOfTheWeek.contains(dayOfTheWeekInt) {
@@ -28,16 +28,18 @@ struct DayOfWeekSelector: View {
                                     Circle()
                                         .foregroundColor(ThemeColor.mainColor(colorScheme))
                                 )
+                                .frame(width: 40, height: 40)
                         }
                         Text(Date.dayOfTheWeekShortStr(dayOfTheWeekInt))
                             .foregroundColor(dayOfTheWeek.contains(dayOfTheWeekInt) ? .white : .black)
+                            .bodyText()
                     }
                     .frame(width: 40, height: 40)
                     .zIndex(0)
                 }
             }
         }
-        .padding([.leading, .trailing], 10)
+        .padding(.vertical, 3)
     }
 }
 /*

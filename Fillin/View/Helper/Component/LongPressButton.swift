@@ -16,13 +16,13 @@ struct LongPressButton: View {
         if isMacOS {
             Button(action: onTapFunc) {
                 Image(systemName: imageSystemName)
-                    .font(.system(size: 22, weight: .semibold))
-                    .frame(width: 50, height: 60)
+                    .font(.system(size: 24, weight: .semibold))
+                    .frame(width: 44, height: 44)
             }
         } else {
             Image(systemName: imageSystemName)
-                .font(.system(size: 22, weight: .semibold))
-                .frame(width: 50, height: 60)
+                .font(.system(size: 24, weight: .semibold))
+                .frame(width: 44, height: 44)
                 .onTapGesture {
                    onTapFunc()
                 }

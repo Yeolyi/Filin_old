@@ -14,35 +14,56 @@ struct EmojiPicker: View {
     @ObservedObject var habit: Habit
     @ObservedObject var emojiManager: EmojiManager
     @Binding var activeSheet: DetailViewActiveSheet?
-    
+    var emoji: String? {
+        habit.dailyEmoji[selectedDate.dictKey]
+    }
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 20) {
-                Button(action: {
-                    habit.dailyEmoji[selectedDate.dictKey] = nil
-                    save()
-                }) {
-                    Image(systemName: "xmark.circle")
-                        .font(.system(size: 25))
-                        .mainColor()
-                        .opacity(habit.dailyEmoji[selectedDate.dictKey] == nil ? 1 : 0.5)
+        VStack(spacing: 8) {
+            HStack {
+                if emoji != nil {
+                    Text(emoji!)
+                        .title()
+                } else {
+                    Circle()
+                        .frame(width: 46, height: 46)
+                        .subColor()
+                        .opacity(0.3)
                 }
-                ForEach(emojiManager.emojiList, id: \.self) { emoji in
+                Spacer()
+            }
+            HStack {
+                Text("Summarize day.".localized)
+                    .bodyText()
+                Spacer()
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
                     Button(action: {
-                        habit.dailyEmoji[selectedDate.dictKey] = emoji
+                        habit.dailyEmoji[selectedDate.dictKey] = nil
                         save()
                     }) {
-                        Text(emoji)
+                        Image(systemName: "xmark.circle")
                             .font(.system(size: 25))
-                            .opacity(habit.dailyEmoji[selectedDate.dictKey] == emoji ? 1 : 0.5)
+                            .mainColor()
+                            .opacity(habit.dailyEmoji[selectedDate.dictKey] == nil ? 1 : 0.5)
                     }
-                }
-                Button(action: {
-                    activeSheet = DetailViewActiveSheet.emoji
-                }) {
-                    Image(systemName: "gearshape")
-                        .font(.system(size: 25))
-                        .subColor()
+                    ForEach(emojiManager.emojiList, id: \.self) { emoji in
+                        Button(action: {
+                            habit.dailyEmoji[selectedDate.dictKey] = emoji
+                            save()
+                        }) {
+                            Text(emoji)
+                                .font(.system(size: 25))
+                                .opacity(habit.dailyEmoji[selectedDate.dictKey] == emoji ? 1 : 0.5)
+                        }
+                    }
+                    Button(action: {
+                        activeSheet = DetailViewActiveSheet.emoji
+                    }) {
+                        Image(systemName: "gearshape")
+                            .font(.system(size: 25))
+                            .subColor()
+                    }
                 }
             }
         }

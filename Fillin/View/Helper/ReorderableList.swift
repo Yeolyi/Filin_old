@@ -162,8 +162,8 @@ struct ReorderableList<Value: Hashable, Content: View>: View {
                         Spacer()
                         Image(systemName: "pause")
                             .rotationEffect(.degrees(-90))
-                            .mainColor()
-                            .font(.system(size: 25))
+                            .subColor()
+                            .font(.system(size: 24, weight: .semibold))
                             .gesture(
                                 listData.rowDrag(id: listElement.id)
                             )

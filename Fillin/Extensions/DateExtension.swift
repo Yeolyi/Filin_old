@@ -104,6 +104,12 @@ extension Date {
         let calendar = Calendar.current
         return calendar.date(byAdding: dayComponent, to: self)
     }
+    func addMonth(_ num: Int) -> Date {
+        var dayComponent = DateComponents()
+        dayComponent.month = num
+        let calendar = Calendar.current
+        return calendar.date(byAdding: dayComponent, to: self)!
+    }
     func nearDayOfWeekDate(_ dayOfWeeks: [Int]) -> Date {
         var dateIterate = self
         while !dayOfWeeks.contains(dateIterate.dayOfTheWeek) {
@@ -119,6 +125,14 @@ extension Date {
         let userFormat = DateFormatter.dateFormat(
             fromTemplate: "yyyyMMM", options: 0, locale: Locale.current
         ) ?? "yyyyMMM"
+        df.setLocalizedDateFormatFromTemplate(userFormat)
+        return df.string(from: self)
+    }
+    var localizedYearMonthDay: String {
+        let df = DateFormatter()
+        let userFormat = DateFormatter.dateFormat(
+            fromTemplate: "yyyyMMMd", options: 0, locale: Locale.current
+        ) ?? "yyyyMMMd"
         df.setLocalizedDateFormatFromTemplate(userFormat)
         return df.string(from: self)
     }

@@ -20,7 +20,7 @@ struct InlineNavigationBar<Content1: View, Content2: View>: View {
             VStack {
                 HStack {
                     Text(title)
-                        .title()
+                        .headline()
                         .padding(.leading, 20)
                     Spacer()
                     if button2 != nil {
@@ -30,7 +30,7 @@ struct InlineNavigationBar<Content1: View, Content2: View>: View {
                 }
                 Divider()
             }
-            .padding(.top, 30)
+            .padding(.top, 20)
     }
 }
 

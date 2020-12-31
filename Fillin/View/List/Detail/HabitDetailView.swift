@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum DetailViewActiveSheet: Identifiable {
-    case diary, edit, emoji
+    case edit, emoji
     var id: UUID {
         UUID()
     }
@@ -21,7 +21,7 @@ struct HabitDetailView: View {
     @EnvironmentObject var listOrderManager: DisplayManager
     @State var activeSheet: DetailViewActiveSheet?
     @State var selectedDate = Date()
-    @State var isEmojiCalendar = false
+
     init(habit: Habit) {
         self.habit = habit
         if habit.cycleType == HabitCycleType.weekly {
@@ -33,27 +33,9 @@ struct HabitDetailView: View {
             EmptyView()
         } else {
             ScrollView {
-                VStack(spacing: 10) {
-                    HStack {
-                        Text("Calendar".localized)
-                            .sectionText()
-                        Button(action: {
-                            withAnimation {
-                                isEmojiCalendar.toggle()
-                            }
-                        }) {
-                            Image(systemName: isEmojiCalendar ? "face.smiling.fill" : "face.smiling")
-                                .font(.system(size: 25))
-                                .mainColor()
-                        }
-                        .padding(.trailing, 20)
-                    }
-                    HabitCalendar(selectedDate: $selectedDate, habit: habit, isEmojiView: $isEmojiCalendar)
-                    Text("Data".localized)
-                        .sectionText()
+                VStack(spacing: 0) {
+                    HabitCalendar(selectedDate: $selectedDate, habit: habit)
                     TodayInformation(habit: habit, selectedDate: $selectedDate)
-                    Text("Feeling".localized)
-                        .sectionText()
                     EmojiPicker(selectedDate: $selectedDate, habit: habit, emojiManager: emojiManager, activeSheet: $activeSheet)
                     Text("")
                         .font(.system(size: 30))
@@ -69,9 +51,6 @@ struct HabitDetailView: View {
             )
             .sheet(item: $activeSheet) { item in
                 switch item {
-                case .diary:
-                    MemoSheet(habit: habit, targetDate: selectedDate)
-                        .allowAutoDismiss(false)
                 case .edit:
                     EditHabit(targetHabit: habit)
                         .environment(\.managedObjectContext, managedObjectContext)

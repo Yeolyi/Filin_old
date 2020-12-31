@@ -10,7 +10,8 @@ import SwiftUI
 struct Title: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.system(size: 30, weight: .heavy))
+            .font(.system(size: 39, weight: .semibold))
+            .mainColor()
     }
 }
 

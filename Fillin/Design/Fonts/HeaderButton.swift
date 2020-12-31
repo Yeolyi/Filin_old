@@ -7,13 +7,33 @@
 
 import SwiftUI
 
+struct BasicButton: View {
+    let action: () -> Void
+    let imageName: String
+    
+    init(_ imageName: String, action: @escaping () -> Void) {
+        self.imageName = imageName
+        self.action = action
+    }
+    
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: imageName)
+                .subColor()
+                .font(.system(size: 24, weight: .semibold))
+                .frame(width: 44, height: 44)
+        }
+    }
+}
+
 struct HeaderButton: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
     func body(content: Content) -> some View {
         content
             .padding(.trailing, 20)
-            .font(.system(size: 18, weight: .semibold))
+            .bodyText()
             .foregroundColor(ThemeColor.mainColor(colorScheme))
+            .frame(width: 44, height: 44)
     }
 }
 

@@ -13,6 +13,15 @@ struct RingRow: View {
     @ObservedObject var habits: CalendarHabitList
     @State var isExpanded = false
     @Environment(\.colorScheme) var colorScheme
+    @State var isEmojiView = false
+    var color: Color {
+        let validHabits = habits.habits.compactMap{$0}
+        if !validHabits.isEmpty {
+            return validHabits[0].color
+        } else {
+            return ThemeColor.mainColor(colorScheme)
+        }
+    }
     
     init(selectedDate: Binding<Date>, habits: [Habit?], isExpanded: Bool = false) {
         self._selectedDate = selectedDate
@@ -22,9 +31,56 @@ struct RingRow: View {
     }
     
     var body: some View {
-        CalendarRow(selectedDate: $selectedDate, isExpanded: $isExpanded, move: move) { week, isExpanded in
-            RingWeek(week: week, isExpanded: $isExpanded, habits: habits.habits, selectedDate: $selectedDate)
-                .padding(.bottom, 10)
+        VStack {
+            HStack {
+                VStack {
+                    HStack {
+                        Group {
+                            if isExpanded {
+                                Text(selectedDate.localizedYearMonthDay)
+                            } else {
+                                Text(selectedDate.localizedMonthDay)
+                            }
+                        }
+                        .foregroundColor(color)
+                        .headline()
+                        Spacer()
+                    }
+                }
+                .animation(nil)
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        isEmojiView.toggle()
+                    }
+                }) {
+                    Image(systemName: isEmojiView ? "face.smiling.fill" : "face.smiling")
+                        .subColor()
+                        .headline()
+                }
+            }
+            .padding(.horizontal, 20)
+            CalendarRow(selectedDate: $selectedDate, isExpanded: $isExpanded, isEmojiView: $isEmojiView, move: move, content: { week, isExpanded in
+                Group {
+                    if isEmojiView && !habits.habits.compactMap{$0}.isEmpty{
+                        CalendarWeek(week: week, selectedDate: $selectedDate) { date in
+                            Button(action: { self.selectedDate = date }) {
+                                VStack {
+                                    Text(String(date.day))
+                                        .foregroundColor(selectedDate.dictKey == date.dictKey ? color : ThemeColor.mainColor(colorScheme))
+                                        .bodyText()
+                                    Text(habits.habits.compactMap{$0}[0].dailyEmoji[date.dictKey] ?? "")
+                                        .headline()
+                                        .frame(width: 40, height: 40)
+                                }
+                            }
+                            .opacity(selectedDate.month == date.month ? 1 : 0.5)
+                        }
+                    } else {
+                        RingWeek(week: week, isExpanded: $isExpanded, habits: habits.habits, selectedDate: $selectedDate)
+                    }
+                }
+            })
         }
     }
     

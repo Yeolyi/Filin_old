@@ -38,8 +38,6 @@ struct SummaryView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     if isSummaryExist {
-                        Text("Calendar".localized)
-                            .sectionText()
                         RingRow(selectedDate: $selectedDate, habits: firstThreeElements())
                         TodaySummary(selectedDate: $selectedDate)
                     } else {
@@ -47,17 +45,16 @@ struct SummaryView: View {
                             selectedDate: .constant(Date()),
                             habits: [sampleHabit(name: ""), sampleHabit(name: "")]
                         )
-                            .opacity(0.5)
-                            .disabled(true)
+                        .opacity(0.5)
+                        .disabled(true)
                         Text("See information of goals at once.")
-                            .rowHeadline()
-                            .padding(.top, 20)
-                            .padding(.bottom, 10)
+                            .bodyText()
+                            .padding(.top, 34)
                         ListEmptyButton(
                             action: { isSettingSheet = true },
                             str: "Select goals".localized
                         )
-                        .padding(.top, 5)
+                        .padding(.top, 13)
                     }
                 }
             }

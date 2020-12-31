@@ -16,9 +16,13 @@ struct ColoredToggleStyle: ToggleStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         HStack {
             Text(label)
-                .rowHeadline()
+                .bodyText()
             Spacer()
-            Button(action: { configuration.isOn.toggle()} ) {
+            Button(action: {
+                withAnimation {
+                    configuration.isOn.toggle()
+                }
+            } ) {
                 RoundedRectangle(cornerRadius: 16, style: .circular)
                     .fill(configuration.isOn ? onColor : offColor)
                     .frame(width: 50, height: 29)

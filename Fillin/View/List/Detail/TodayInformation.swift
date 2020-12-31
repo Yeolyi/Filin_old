@@ -16,26 +16,24 @@ struct TodayInformation: View {
     @State var tappingPlus = false
     @State var isExpanded = false
     var body: some View {
-        VStack {
-            HStack(spacing: 0) {
-                moveButton(isAdd: false)
-                VStack {
+        VStack(spacing: 0) {
+            VStack(spacing: 0) {
+                HStack {
                     Text("\(habit.achievement[selectedDate.dictKey] ?? 0)\(" times".localized)/\(habit.numberOfTimes)\(" times".localized)")
-                        .rowHeadline()
-                    Text("""
-\(selectedDate.localizedMonthDay)\(selectedDate.dictKey == Date().dictKey ? "(\("Today".localized))" : "")
-""")
-                        .rowSubheadline()
+                        .foregroundColor(habit.color)
+                        .headline()
+                    Spacer()
+                }
+                HStack {
                     LinearProgressBar(
                         color: habit.color,
                         progress: Double(habit.achievement[selectedDate.dictKey] ?? 0)/Double(habit.numberOfTimes)
                     )
-                    .padding([.trailing, .leading], 5)
-                    .frame(maxWidth: 400)
+                    moveButton(isAdd: false)
+                        .subColor()
+                    moveButton(isAdd: true)
+                        .subColor()
                 }
-                .frame(height: 70)
-                .padding([.leading, .trailing], 5)
-                moveButton(isAdd: true)
             }
             .rowBackground()
             if let id = habit.id, isExpanded {

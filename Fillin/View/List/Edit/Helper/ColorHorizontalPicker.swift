@@ -43,7 +43,7 @@ struct ColorHorizontalPicker: View {
                 }
             }
         }
-        .padding([.leading, .trailing], 10)
+        .padding(.vertical, 3)
     }
     func button(index: Int) -> some View {
         Button(action: { self.selectedColor = accentColors[index] }) {

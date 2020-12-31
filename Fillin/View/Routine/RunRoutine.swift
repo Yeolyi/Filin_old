@@ -47,7 +47,7 @@ struct RunRoutine: View {
                     ForEach(0...currentListIndex - 1, id: \.self) { index in
                         Text(habitList[index].name)
                             .subColor()
-                            .rowHeadline()
+                            .headline()
                     }
                 }
             }
@@ -66,7 +66,7 @@ struct RunRoutine: View {
                     ForEach(currentListIndex + 1...habitList.count - 1, id: \.self) { index in
                         Text(habitList[index].name)
                             .subColor()
-                            .rowHeadline()
+                            .headline()
                     }
                 }
             }

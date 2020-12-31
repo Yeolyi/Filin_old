@@ -36,7 +36,7 @@ struct RoutineView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     if !routines.isEmpty {
-                        Text("List".localized)
+                        Text("Today".localized)
                             .sectionText()
                         VStack(spacing: 0) {
                             ForEach(routines, id: \.self) { routine in
@@ -53,13 +53,12 @@ struct RoutineView: View {
                         .opacity(0.5)
                         .disabled(true)
                         Text("Group and repeat goals to make them a habit.".localized)
-                            .rowHeadline()
-                            .padding(.top, 20)
-                            .padding(.bottom, 10)
+                            .bodyText()
+                            .padding(.top, 34)
                         ListEmptyButton(action: {
                             isAddSheet = .add
                         }, str: "Add routine".localized)
-                        .padding(.top, 5)
+                        .padding(.top, 13)
                     }
                 }
                 .padding(.top, 1)
@@ -75,10 +74,8 @@ struct RoutineView: View {
                         AddRoutine()
                             .environment(\.managedObjectContext, managedObjectContext)
                             .environmentObject(displayManager)
-                            .allowAutoDismiss(false)
                     case RoutineSheet.edit(let routine):
                         EditRoutine(routine: routine)
-                            .allowAutoDismiss(false)
                     }
                 }
             }

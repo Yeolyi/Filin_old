@@ -34,7 +34,7 @@ struct SettingView: View {
                         VStack {
                             HStack {
                                 Text("Change Default Tab".localized)
-                                    .rowHeadline()
+                                    .bodyText()
                                 Spacer()
                             }
                             .rowBackground()
@@ -45,7 +45,7 @@ struct SettingView: View {
                     Button(action: {self.isReorderSheet = true}) {
                         HStack {
                             Text("Change List Order".localized)
-                                .rowHeadline()
+                                .bodyText()
                             Spacer()
                         }
                         .rowBackground()
@@ -54,14 +54,14 @@ struct SettingView: View {
                         .sectionText()
                     HStack {
                         Text("App Version".localized)
-                            .rowHeadline()
+                            .bodyText()
                         Spacer()
                         Text("\(appVersion)")
                     }
                     .rowBackground()
                     HStack {
                         Text("Build".localized)
-                            .rowHeadline()
+                            .bodyText()
                         Spacer()
                         Text("\(build)")
                     }

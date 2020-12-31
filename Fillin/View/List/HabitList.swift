@@ -26,9 +26,9 @@ struct HabitList: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                Text("Today".localized)
-                    .sectionText()
                 if !isTodayEmpty {
+                    Text("Today".localized)
+                        .sectionText()
                     ForEach(habitList.filter {$0.isTodayTodo}, id: \.self) { habitInfo in
                         if habitInfo.isFault {
                             EmptyView()

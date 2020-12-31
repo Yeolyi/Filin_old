@@ -57,26 +57,21 @@ struct EditRoutine: View {
                                 .headerButton()
                         }
                     }, button2: {
-                        Button(action: {
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Text("Cancel".localized)
-                                .headerButton()
-                        }
+                        EmptyView()
                     }
                 )
                 ScrollView {
                     VStack(spacing: 35) {
                         HStack {
                             Text("Name".localized)
-                                .rowHeadline()
+                                .headline()
                                 .padding(.leading, 18)
                             TextFieldWithEndButton("Drink water".localized, text: $name)
                         }
                         NavigationLink(destination: RoutineSetList(listData: listData)) {
                             HStack {
                                 Text("Change habit list")
-                                    .rowHeadline()
+                                    .headline()
                                 Spacer()
                             }
                             Spacer()
@@ -87,7 +82,7 @@ struct EditRoutine: View {
                         VStack {
                             HStack {
                                 Text("Repeat")
-                                    .rowHeadline()
+                                    .headline()
                                     .padding(.leading, 18)
                                 Spacer()
                             }
@@ -106,7 +101,7 @@ struct EditRoutine: View {
                             if isReminderUsed {
                                 HStack {
                                     Text("Reminder time".localized)
-                                        .rowSubheadline()
+                                        .bodyText()
                                         .padding(.leading, 10)
                                     Spacer()
                                     DatePicker("", selection: $reminderTime, displayedComponents: .hourAndMinute)

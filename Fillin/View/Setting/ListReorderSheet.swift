@@ -30,7 +30,7 @@ struct ListReorderSheet: View {
                     listData: listData,
                     view: { id in
                         Text(habitInfos.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "")
-                            .rowHeadline()
+                            .headline()
                     })
                     .padding(8)
                     .padding([.leading, .trailing], 10)

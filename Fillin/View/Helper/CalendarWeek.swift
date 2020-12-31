@@ -15,7 +15,7 @@ struct CalendarWeek<Content: View>: View {
     @Binding var selectedDate: Date
     
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             ForEach(dateList, id: \.self) { date in
                 content(date)
             }

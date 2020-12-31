@@ -37,6 +37,5 @@ struct TextFieldWithEndButton: View {
                 }
             }
         }
-        .rowBackground()
     }
 }

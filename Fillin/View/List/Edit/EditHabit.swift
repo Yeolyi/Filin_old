@@ -43,7 +43,7 @@ struct EditHabit: View {
         if targetHabit.isFault {
             EmptyView()
         } else {
-            VStack {
+            VStack(spacing: 0) {
                 InlineNavigationBar(
                     title: "\(targetHabit.name)",
                     button1: {
@@ -53,20 +53,26 @@ struct EditHabit: View {
                     }
                 )
                 ScrollView {
-                    VStack(spacing: 35) {
-                        HStack {
-                            Text("Name".localized)
-                                .rowHeadline()
-                                .padding(.leading, 10)
+                    VStack(spacing: 8) {
+                        VStack {
+                            HStack {
+                                Text("Name".localized)
+                                    .bodyText()
+                                Spacer()
+                            }
                             TextFieldWithEndButton("Drink water".localized, text: $name)
                         }
-                        HStack {
-                            Text("Times".localized)
-                                .rowHeadline()
-                                .padding(.leading, 10)
+                        .rowBackground()
+                        VStack {
+                            HStack {
+                                Text("Times".localized)
+                                    .bodyText()
+                                Spacer()
+                            }
                             TextFieldWithEndButton("15", text: $numberOfTimes)
                                 .keyboardType(.numberPad)
                         }
+                        .rowBackground()
                         VStack {
                             Toggle("", isOn: $isRequiredTime)
                                 .toggleStyle(
@@ -75,10 +81,6 @@ struct EditHabit: View {
                                         onColor: ThemeColor.mainColor(colorScheme)
                                     )
                                 )
-                                .padding(.horizontal, 10)
-                                .if(!isRequiredTime) {
-                                    $0.padding(.bottom, 20)
-                                }
                             if isRequiredTime {
                                 GeometryReader { geo in
                                     HStack {
@@ -86,56 +88,53 @@ struct EditHabit: View {
                                             Picker(selection: $minute, label: EmptyView(), content: {
                                                 ForEach(0...500, id: \.self) { minute in
                                                     Text(String(minute))
-                                                        .rowHeadline()
+                                                        .bodyText()
                                                 }
                                             })
                                             .frame(height: 170)
                                             .frame(maxWidth: geo.size.width/2 - 10)
                                             .clipped()
                                             Text("Minute")
-                                                .rowSubheadline()
+                                                .bodyText()
                                         }
                                         VStack {
                                             Picker(selection: $second, label: EmptyView(), content: {
                                                 ForEach(0...59, id: \.self) { second in
                                                     Text(String(second))
-                                                        .rowHeadline()
+                                                        .bodyText()
                                                 }
                                             })
                                             .frame(height: 170)
                                             .frame(maxWidth: geo.size.width/2 - 10)
                                             .clipped()
                                             Text("Second")
-                                                .rowSubheadline()
+                                                .bodyText()
                                         }
                                     }
-                                    .padding(.horizontal, 10)
                                 }
                                 .frame(height: 200)
                             }
-                            VStack {
-                                HStack {
-                                    Text("Repeat".localized)
-                                        .rowHeadline()
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 10)
-                                DayOfWeekSelector(dayOfTheWeek: $dayOfTheWeek)
-                                    .rowBackground()
-                            }
-                            VStack {
-                                HStack {
-                                    Text("Color".localized)
-                                        .rowHeadline()
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 10)
-                                ColorHorizontalPicker(selectedColor: $colorHex)
-                                    .rowBackground()
-                            }
-                            deleteButton
                         }
-                        .padding(.top, 10)
+                        .rowBackground()
+                        VStack {
+                            HStack {
+                                Text("Repeat".localized)
+                                    .bodyText()
+                                Spacer()
+                            }
+                            DayOfWeekSelector(dayOfTheWeek: $dayOfTheWeek)
+                        }
+                        .rowBackground()
+                        VStack {
+                            HStack {
+                                Text("Color".localized)
+                                    .bodyText()
+                                Spacer()
+                            }
+                            ColorHorizontalPicker(selectedColor: $colorHex)
+                        }
+                        .rowBackground()
+                        deleteButton
                     }
                 }
             }
@@ -152,8 +151,11 @@ struct EditHabit: View {
             self.presentationMode.wrappedValue.dismiss()
         }) {
             Text("Save".localized)
-                .headerButton()
+                .font(.system(size: 18, weight: .semibold))
+                .mainColor()
         }
+        .frame(width: 44, height: 44)
+        .padding(.trailing, 20)
         .opacity(isSaveAvailable ? 1.0 : 0.5)
     }
     var deleteButton: some View {

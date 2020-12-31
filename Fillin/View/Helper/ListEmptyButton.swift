@@ -17,7 +17,7 @@ struct ListEmptyButton: View {
                 Spacer()
                 Text(str)
                     .foregroundColor(.white)
-                    .rowHeadline()
+                    .bodyText()
                     .padding(10)
                 Spacer()
             }

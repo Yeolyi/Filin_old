@@ -1,20 +1,19 @@
 //
-//  RoutineDate.swift
-//  Fillin
+//  Test2.swift
+//  habitdiary
 //
-//  Created by SEONG YEOL YI on 2020/12/28.
+//  Created by SEONG YEOL YI on 2020/12/13.
 //
 
 import SwiftUI
 
-struct RoutineDate: View {
-    
+struct DateSection: View {
+    @Binding var habitType: HabitCycleType
     @Binding var dayOfTheWeek: [Int]
-    
     var body: some View {
         HabitAddBadgeView(title: "Repeat".localized, imageName: "calendar") {
             HStack {
-                Text("Choose the day of the week to proceed with the routine.".localized)
+                Text("Choose the day of the week to proceed with the goal.".localized)
                     .bodyText()
                     .multilineTextAlignment(.center)
                 Spacer()
@@ -26,8 +25,8 @@ struct RoutineDate: View {
     }
 }
 
-struct RoutineDate_Previews: PreviewProvider {
+struct Test2_Previews: PreviewProvider {
     static var previews: some View {
-        RoutineDate(dayOfTheWeek: .constant([1, 2, 3, 4, 5, 6, 7]))
+        DateSection(habitType: .constant(.weekly), dayOfTheWeek: .constant([]))
     }
 }

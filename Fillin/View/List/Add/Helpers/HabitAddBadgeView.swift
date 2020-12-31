@@ -18,15 +18,15 @@ struct HabitAddBadgeView<Content: View>: View {
         self.content = content()
     }
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Image(systemName: imageName)
-                .font(.system(size: 70, weight: .semibold))
-                .foregroundColor(ThemeColor.mainColor(colorScheme))
-                .padding(.bottom, 10)
-                .padding(.top, 30)
+                .font(.system(size: 63))
+                .mainColor()
+                .padding(.bottom, 13)
+                .padding(.top, 55)
             Text(title)
                 .title()
-                .padding(.bottom, 30)
+                .padding(.bottom, 144)
             content
             Spacer()
         }

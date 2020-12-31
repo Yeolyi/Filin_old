@@ -31,7 +31,7 @@ struct HabitListView: View {
                             .opacity(0.5)
                             .disabled(true)
                         Text("Set goals and execute them.".localized)
-                            .rowHeadline()
+                            .headline()
                             .padding(.top, 20)
                             .padding(.bottom, 10)
                         ListEmptyButton(action: { isAddSheet = true }, str: "Add new goal".localized)

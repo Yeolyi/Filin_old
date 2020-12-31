@@ -32,10 +32,11 @@ struct CircleProgress<Content: View>: View {
         ringDatas.firstIndex(where: {$0.id == ringData.id}) ?? 0
     }
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             if ringDatas.count > 1 {
                 content
-                    .padding(.bottom, 2)
+                    .padding(.bottom, 5)
+                    .padding(.top, 8)
             }
             ZStack {
                 if !ringDatas.isEmpty {
@@ -45,12 +46,13 @@ struct CircleProgress<Content: View>: View {
                             .overlay(
                                 Circle()
                                     .trim(from: 0.0, to: CGFloat(ringDatas[index].progress))
-                                    .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .square, lineJoin: .bevel))
+                                    .stroke(style: StrokeStyle(lineWidth: 5.0 - CGFloat(index) * 0.5, lineCap: .square, lineJoin: .bevel))
                                     .foregroundColor(ringDatas[index].color)
                                     .rotationEffect(Angle(degrees: 270.0))
+                                    /*
                                     .if(isAnimation) {
                                         $0.animation(.linear)
-                                    }
+                                    }*/
                             )
                             .frame(width: 40 - CGFloat(index * 12), height: 40 - CGFloat(index * 12))
                     }

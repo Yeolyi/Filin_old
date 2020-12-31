@@ -71,17 +71,17 @@ struct AddHabit: View {
             }
             nextButton
         }
-        .padding(.bottom, 30)
+        .padding(.bottom, 20)
     }
     var previousButton: some View {
         Button(action: {
             withAnimation { self.currentPage = max(self.currentPage - 1, 1) }
         }) {
             Text("Previous".localized)
+                .bodyText()
                 .fixedSize()
-                .foregroundColor(ThemeColor.mainColor(colorScheme))
-                .padding(.leading, 10)
-                .padding(.bottom, 3)
+                .padding(.leading, 20)
+                .padding(.bottom, 8)
         }
         .if(currentPage == 1) {
             $0.hidden()
@@ -99,15 +99,15 @@ struct AddHabit: View {
             HStack {
                 Spacer()
                 Text(currentPage == totalPage ? "Done".localized: "\("Next".localized) (\(currentPage)/\(totalPage))")
-                    .font(.system(size: 18, weight: .medium))
-                    .fixedSize()
                     .foregroundColor(.white)
+                    .bodyText()
+                    .fixedSize()
                     .padding([.top, .bottom], 15)
                 Spacer()
             }
             .background(ThemeColor.mainColor(colorScheme))
         }
-        .padding([.leading, .trailing], 10)
+        .padding(.horizontal, 20)
         .opacity(isNextAvailable ? 1.0 : 0.3)
     }
     func saveAndQuit() {

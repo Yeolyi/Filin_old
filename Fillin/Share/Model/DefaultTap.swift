@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum DefaultTap: Int, PickerUsable, CaseIterable {
+enum DefaultTap: Int, CaseIterable {
     var string: String {
         switch self {
         case .list: return "List".localized

@@ -13,8 +13,12 @@ struct ThemeSection: View {
     
     var body: some View {
         HabitAddBadgeView(title: "Theme".localized, imageName: "paintpalette") {
-            Text("Color".localized)
-                .sectionText()
+            HStack {
+                Text("Select main color.".localized)
+                    .bodyText()
+                Spacer()
+            }
+            .padding(.leading, DesignValues.horizontalBorderPadding)
             ColorHorizontalPicker(selectedColor: $color)
         }
     }

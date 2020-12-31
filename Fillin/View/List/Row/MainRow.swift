@@ -39,7 +39,7 @@ struct MainRow: View {
         return subTitleStr
     }
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack(spacing: 0) {
                 if showAdd {
                     HabitCheckButton(isExpanded: $isExpanded, date: date, habit: habit)
@@ -48,22 +48,30 @@ struct MainRow: View {
                     HStack {
                         VStack {
                             HStack {
-                                Text(habit.name)
-                                    .rowHeadline()
+                                Text(subTitle)
+                                    .bodyText()
                                 Spacer()
                             }
                             HStack {
-                                Text(subTitle)
-                                    .rowSubheadline()
+                                Text(habit.name)
+                                    .foregroundColor(habit.color)
+                                    .headline()
                                 Spacer()
                             }
                         }
-                        VStack(alignment: .trailing) {
+                        ZStack {
                             LinearProgressBar(color: habit.color, progress: habit.progress(at: date) ?? 0)
-                                .frame(width: 150)
-                            Text("\(habit.achievement[date.dictKey] ?? 0)\(" times".localized)/\(habit.numberOfTimes)\(" times".localized)")
-                                .rowSubheadline()
+                            HStack {
+                                Spacer()
+                                Text("\(habit.achievement[date.dictKey] ?? 0)\(" times".localized)/\(habit.numberOfTimes)\(" times".localized)")
+                                    .mainColor()
+                                    .opacity(0.8)
+                                    .bodyText()
+                                    .padding(.trailing, 5)
+                            }
+                            .zIndex(1)
                         }
+                        .frame(width: 150, height: 20)
                     }
                     NavigationLink(destination: HabitDetailView(habit: habit)) {
                         Rectangle()

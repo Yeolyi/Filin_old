@@ -20,7 +20,7 @@ struct HabitCheckButton: View {
     var body: some View {
         if habit.requiredSecond == 0 {
             LongPressButton(
-                imageSystemName: isExpanded ? "xmark" : (showCheck ? "checkmark.circle.fill" : "circle"),
+                imageSystemName: isExpanded ? "xmark" : (showCheck ? "checkmark.circle.fill" : "plus.circle"),
                 onTapFunc: {
                     if isExpanded {
                         withAnimation { isExpanded = false }
@@ -54,9 +54,9 @@ struct HabitCheckButton: View {
                     HabitTimer(habit: habit, date: date)
             ) {
                 Image(systemName: showCheck ? "clock.fill" : "clock")
-                    .font(.system(size: 22, weight: .semibold))
+                    .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(habit.color)
-                    .frame(width: 50, height: 60)
+                    .frame(width: 44, height: 44)
             }
         }
     }
