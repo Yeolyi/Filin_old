@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RoutineRow: View {
     
-    @ObservedObject var routine: Routine
+    @ObservedObject var routine: RoutineContext
     @Binding var isSheet: RoutineSheet?
     
     var subTitle: String {
@@ -55,7 +55,7 @@ struct RoutineRow: View {
             }
             Spacer()
             NavigationLink(destination:
-                            RunRoutine(routine: routine)
+                        RunRoutine(routine: routine)
             ) {
                 Image(systemName: "play")
                     .font(.system(size: 22, weight: .semibold))
@@ -68,16 +68,4 @@ struct RoutineRow: View {
         .rowBackground()
     }
     
-    @Environment(\.managedObjectContext) var context
-    @EnvironmentObject var displayManager: DisplayManager
-    
-}
-
-struct RoutineRow_Previews: PreviewProvider {
-    static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        return RoutineRow(routine: CoreDataPreview().sampleRoutine(name: "Sample", dayOfTheWeek: [1, 3, 5], time: "13-30"), isSheet: .constant(nil))
-            .environment(\.managedObjectContext, coreDataPreview.context)
-            .environmentObject(coreDataPreview.displayManager)
-    }
 }

@@ -157,18 +157,18 @@ extension Date {
         df.setLocalizedDateFormatFromTemplate(userFormat)
         return df.string(from: self)
     }
-    func monthShift(contains dayOfWeek: [Int16], isAdd: Bool) -> Date {
+    func monthShift(contains dayOfWeek: [Int], isAdd: Bool) -> Date {
         var plusCursor = Calendar.current.date(
             byAdding: .month, value: isAdd ? 1 : -1, to: self
         )!
         var minusCursor = plusCursor
         var plusCount = 0
         var minusCount = 0
-        while dayOfWeek.contains(Int16(plusCursor.dayOfTheWeek)) == false {
+        while dayOfWeek.contains(plusCursor.dayOfTheWeek) == false {
             plusCursor = plusCursor.addDate(1)!
             plusCount += 1
         }
-        while dayOfWeek.contains(Int16(minusCursor.dayOfTheWeek)) == false {
+        while dayOfWeek.contains(minusCursor.dayOfTheWeek) == false {
             minusCursor = minusCursor.addDate(-1)!
             minusCount += 1
         }

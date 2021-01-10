@@ -10,7 +10,6 @@ import Combine
 
 struct SettingView: View {
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var displayManager: DisplayManager
     @EnvironmentObject var appSetting: AppSetting
     @Environment(\.managedObjectContext) var context
     @State var isReorderSheet = false
@@ -52,20 +51,6 @@ struct SettingView: View {
                         Text("\(build)")
                     }
                     .rowBackground()
-                    #if DEBUG
-                    Button(action: {
-                        CoreDataPreview.addSampleData(to: context, displayManager: displayManager)
-                    }) {
-                        Text("Add Sample")
-                            .bodyText()
-                    }
-                    .rowBackground()
-                    NavigationLink(destination: AppIcon()) {
-                        Text("App Icon")
-                            .bodyText()
-                    }
-                    .rowBackground()
-                    #endif
                 }
             }
             .padding(.top, 1)
@@ -73,8 +58,6 @@ struct SettingView: View {
         }
         .sheet(isPresented: $isReorderSheet) {
             ListReorderSheet()
-            .environment(\.managedObjectContext, context)
-            .environmentObject(displayManager)
         }
         .accentColor(ThemeColor.mainColor(colorScheme))
         .navigationViewStyle(StackNavigationViewStyle())

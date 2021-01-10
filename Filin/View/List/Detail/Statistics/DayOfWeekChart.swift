@@ -7,52 +7,18 @@
 
 import SwiftUI
 
-extension Habit {
-    var dayOfWeekAchievement: [Int] {
-        var temp = [Int](repeating: 0, count: 7)
-        let achievementFiltered = achievement.filter {
-            let dateFromtoday = Date(dictKey: $0.key).daysFromToday
-            return dateFromtoday < 100 && dateFromtoday > 0
-        }
-        for (dictKey, value) in achievementFiltered {
-            let date = Date(dictKey: dictKey)
-            let dayOfWeekIndex = date.dayOfTheWeek - 1
-            temp[dayOfWeekIndex] += Int(value)
-        }
-        return temp
-    }
-    var dayOfWeekAverage: [Double] {
-        var count = [Int]()
-        if firstDay.daysFromToday < 100 {
-            count = [Int](repeating: 0, count: 7)
-            var datePointer = firstDay
-            while datePointer.dictKey != Date().dictKey {
-                count[datePointer.dayOfTheWeek - 1] += 1
-                datePointer = datePointer.addDate(1)!
-            }
-            count[datePointer.dayOfTheWeek - 1] += 1
-        } else {
-            count = [Int](repeating: 14, count: 7)
-            let firstDayofWeekIndex = firstDay.dayOfTheWeek
-            count[firstDayofWeekIndex + 1 > 6 ? 0 : firstDayofWeekIndex + 1] += 1
-            count[firstDayofWeekIndex + 2 > 6 ? firstDayofWeekIndex - 6 : firstDayofWeekIndex + 2] += 1
-        }
-        return dayOfWeekAchievement.enumerated().map{Double($1)/Double(max(1, count[$0]))}
-    }
-}
-
 struct DayOfWeekChart: View {
-    
+    @Environment(\.colorScheme) var colorScheme
     let dayOfWeekTrend: [Double]
     let trendToGraphHeight: [CGFloat]
     let color: Color
     let dayOfWeek: [Int]
     
-    init(habit: Habit) {
+    init(habit: HabitContext) {
         func roundAndCut(_ num: Double) -> Double {
             round(num*10)/10
         }
-        self.dayOfWeek = habit.dayOfWeek.map(Int.init)
+        self.dayOfWeek = habit.dayOfWeek
         var weeklyData = [Int](repeating: 0, count: 7)
         for diff in -7 ... -1 {
             let datePointer = Date().addDate(diff)!
@@ -144,15 +110,5 @@ struct DayOfWeekChart: View {
             .frame(height: 160)
         }
         .frame(height: 180)
-    }
-    
-    @Environment(\.colorScheme) var colorScheme
-    
-}
-
-struct DayOfWeekChart_Previews: PreviewProvider {
-    static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        DayOfWeekChart(habit: coreDataPreview.habit1)
     }
 }

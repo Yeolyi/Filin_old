@@ -14,34 +14,27 @@ struct CheckButton: View {
         habit.isComplete(at: date)
     }
     let date: Date
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var incrementPerTap: IncrementPerTap
-    let habit: Habit
+    @EnvironmentObject var habit: HabitContext
     
     var body: some View {
-        if habit.requiredSecond == 0 {
-            Button(action: {
-                guard let id = habit.id else {
-                    return
-                }
-                let addedVal = Int16(incrementPerTap.addUnit[id] ?? 1)
-                withAnimation {
-                    habit.achievement[date.dictKey] = (habit.achievement[date.dictKey] ?? 0) + addedVal
-                }
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                Habit.save(managedObjectContext)
-            }) {
-                Image(systemName: showCheck ? "checkmark.circle.fill" : "plus.circle")
+        if habit.isTimer{
+            NavigationLink(
+                destination:
+                    HabitTimer(date: date).environmentObject(habit)
+            ) {
+                Image(systemName: showCheck ? "clock.fill" : "clock")
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(habit.color)
                     .frame(width: 44, height: 44)
             }
         } else {
-            NavigationLink(
-                destination:
-                    HabitTimer(habit: habit, date: date)
-            ) {
-                Image(systemName: showCheck ? "clock.fill" : "clock")
+            Button(action: {
+                withAnimation {
+                    habit.calAchieve(at: Date(), isAdd: true)
+                }
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            }) {
+                Image(systemName: showCheck ? "checkmark.circle.fill" : "plus.circle")
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(habit.color)
                     .frame(width: 44, height: 44)
@@ -50,10 +43,9 @@ struct CheckButton: View {
     }
 }
 
-/*
 struct HabitCheckButton_Previews: PreviewProvider {
     static var previews: some View {
-        HabitCheckButton()
+        CheckButton(date: Date())
+            .environmentObject(HabitContext(name: "Test"))
     }
 }
-*/

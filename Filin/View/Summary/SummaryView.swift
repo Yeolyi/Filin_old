@@ -12,16 +12,25 @@ struct SummaryView: View {
     @State var updated = false
     @State var selectedDate = Date()
     @State var isSettingSheet = false
-
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var summaryManager: SummaryContextManager
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    if summary.isEmpty || summary[0].isEmpty {
+                    if summaryManager.contents.isEmpty || summaryManager.contents[0].isEmpty {
                         SummaryPreview(isSettingSheet: $isSettingSheet)
                     } else {
-                        RingCalendar(selectedDate: $selectedDate, habits: firstThreeElements())
-                        TodaySummary(selectedDate: $selectedDate)
+                        RingsCalendar(
+                            selectedDate: $selectedDate,
+                            habit1: summaryManager.contents[0].first,
+                            habit2: summaryManager.contents[0].second,
+                            habit3: summaryManager.contents[0].third
+                        )
+                        ForEach(summaryManager.contents[0].habitArray.compactMap({$0}), id: \.id) { habit in
+                            HabitRow(habit: habit, showAdd: false, date: selectedDate)
+                        }
                     }
                 }
             }
@@ -36,51 +45,23 @@ struct SummaryView: View {
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(isPresented: $isSettingSheet) {
             ProfileSettingView()
-                .environment(\.managedObjectContext, context)
                 .accentColor(ThemeColor.mainColor(colorScheme))
+                .environmentObject(summaryManager)
         }
         .accentColor(ThemeColor.mainColor(colorScheme))
         .onAppear {
-            if summary.isEmpty {
-                Summary.save(name: "Default", first: nil, second: nil, third: nil, managedObjectContext: context)
+            if summaryManager.contents.isEmpty {
+                summaryManager.addObject(.init(id: UUID(), name: "Default"))
             }
         }
     }
-    func firstThreeElements() -> [Habit?] {
-        var tempArray: [Habit?] = []
-        for id in summary[0].idArray {
-            if id == nil {
-                tempArray.append(nil)
-                continue
-            }
-            if let habit = habitInfos.first(where: {$0.id == id}) {
-                tempArray.append(habit)
-            }
-        }
-        return tempArray
-    }
-    
-    @Environment(\.managedObjectContext) var context
-    @EnvironmentObject var displayManager: DisplayManager
-    @Environment(\.colorScheme) var colorScheme
-    @FetchRequest(
-        entity: Habit.entity(),
-        sortDescriptors: []
-    )
-    var habitInfos: FetchedResults<Habit>
-    @FetchRequest(
-        entity: Summary.entity(),
-        sortDescriptors: []
-    )
-    var summary: FetchedResults<Summary>
-    
 }
 
+/*
 struct CalendarSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
+        _ = CoreDataPreview.shared
         return SummaryView()
-            .environment(\.managedObjectContext, coreDataPreview.context)
-            .environmentObject(coreDataPreview.displayManager)
     }
 }
+*/

@@ -9,13 +9,6 @@ import SwiftUI
 
 struct RoutineSetList: View {
     
-    var habitList: [Habit] {
-        displayManager.habitOrder.compactMap { orderInfo in
-            habitInfos.first(where: { habitInfo in
-                orderInfo == habitInfo.id
-            })
-        }
-    }
     @ObservedObject var listData: ListData<UUID>
     
     init(listData: ListData<UUID>) {
@@ -29,15 +22,13 @@ struct RoutineSetList: View {
                     .bodyText()
                     .padding(.bottom, 5)
                 ScrollView {
-                    ForEach(habitList) { habit in
+                    ForEach(HabitContextManager.shared.ordered) { habit in
                         HStack {
                             Text(habit.name)
                                 .bodyText()
                             Spacer()
                             BasicButton("plus") {
-                                guard let id = habit.id else {
-                                    return
-                                }
+                                let id = habit.id
                                 listData.add(value: id)
                             }
                         }
@@ -57,7 +48,7 @@ struct RoutineSetList: View {
                         BasicButton("minus") {
                             listData.delete(id: id)
                         }
-                        Text(habitList.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "Test")
+                        Text( HabitContextManager.shared.contents.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "Test")
                             .bodyText()
                     }
                 })
@@ -71,7 +62,6 @@ struct RoutineSetList: View {
     var habitInfos: FetchedResults<Habit>
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var displayManager: DisplayManager
     
 }
 

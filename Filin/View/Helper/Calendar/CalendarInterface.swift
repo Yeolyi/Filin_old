@@ -42,7 +42,7 @@ struct CalendarInterface<Content: View>: View {
     }
     
     init(selectedDate: Binding<Date>, color: Color, isExpanded: Binding<Bool>, isEmojiView: Binding<Bool>, move: @escaping (Bool) -> Date,
-         content: @escaping (_ week: Int, _ isExpanded: Bool) -> Content
+        content: @escaping (_ week: Int, _ isExpanded: Bool) -> Content
     ) {
         self._selectedDate = selectedDate
         self._isExpanded = isExpanded

@@ -36,6 +36,7 @@ struct NameSection: View {
                 TextFieldWithEndButton("Drink water".localized, text: $name)
                     .rowBackground()
                     .padding(.bottom, 15)
+                /*
                 FlowLayout(mode: .scrollable, items: nameExamples) { text in
                     Button(action: { name = text }) {
                     Text(text)
@@ -49,6 +50,7 @@ struct NameSection: View {
                     }
                 }
                 .rowPadding()
+ */
             }
         }
     }
@@ -68,9 +70,8 @@ struct Test1_Previews: PreviewProvider {
     struct StateWrapper: View {
         @State var selectedText = "Text"
         var body: some View {
-            let coreDataPreview = CoreDataPreview()
+            let coreDataPreview = CoreDataPreview.shared
             return NameSection(name: $selectedText)
-                .environment(\.managedObjectContext, coreDataPreview.context)
                 .environmentObject(AppSetting())
         }
     }

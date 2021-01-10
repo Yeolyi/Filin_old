@@ -13,9 +13,7 @@ struct SummaryPreview: View {
     
     var body: some View {
         RingCalendar(
-            selectedDate: .constant(Date()),
-            habits: [CoreDataPreview.sampleHabit(name: ""), CoreDataPreview.sampleHabit(name: "")]
-        )
+            selectedDate: .constant(Date()), habit: HabitContext(name: "Test"))
         .opacity(0.5)
         .disabled(true)
         Text("See information of goals at once.")

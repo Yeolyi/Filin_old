@@ -10,7 +10,7 @@ import SwiftUI
 struct SummaryStateRow: View {
     
     let num: Int
-    @Binding var ringName: String
+    @Binding var targetHabit: HabitContext?
     
     var description: String {
         switch num {
@@ -33,11 +33,13 @@ struct SummaryStateRow: View {
                     .bodyText()
                     .mainColor()
                 Spacer()
-                Text(ringName)
+                Text(targetHabit?.name ?? "Empty".localized)
                     .subColor()
                     .bodyText()
             }
-            NavigationLink(destination: HabitSelector(position: num, ringName: $ringName)) {
+            NavigationLink(destination:
+                            HabitSelector(position: num, targetHabit: $targetHabit)
+            ) {
                 Rectangle()
                     .opacity(0)
             }
@@ -46,10 +48,10 @@ struct SummaryStateRow: View {
     }
 }
 
-
+/*
 struct SummaryStateRow_Previews: PreviewProvider {
     static var previews: some View {
-        SummaryStateRow(num: 1, ringName: .constant(""))
+        SummaryStateRow(num: 1)
     }
 }
-
+*/

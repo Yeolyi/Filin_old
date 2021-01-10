@@ -10,21 +10,16 @@ import AVFoundation
 
 struct HabitRow: View {
     
-    @ObservedObject var habit: Habit
-    let date: Date
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @ObservedObject var habit: HabitContext
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var addUnit: IncrementPerTap
     @State var isTapping = false
+    let date: Date
+    let showAdd: Bool
     
-    init(habit: Habit, showAdd: Bool, date: Date = Date()) {
+    init(habit: HabitContext, showAdd: Bool, date: Date = Date()) {
         self.habit = habit
         self.showAdd = showAdd
         self.date = date
-    }
-    let showAdd: Bool
-    var showCheck: Bool {
-        habit.isComplete(at: date)
     }
     var subTitle: String {
         var subTitleStr = ""
@@ -44,7 +39,8 @@ struct HabitRow: View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 if showAdd {
-                    CheckButton(date: date, habit: habit)
+                    CheckButton(date: date)
+                        .environmentObject(habit)
                 }
                 ZStack {
                     HStack {
@@ -61,7 +57,7 @@ struct HabitRow: View {
                                 Spacer()
                             }
                         }
-                        if habit.dayOfWeek.contains(Int16(date.dayOfTheWeek)) {
+                        if habit.dayOfWeek.contains(date.dayOfTheWeek) {
                             ZStack {
                                 LinearProgressBar(color: habit.color, progress: habit.progress(at: date) ?? 0)
                                 HStack {
@@ -77,7 +73,9 @@ struct HabitRow: View {
                             .frame(width: 150, height: 20)
                         }
                     }
-                    NavigationLink(destination: HabitDetailView(habit: habit)) {
+                    NavigationLink(destination:
+                                    HabitDetailView(habit: habit).environmentObject(habit)
+                    ) {
                         Rectangle()
                             .opacity(0)
                     }
@@ -86,5 +84,11 @@ struct HabitRow: View {
             }
             .rowBackground()
         }
+    }
+}
+
+struct HabitRow_Previews: PreviewProvider {
+    static var previews: some View {
+        HabitRow(habit: HabitContext(name: "Test"),showAdd: true)
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditRoutine: View {
     
-    @ObservedObject var routine: Routine
+    @ObservedObject var routine: RoutineContext
 
     @State var name = ""
     @State var habitList: [UUID]
@@ -19,11 +19,11 @@ struct EditRoutine: View {
     @State var dayOfWeek: [Int]
     @ObservedObject var listData: ListData<UUID>
     
-    init(routine: Routine) {
+    init(routine: RoutineContext) {
         self.routine = routine
         _name = State(initialValue: routine.name)
         _habitList = State(initialValue: routine.list)
-        _dayOfWeek = State(initialValue: routine.dayOfWeek.map(Int.init))
+        _dayOfWeek = State(initialValue: routine.dayOfWeek)
         if let time = routine.time {
             _isReminderUsed = State(initialValue: true)
             _reminderTime = State(initialValue: Date(hourAndMinuteStr: time))
@@ -43,12 +43,7 @@ struct EditRoutine: View {
                             .headline()
                         Spacer()
                         HeaderText("Save".localized) {
-                            routine.edit(
-                                name: name, list: listData.sortedValue,
-                                time: isReminderUsed ? reminderTime.hourAndMinuteStr : nil,
-                                dayOfWeek: dayOfWeek,
-                                context: context
-                            ) { _ in }
+                            #warning("Save function needs")
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
@@ -131,7 +126,7 @@ struct EditRoutine: View {
             message: nil,
             primaryButton: .default(Text("Cancel".localized)),
             secondaryButton: .destructive(Text("Delete".localized), action: {
-                routine.delete(context)
+
                 presentationMode.wrappedValue.dismiss()
             }))
     }
@@ -142,11 +137,12 @@ struct EditRoutine: View {
     
 }
 
+/*
 struct EditRoutine_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
+        let coreDataPreview = CoreDataPreview.shared
         EditRoutine(routine: coreDataPreview.sampleRoutine(name: "Default", dayOfTheWeek: [1, 2, 3, 4], time: "12-03"))
             .environment(\.managedObjectContext, coreDataPreview.context)
-            .environmentObject(coreDataPreview.displayManager)
     }
 }
+*/

@@ -9,7 +9,8 @@ import SwiftUI
 
 struct RunRoutine: View {
     
-    let routine: Routine
+    let routine: RoutineContext
+    let habitContent = HabitContextManager.shared.contents
     @State var currentListIndex = 0
     @State var isTimeInit = false
     
@@ -26,26 +27,26 @@ struct RunRoutine: View {
             if currentListIndex > 0 {
                 VStack {
                     ForEach(0...currentListIndex - 1, id: \.self) { index in
-                        Text(habitList[index].name)
+                        Text(habitContent[index].name)
                             .subColor()
                             .headline()
                     }
                 }
             }
             VStack {
-                Text(habitList[currentListIndex].name)
+                Text(habitContent[currentListIndex].name)
                     .title()
                 LinearProgressBar(
                     color: ThemeColor.mainColor(colorScheme),
-                    progress: habitList[currentListIndex].progress(at: Date()) ?? 0
+                    progress: habitContent[currentListIndex].progress(at: Date()) ?? 0
                 )
                 .frame(width: 200)
             }
             .padding(10)
-            if currentListIndex < habitList.count - 1 {
+            if currentListIndex < habitContent.count - 1 {
                 VStack {
-                    ForEach(currentListIndex + 1...habitList.count - 1, id: \.self) { index in
-                        Text(habitList[index].name)
+                    ForEach(currentListIndex + 1...habitContent.count - 1, id: \.self) { index in
+                        Text(habitContent[index].name)
                             .subColor()
                             .headline()
                     }
@@ -77,7 +78,7 @@ struct RunRoutine: View {
     
     var nextButton: some View {
         Button(action: {
-            if habitList[currentListIndex].requiredSecond != 0 && timeRemaining != 0 {
+            if habitContent[currentListIndex].requiredSec != 0 && timeRemaining != 0 {
                 if isCounting {
                     self.timer.upstream.connect().cancel()
                 } else {
@@ -89,30 +90,26 @@ struct RunRoutine: View {
             } else {
                 self.timer.upstream.connect().cancel()
                 isCounting = false
-                guard let id = habitList[currentListIndex].id else {
-                    return
-                }
-                let addedVal = Int16(incrementPerTap.addUnit[id] ?? 1)
+                let id = habitContent[currentListIndex].id
                 withAnimation {
-                    habitList[currentListIndex].achievement[Date().dictKey]
-                        = (habitList[currentListIndex].achievement[Date().dictKey] ?? 0) + addedVal
+                    habitContent[currentListIndex].calAchieve(at: Date(), isAdd: true)
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                    if currentListIndex == habitList.count - 1 {
+                    if currentListIndex == habitContent.count - 1 {
                         presentationMode.wrappedValue.dismiss()
                         return
                     }
                     withAnimation {
                         currentListIndex += 1
                     }
-                    timeRemaining = Int(habitList[currentListIndex].requiredSecond)
+                    timeRemaining = habitContent[currentListIndex].requiredSec
                 }
             }
         }) {
             ZStack {
-                if habitList[currentListIndex].requiredSecond != 0 {
+                if habitContent[currentListIndex].requiredSec != 0 {
                     if timeRemaining == 0 {
-                        Text(currentListIndex == habitList.count - 1 ? "Complete".localized : "Next".localized)
+                        Text(currentListIndex == habitContent.count - 1 ? "Complete".localized : "Next".localized)
                             .foregroundColor(.white)
                             .zIndex(1)
                         Circle()
@@ -127,7 +124,7 @@ struct RunRoutine: View {
                             .foregroundColor(.clear)
                             .overlay(
                                 Circle()
-                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(habitList[currentListIndex].requiredSecond))
+                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(habitContent[currentListIndex].requiredSec))
                                     .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .square, lineJoin: .bevel))
                                     .mainColor()
                                     .rotationEffect(Angle(degrees: 270.0))
@@ -142,7 +139,7 @@ struct RunRoutine: View {
                             .foregroundColor(.clear)
                             .overlay(
                                 Circle()
-                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(habitList[currentListIndex].requiredSecond))
+                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(habitContent[currentListIndex].requiredSec))
                                     .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .square, lineJoin: .bevel))
                                     .mainColor()
                                     .rotationEffect(Angle(degrees: 270.0))
@@ -150,7 +147,7 @@ struct RunRoutine: View {
                             .frame(width: 100, height: 100)
                     }
                 } else {
-                    Text(currentListIndex == habitList.count - 1 ? "Complete".localized : "Next".localized)
+                    Text(currentListIndex == habitContent.count - 1 ? "Complete".localized : "Next".localized)
                         .foregroundColor(.white)
                         .zIndex(1)
                     Circle()
@@ -163,32 +160,20 @@ struct RunRoutine: View {
     }
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var incrementPerTap: IncrementPerTap
     @FetchRequest(
         entity: Habit.entity(),
         sortDescriptors: []
     )
     var habitInfos: FetchedResults<Habit>
-    var habitList: [Habit] {
-        var tempList: [Habit] = []
-        for id in routine.list {
-            guard let habit = habitInfos.first(where: {$0.id == id}) else {
-                //assertionFailure()
-                return []
-            }
-            tempList.append(habit)
-        }
-        return tempList
-    }
+
 }
 
+/*
 struct RunRoutine_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
+        let coreDataPreview = CoreDataPreview.shared
         return RunRoutine(routine: coreDataPreview.sampleRoutine(name: "Sample", dayOfTheWeek: [1, 3, 5], time: "13-00"))
-            .environment(\.managedObjectContext, coreDataPreview.context)
-            .environmentObject(coreDataPreview.displayManager)
-            .environmentObject(coreDataPreview.incrementPerTap)
     }
 }
 
+*/

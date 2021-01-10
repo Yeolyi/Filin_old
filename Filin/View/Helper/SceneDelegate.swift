@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fatalError()
         }
         
-        let displayManager = DisplayManager()
+        print(HabitContextManager.shared.contents)
         
         let appSetting = AppSetting()
         appSetting.runCount += 1
@@ -37,9 +37,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let contentView =
             ContentView(defaultTap: appSetting.defaultTap)
             .environment(\.managedObjectContext, context)
-            .environmentObject(displayManager)
-            .environmentObject(IncrementPerTap())
             .environmentObject(appSetting)
+            .environmentObject(HabitContextManager.shared)
+            .environmentObject(SummaryContextManager.shared)
         /*
         for family in UIFont.familyNames.sorted() {
             let names = UIFont.fontNames(forFamilyName: family)
@@ -61,7 +61,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later,
         //as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        HabitContextManager.shared.save()
+        SummaryContextManager.shared.save()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -85,6 +86,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
 
         // Save changes in the application's managed object context when the application transitions to the background.
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        HabitContextManager.shared.save()
+        SummaryContextManager.shared.save()
     }
 }

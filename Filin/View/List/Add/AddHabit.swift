@@ -9,29 +9,17 @@ import SwiftUI
 
 struct AddHabit: View {
     
+    @Environment(\.presentationMode) var presentationMode
     @State var currentPage = 1
     let totalPage = 5
-    
-    @State var habitName = ""
-    @State var dayOfTheWeek = [1, 2, 3, 4, 5, 6, 7]
-    @State var number = 10
-    @State var selectedColor = "#a5a5a5"
-    @State var minute = 1
-    @State var second = 30
-    @State var isRequiredSecond = false
-    
-    @State var oneTapUnit = 1
-    
+    @ObservedObject var tempHabit = HabitContext(name: "")
     var isNextAvailable: Bool {
-        #if DEBUG
-        return true
-        #endif
         switch currentPage {
         case 1:
-            return habitName != ""
-        case 2: return !dayOfTheWeek.isEmpty
-        case 3: return number > 0
-        case 4: return !isRequiredSecond || (isRequiredSecond && dateToSecond > 0)
+            return tempHabit.name != ""
+        case 2: return !tempHabit.dayOfWeek.isEmpty
+        case 3: return tempHabit.numberOfTimes > 0
+        case 4: return !tempHabit.isTimer || tempHabit.requiredSec > 0
         case 5: return true
         default:
             assertionFailure()
@@ -39,26 +27,22 @@ struct AddHabit: View {
         }
     }
     
-    var dateToSecond: Int {
-        minute * 60 + second
-    }
-    
     var body: some View {
         VStack {
             if currentPage == 1 {
-                NameSection(name: $habitName)
+                NameSection(name: $tempHabit.name)
             }
             if currentPage == 2 {
-                DateSection(dayOfTheWeek: $dayOfTheWeek)
+                DateSection(dayOfTheWeek: $tempHabit.dayOfWeek)
             }
             if currentPage == 3 {
-                TimesSection(number: $number, oneTapUnit: $oneTapUnit)
+                TimesSection(numberOfTimes: $tempHabit.numberOfTimes, addUnit: $tempHabit.addUnit)
             }
             if currentPage == 4 {
-                TimerSection(minute: $minute, second: $second, isRequiredTime: $isRequiredSecond)
+                TimerSection(time: $tempHabit.requiredSec)
             }
             if currentPage == 5 {
-                ThemeSection(color: $selectedColor)
+                ThemeSection(color: $tempHabit.color)
             }
             HStack {
                 previousButton
@@ -94,37 +78,15 @@ struct AddHabit: View {
         .opacity(isNextAvailable ? 1.0 : 0.5)
     }
     func saveAndQuit() {
-        let id = UUID()
-        Habit.saveHabit(
-            id: id, name: habitName, color: selectedColor, dayOfWeek: dayOfTheWeek,
-            numberOfTimes: number, requiredSecond: isRequiredSecond ? dateToSecond : 0, managedObjectContext
-        )
-        displayManager.habitOrder.append(id)
-        if oneTapUnit != 1 {
-            incrementPerTap.addUnit[id] = oneTapUnit
-        }
+        HabitContextManager.shared.addObject(tempHabit)
         self.presentationMode.wrappedValue.dismiss()
     }
-    
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var displayManager: DisplayManager
-    @EnvironmentObject var incrementPerTap: IncrementPerTap
-    @FetchRequest(
-        entity: Habit.entity(),
-        sortDescriptors: []
-    )
-    var habitInfos: FetchedResults<Habit>
     
 }
 
 struct AddHabit_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
         return AddHabit()
-            .environment(\.managedObjectContext, coreDataPreview.context)
-            .environmentObject(coreDataPreview.displayManager)
             .environmentObject(AppSetting())
     }
 }

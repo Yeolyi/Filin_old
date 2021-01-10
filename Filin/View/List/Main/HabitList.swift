@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct HabitList: View {
-    @State var isAddSheet = false
+    
+    @State var isSheet = false
+    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var appSetting: AppSetting
     
     var body: some View {
         NavigationView {
             Group {
-                if habitInfos.isEmpty {
-                    ListPreview(isAddSheet: $isAddSheet)
+                if habitManager.contents.isEmpty {
+                    ListPreview(isAddSheet: $isSheet)
                 } else {
                     HabitScrollView()
                 }
@@ -23,45 +26,28 @@ struct HabitList: View {
             .navigationBarItems(
                 trailing:
                     HeaderButton("plus") {
-                        self.isAddSheet = true
+                        self.isSheet = true
                     }
             )
-            .sheet(isPresented: $isAddSheet) {
+            .sheet(isPresented: $isSheet) {
                 AddHabit()
-                    .environment(\.managedObjectContext, managedObjectContext)
-                    .environmentObject(displayManager)
                     .environmentObject(appSetting)
-                    .environmentObject(incrementPerTap)
             }
         }
         .onAppear {
-            if appSetting.isFirstRun && habitInfos.isEmpty {
-                isAddSheet = true
+            if appSetting.isFirstRun && habitManager.contents.isEmpty {
+                isSheet = true
             }
         }
-        .accentColor(ThemeColor.mainColor(colorScheme))
+        .accentColor(.black)
         .navigationViewStyle(StackNavigationViewStyle())
     }
-    
-    @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var displayManager: DisplayManager
-    @EnvironmentObject var incrementPerTap: IncrementPerTap
-    @EnvironmentObject var appSetting: AppSetting
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @FetchRequest(
-        entity: Habit.entity(),
-        sortDescriptors: []
-    )
-    var habitInfos: FetchedResults<Habit>
 }
 
 struct HabitList_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
+        _ = CoreDataPreview.shared
         return HabitList()
-            .environment(\.managedObjectContext, coreDataPreview.context)
             .environmentObject(AppSetting())
-            .environmentObject(coreDataPreview.displayManager)
-            //.previewDevice(.init(stringLiteral: "iPhone 12 mini"))
     }
 }

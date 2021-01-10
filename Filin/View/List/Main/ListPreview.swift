@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct ListPreview: View {
+    
     @Binding var isAddSheet: Bool
+    
     var body: some View {
         ScrollView {
             Group {
-                HabitRow(habit: CoreDataPreview.sampleHabit(name: "A ten-minute walk".localized, dayOfWeek: [1, 3, 5, 7], seconds: 600, count: 3), showAdd: true)
-                HabitRow(habit: CoreDataPreview.sampleHabit(name: "Stretching".localized), showAdd: true)
+                HabitRow(habit: HabitContext(
+                    name: "A ten-minute walk".localized,
+                    dayOfWeek: [1, 3, 5, 7], numberOfTimes: 3, requiredSec: 600
+                ),showAdd: true)
+                HabitRow(habit: HabitContext(name: "Stretching".localized), showAdd: true)
             }
             .opacity(0.5)
             .disabled(true)

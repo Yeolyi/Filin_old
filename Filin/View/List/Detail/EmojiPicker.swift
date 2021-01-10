@@ -12,7 +12,7 @@ struct EmojiPicker: View {
     
     @Binding var selectedDate: Date
     @Environment(\.managedObjectContext) var managedObjectContext
-    @ObservedObject var habit: Habit
+    @ObservedObject var habit: HabitContext
     @ObservedObject var emojiManager: EmojiManager
     @Binding var activeSheet: DetailViewActiveSheet?
     var emoji: String? {
@@ -80,15 +80,3 @@ struct EmojiPicker: View {
     }
 }
 
-struct EmojiPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        let fetchRequest: NSFetchRequest<Habit> = Habit.fetchRequest()
-        let fetched = (try? coreDataPreview.context.fetch(fetchRequest)) ?? []
-        EmojiPicker(
-            selectedDate: .constant(Date()),
-            habit: fetched[0],
-            emojiManager: EmojiManager(), activeSheet: .constant(nil)
-        )
-    }
-}

@@ -94,16 +94,7 @@ struct AddRoutine: View {
             action: {
                 if isNextAvailable == false { return }
                 if currentPage == totalPage {
-                    Routine.save(
-                        name: name, list: listData.sortedValue,
-                        time: isReminder ? routineTime.hourAndMinuteStr : nil,
-                        dayOfWeek: dayOfWeek,
-                        context: context
-                    ) { isSuccess in
-                        if !isSuccess {
-                            print("Failed")
-                        }
-                    }
+                    #warning("Save function Needed")
                     presentationMode.wrappedValue.dismiss()
                     return
                 }

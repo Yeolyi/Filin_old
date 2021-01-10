@@ -8,20 +8,25 @@
 import SwiftUI
 
 struct HabitScrollView: View {
-
+    
+    @EnvironmentObject var habitManager: HabitContextManager
     @State var searchWord = ""
-    var habitDisplayList: [Habit] {
-        displayManager.habitOrder.compactMap { orderInfo in
-            habitList.first(where: { habitInfo in
-                orderInfo == habitInfo.id
-            })
-        }
-    }
+    
     var isTodayEmpty: Bool {
-        habitDisplayList.filter({$0.isTodayTodo}).isEmpty
+        habitManager.contents.filter(\.isTodayTodo).isEmpty
     }
     var isGeneralEmpty: Bool {
-        (habitList.count - habitDisplayList.filter({$0.isTodayTodo}).count) == 0
+        (habitManager.contents.count - habitManager.contents.filter(\.isTodayTodo).count) == 0
+    }
+    
+    var emptyIndicatingRow: some View {
+        HStack {
+            Spacer()
+            Text("Empty".localized)
+                .subColor()
+            Spacer()
+        }
+        .rowBackground()
     }
     
     var body: some View {
@@ -30,61 +35,37 @@ struct HabitScrollView: View {
                 Text("Today".localized)
                     .sectionText()
                 if !isTodayEmpty {
-                    ForEach(habitDisplayList.filter {$0.isTodayTodo}, id: \.self) { habitInfo in
-                        if habitInfo.isFault {
-                            EmptyView()
-                        } else {
-                            HabitRow(habit: habitInfo, showAdd: true)
-                        }
+                    ForEach(habitManager.ordered.filter(\.isTodayTodo)) { habitInfo in
+                        HabitRow(habit: habitInfo, showAdd: true)
+                            .environmentObject(habitInfo)
                     }
                 } else {
-                    HStack {
-                        Spacer()
-                        Text("Empty".localized)
-                            .subColor()
-                        Spacer()
-                    }
-                    .rowBackground()
+                    emptyIndicatingRow
                 }
                 Text("Others".localized)
                     .sectionText()
                 if !isGeneralEmpty {
-                    ForEach(habitDisplayList.filter {!$0.isTodayTodo}, id: \.self) { habitInfo in
-                        if habitInfo.isFault {
-                            EmptyView()
-                        } else {
-                            HabitRow(habit: habitInfo, showAdd: false)
-                        }
+                    ForEach(habitManager.ordered.filter({!$0.isTodayTodo}), id: \.self) { habitInfo in
+                        HabitRow(habit: habitInfo, showAdd: false)
                     }
                 } else {
-                    HStack {
-                        Spacer()
-                        Text("Empty".localized)
-                            .subColor()
-                        Spacer()
-                    }
-                    .rowBackground()
+                   emptyIndicatingRow
                 }
                 
             }
         }
         .padding(.top, 1)
     }
-    
-    @EnvironmentObject var displayManager: DisplayManager
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.colorScheme) var colorScheme
-    @FetchRequest(entity: Habit.entity(), sortDescriptors: [])
-    var habitList: FetchedResults<Habit>
-    
 }
 
 struct MainList_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        return HabitScrollView()
-            .environment(\.managedObjectContext, coreDataPreview.context)
-            .environmentObject(AppSetting())
-            .environmentObject(coreDataPreview.displayManager)
+        _ = CoreDataPreview.shared
+        return
+            NavigationView {
+                HabitScrollView()
+                .environmentObject(AppSetting())
+                    .navigationBarTitle(Text("Test"))
+            }
     }
 }

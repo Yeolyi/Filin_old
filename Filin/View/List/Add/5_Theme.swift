@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ThemeSection: View {
     
-    @Binding var color: String
+    @Binding var color: Color
     
     var body: some View {
         HabitAddBadgeView(title: "Theme".localized, imageName: "paintpalette") {
@@ -28,6 +28,6 @@ struct ThemeSection: View {
 
 struct Test4_Previews: PreviewProvider {
     static var previews: some View {
-        ThemeSection(color: .constant(""))
+        ThemeSection(color: .constant(.blue))
     }
 }

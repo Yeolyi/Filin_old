@@ -10,7 +10,7 @@ import SwiftUI
 struct EmojiCalendarRow: View {
     let week: Int
     let isExpanded: Bool
-    @ObservedObject var habit: Habit
+    @ObservedObject var habit: HabitContext
     @Binding var selectedDate: Date
     
     var body: some View {

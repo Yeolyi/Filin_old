@@ -10,15 +10,16 @@ import SwiftUI
 struct HabitSelector: View {
     
     let position: Int
-    @Binding var ringName: String
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var targetHabit: HabitContext?
     
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(habitInfos, id: \.self) { habit in
+                ForEach(HabitContextManager.shared.contents, id: \.self) { habit in
                     Button(action: {
-                        summary[0].setByNumber(position, id: habit.id)
-                        ringName = habitInfos.first(where: {$0.id == habit.id})?.name ?? ""
+                        targetHabit = habit
                         self.presentationMode.wrappedValue.dismiss()
                     }) {
                         HStack {
@@ -26,7 +27,7 @@ struct HabitSelector: View {
                                 .mainColor()
                                 .bodyText()
                             Spacer()
-                            if summary[0].getByNumber(position) == habit.id {
+                            if targetHabit?.id == habit.id {
                                 Image(systemName: "checkmark")
                                     .mainColor()
                                     .bodyText()
@@ -36,8 +37,7 @@ struct HabitSelector: View {
                     .rowBackground()
                 }
                 Button(action: {
-                    summary[0].setByNumber(position, id: nil)
-                    ringName = "Empty".localized
+                    targetHabit = nil
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
                     HStack {
@@ -52,19 +52,4 @@ struct HabitSelector: View {
             .padding(.top, 1)
         }
     }
-    
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.presentationMode) var presentationMode
-    @FetchRequest(
-        entity: Summary.entity(),
-        sortDescriptors: []
-    )
-    var summary: FetchedResults<Summary>
-    @FetchRequest(
-        entity: Habit.entity(),
-        sortDescriptors: []
-    )
-    var habitInfos: FetchedResults<Habit>
-    @Environment(\.managedObjectContext) var managedObjectContext
-    
 }

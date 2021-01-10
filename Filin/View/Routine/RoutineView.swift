@@ -9,7 +9,7 @@ import SwiftUI
 
 enum RoutineSheet: Identifiable {
     case add
-    case edit(Routine)
+    case edit(RoutineContext)
     var id: Int {
         switch self {
         case .add:
@@ -23,28 +23,29 @@ enum RoutineSheet: Identifiable {
 struct RoutineView: View {
     
     @State var isAddSheet: RoutineSheet?
+    @ObservedObject var routineManager = RoutineContextManager.shared
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    if !routines.isEmpty {
+                    if !routineManager.contents.isEmpty {
                         Text("Today".localized)
                             .sectionText()
                         VStack(spacing: 0) {
-                            ForEach(routines, id: \.self) { routine in
+                            ForEach(routineManager.contents) { routine in
                                 RoutineRow(routine: routine, isSheet: $isAddSheet)
                             }
                         }
                     } else {
+                        /*
                         ForEach([
-                            CoreDataPreview.sampleRoutine(name: "After wake up".localized, dayOfTheWeek: [1, 2, 3, 4, 5, 6, 7], time: "07-00"),
-                            CoreDataPreview.sampleRoutine(name: "Before bed".localized, dayOfTheWeek: [1, 2, 3, 4, 5, 6, 7], time: "23-30")
                         ], id: \.self) { routine in
                             RoutineRow(routine: routine, isSheet: $isAddSheet)
                         }
                         .opacity(0.5)
                         .disabled(true)
+ */
                         Text("Group and repeat goals to make them a habit.".localized)
                             .bodyText()
                             .padding(.top, 34)
@@ -65,12 +66,8 @@ struct RoutineView: View {
                     switch sheetType {
                     case RoutineSheet.add:
                         AddRoutine()
-                            .environment(\.managedObjectContext, managedObjectContext)
-                            .environmentObject(displayManager)
                     case RoutineSheet.edit(let routine):
                         EditRoutine(routine: routine)
-                            .environment(\.managedObjectContext, managedObjectContext)
-                            .environmentObject(displayManager)
                             .accentColor(ThemeColor.mainColor(colorScheme))
                     }
                 }
@@ -81,18 +78,5 @@ struct RoutineView: View {
     }
     
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var displayManager: DisplayManager
     @Environment(\.presentationMode) var presentationMode
-    @FetchRequest(entity: Routine.entity(), sortDescriptors: [])
-    var routines: FetchedResults<Routine>
-}
-
-struct RoutineMainView_Previews: PreviewProvider {
-    static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        return RoutineView()
-            .environment(\.managedObjectContext, coreDataPreview.context)
-            .environmentObject(coreDataPreview.displayManager)
-    }
 }

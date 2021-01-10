@@ -7,65 +7,9 @@
 
 import SwiftUI
 
-extension Habit {
-    
-    var firstDayKeyStr: String {
-        Array(achievement.keys).sorted(by: <).first ?? Date().dictKey
-    }
-    
-    var firstDay: Date {
-        Date(dictKey: firstDayKeyStr)
-    }
-
-    var yearAverage: Double {
-        let yearAchievement = achievement.filter {
-            let dateFromtoday = Date(dictKey: $0.key).daysFromToday
-            return dateFromtoday <= 100 && dateFromtoday > 0
-        }
-        return yearAchievement.reduce(0, {$0 + Double($1.value)}) / max(1, min(Double(abs(firstDay.daysFromToday)), 100))
-    }
-    
-    func weeklyAverage(at date: Date) -> Double {
-        var weekList: [Date] = []
-        for i in -7 ... -1 {
-            weekList.append(date.addDate(i)!)
-        }
-        let achievementList = weekList.compactMap { date in
-            self.achievement[date.dictKey] ?? 0
-        }
-        guard !achievementList.isEmpty else {
-            return 0
-        }
-        return Double(achievementList.reduce(0, {$0 + Int($1)}))/7
-    }
-    
-    func monthlyAverage(at date: Date) -> Double {
-        var weekList: [Date] = []
-        var datePointer = date.addDate(-1)!
-        let targetDateKey = date.addMonth(-1).dictKey
-        while datePointer.dictKey != targetDateKey {
-            weekList.append(datePointer)
-            datePointer = datePointer.addDate(-1)!
-        }
-        let achievementList = weekList.compactMap { date in
-            self.achievement[date.dictKey] ?? 0
-        }
-        guard !achievementList.isEmpty else {
-            return 0
-        }
-        return Double(achievementList.reduce(0, {$0 + Int($1)}))/Double(Calendar.current.dateComponents([.day], from: datePointer, to: date).day!)
-    }
-}
-
-extension Date {
-    var daysFromToday: Int {
-        return Calendar.current.dateComponents([.day], from: self, to: Date()).day!
-    }
-}
-
 struct HabitStatistics: View {
     
-    @ObservedObject var habit: Habit
+    @ObservedObject var habit: HabitContext
     
     var weeklyTrend: Double? {
         guard habit.firstDay.daysFromToday >= 6 else {
@@ -157,13 +101,5 @@ struct HabitStatistics: View {
                 .bodyText()
                 .padding(.top, 8)
         }
-    }
-}
-
-struct HabitStatistics_Previews: PreviewProvider {
-    static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        HabitStatistics(habit: coreDataPreview.habit1)
-            .rowBackground()
     }
 }

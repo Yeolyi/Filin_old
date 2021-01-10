@@ -1,22 +1,28 @@
 //
-//  CustomCalendar.swift
-//  habitdiary
+//  RingsCalendar.swift
+//  Filin
 //
-//  Created by SEONG YEOL YI on 2020/12/12.
+//  Created by SEONG YEOL YI on 2021/01/10.
 //
 
 import SwiftUI
 
-struct RingCalendar: View {
+struct RingsCalendar: View {
     
     @Binding var selectedDate: Date
     @State var isExpanded = false
     @Environment(\.colorScheme) var colorScheme
     @State var isEmojiView = false
-    @ObservedObject var habit: HabitContext
+    @ObservedObject var habit1: HabitContext
+    @ObservedObject var habit2: HabitContext
+    @ObservedObject var habit3: HabitContext
     
     var habitsWrapped: [HabitContext?] {
-        [habit, nil, nil]
+        [
+            habit1.requiredSec == -1 ? nil : habit1,
+            habit2.requiredSec == -1 ? nil : habit2,
+            habit3.requiredSec == -1 ? nil : habit1
+        ]
     }
     
     var color: Color {
@@ -27,10 +33,14 @@ struct RingCalendar: View {
         }
     }
     
-    init(selectedDate: Binding<Date>, isExpanded: Bool = false, habit: HabitContext) {
+    init(selectedDate: Binding<Date>, isExpanded: Bool = false, habit1: HabitContext?, habit2: HabitContext?, habit3: HabitContext?) {
         self._selectedDate = selectedDate
         self._isExpanded = State(initialValue: isExpanded)
-        self.habit = habit
+        var nilHabit = HabitContext(name: "Nil")
+        nilHabit.requiredSec = -1
+        self.habit1 = habit1 == nil ? nilHabit : habit1!
+        self.habit2 = habit2 == nil ? nilHabit : habit2!
+        self.habit3 = habit3 == nil ? nilHabit : habit3!
     }
     
     var body: some View {

@@ -9,20 +9,12 @@ import SwiftUI
 
 struct HabitTimer: View {
     
-    let seconds: Int
-    let habit: Habit
+    @EnvironmentObject var habit: HabitContext
+    @Environment(\.presentationMode) var presentationMode
     let date: Date
-    
-    @State private var timeRemaining = 0
+    @State var timeRemaining = 0
     @State var isCounting = false
     @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
-    init(habit: Habit, date: Date) {
-        self.habit = habit
-        self.seconds = Int(habit.requiredSecond)
-        self.date = date
-        _timeRemaining = State(initialValue: seconds)
-    }
     
     var body: some View {
         VStack {
@@ -33,7 +25,7 @@ struct HabitTimer: View {
                     .overlay(
                         ZStack {
                             Circle()
-                                .trim(from: 0.0, to: (CGFloat(seconds) - CGFloat(timeRemaining))/CGFloat(seconds))
+                                .trim(from: 0.0, to: (CGFloat(habit.requiredSec) - CGFloat(timeRemaining))/CGFloat(habit.requiredSec))
                                 .stroke(style: StrokeStyle(lineWidth: 15, lineCap: .square, lineJoin: .bevel))
                                 .foregroundColor(habit.color)
                                 .rotationEffect(Angle(degrees: 270.0))
@@ -50,7 +42,7 @@ struct HabitTimer: View {
                     .frame(width: 10, height: 90)
                     .cornerRadius(10)
                     .offset(y: -40)
-                    .rotationEffect(.degrees(Double(360/seconds*(seconds - timeRemaining))))
+                    .rotationEffect(.degrees(Double(360/habit.requiredSec*(habit.requiredSec - timeRemaining))))
                     .animation(.linear)
                 Rectangle()
                     .foregroundColor(habit.color)
@@ -85,7 +77,7 @@ struct HabitTimer: View {
                 Button(action: {
                     self.timer.upstream.connect().cancel()
                     isCounting = false
-                    timeRemaining = seconds
+                    timeRemaining = habit.requiredSec
                 }) {
                     Image(systemName: "arrow.triangle.2.circlepath")
                         .subColor()
@@ -93,13 +85,11 @@ struct HabitTimer: View {
                 }
                 .frame(width: 50)
                 Button(action: {
-                    if let id = habit.id, timeRemaining == 0 {
-                        let addedVal = Int16(addUnit.addUnit[id] ?? 1)
+                    if timeRemaining == 0 {
                         withAnimation {
-                            habit.achievement[date.dictKey] = (habit.achievement[date.dictKey] ?? 0) + addedVal
+                            habit.calAchieve(at: date, isAdd: true)
                         }
                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        Habit.save(managedObjectContext)
                         self.presentationMode.wrappedValue.dismiss()
                     }
                     if isCounting {
@@ -119,24 +109,18 @@ struct HabitTimer: View {
             Spacer()
         }
         .navigationBarTitle(habit.name)
+        .onAppear {
+            timeRemaining = habit.requiredSec
+        }
     }
-    
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var addUnit: IncrementPerTap
     
 }
 
 struct HabitTimer_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        coreDataPreview.habit1.requiredSecond = 5
-        return
-            NavigationView {
-                HabitTimer(habit: coreDataPreview.habit1, date: Date())
-                    .environmentObject(coreDataPreview.incrementPerTap)
-            }
+        NavigationView {
+            HabitTimer(date: Date())
+                .environmentObject(HabitContext(name: "Text"))
+        }
     }
 }
-

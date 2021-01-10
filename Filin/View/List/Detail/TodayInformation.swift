@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TodayInformation: View {
     
-    @ObservedObject var habit: Habit
+    @EnvironmentObject var habit: HabitContext
     @Binding var selectedDate: Date
     @State var tappingMinus = false
     @State var tappingPlus = false
@@ -17,17 +17,7 @@ struct TodayInformation: View {
     @State var isExpanded = false
     
     var setAvailable: Bool {
-        guard let id = habit.id else {
-            return false
-        }
-        return !(incrementPerTap.addUnit[id] == 1 || incrementPerTap.addUnit[id] == nil)
-    }
-    
-    var addedVal: Int16 {
-        guard let id = habit.id else {
-            return 1
-        }
-        return Int16(incrementPerTap.addUnit[id] ?? 1)
+        return habit.addUnit != 1
     }
     
     var body: some View {
@@ -38,7 +28,7 @@ struct TodayInformation: View {
                     .headline()
                 Spacer()
                 if setAvailable {
-                    BasicTextButton(isSetMode ? "±\(addedVal)" : "±1") { isSetMode.toggle() }
+                    BasicTextButton(isSetMode ? "±\(habit.addUnit)" : "±1") { isSetMode.toggle() }
                 }
             }
             HStack {
@@ -63,7 +53,7 @@ struct TodayInformation: View {
     }
     func moveButton(isAdd: Bool) -> some View {
         BasicButton(isAdd ? "plus" : "minus") {
-            let addVal = isSetMode ? addedVal : 1
+            let addVal = isSetMode ? habit.addUnit : 1
             withAnimation {
                 if isAdd {
                     habit.achievement[selectedDate.dictKey] =
@@ -77,20 +67,7 @@ struct TodayInformation: View {
                 habit.achievement[selectedDate.dictKey] = nil
             }
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            Habit.save(managedObjectContext)
         }
     }
     
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var incrementPerTap: IncrementPerTap
-    
-}
-
-struct TodayHabit_Previews: PreviewProvider {
-    static var previews: some View {
-        let coreDataPreview = CoreDataPreview()
-        coreDataPreview.incrementPerTap.addUnit[coreDataPreview.habit1.id!] = 5
-        return TodayInformation(habit: coreDataPreview.habit1, selectedDate: .constant(Date()))
-            .environmentObject(IncrementPerTap())
-    }
 }

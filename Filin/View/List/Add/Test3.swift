@@ -9,42 +9,35 @@ import SwiftUI
 
 struct TimesSection: View {
     
-    @Binding var number: Int
-    @Binding var oneTapUnit: Int
-    @State var isSet = false
-    @State var setNum = 1
+    @Binding var numberOfTimes: Int
+    @Binding var addUnit: Int
     
-    var setNumWrapper: Binding<Int> {
-        Binding(
-            get: { setNum },
-            set: {
-                setNum = $0
-                number = setNum * oneTapUnit
+    @State var _isSet = false
+    var isSet: Binding<Bool> {
+        Binding(get: { _isSet}, set: {
+            _isSet = $0
+            if $0 {
+                addUnit = numberOfTimes
+                _setNum = 1
+            } else {
+                addUnit = 1
             }
-        )
+        })
     }
-    var oneTapWrapper: Binding<Int> {
-        Binding(
-            get: { oneTapUnit },
-            set: {
-                oneTapUnit = $0
-                number = setNum * oneTapUnit
-            }
-        )
+
+    @State var _setNum = 1
+    var setNum: Binding<Int> {
+        Binding(get: { _setNum }, set: {
+            _setNum = $0
+            numberOfTimes = $0 * addUnit
+        })
     }
-    var isSetWrapper: Binding<Bool> {
-        Binding(
-            get: { isSet },
-            set: {
-                if $0 {
-                    oneTapUnit = number
-                    setNum = 1
-                } else {
-                    number = oneTapUnit * setNum
-                }
-                isSet = $0
-            }
-        )
+    
+    var oneTapNum: Binding<Int> {
+        Binding(get: {addUnit}, set: {
+            addUnit = $0
+            numberOfTimes = _setNum * $0
+        })
     }
     
     var body: some View {
@@ -54,15 +47,15 @@ struct TimesSection: View {
                     Text("Split into sets".localized)
                         .bodyText()
                     Spacer()
-                    PaperToggle(isSetWrapper)
+                    PaperToggle(isSet)
                 }
-                if !isSet {
-                    PickerWithButton(str: "How many times do you want to achieve your goal in a day?".localized, size: 100, number: $number)
+                if !isSet.wrappedValue {
+                    PickerWithButton(str: "How many times do you want to achieve your goal in a day?".localized, size: 100, number: $numberOfTimes)
                 } else {
-                    PickerWithButton(str: "How many times do you proceed in one set?".localized, size: 100, number: oneTapWrapper)
-                    PickerWithButton(str: "How many sets are there?".localized, size: 30, number: setNumWrapper)
+                    PickerWithButton(str: "How many times do you proceed in one set?".localized, size: 100, number: oneTapNum)
+                    PickerWithButton(str: "How many sets are there?".localized, size: 30, number: setNum)
                     Divider()
-                    Text("Total: \(number)")
+                    Text("Total: \(numberOfTimes)")
                         .headline()
                 }
             }
@@ -79,7 +72,7 @@ struct Test3_Previews: PreviewProvider {
         @State var oneTapUnit = 1
         
         var body: some View {
-            TimesSection(number: $number, oneTapUnit: $oneTapUnit)
+            TimesSection(numberOfTimes: $number, addUnit: $oneTapUnit)
         }
     }
     
