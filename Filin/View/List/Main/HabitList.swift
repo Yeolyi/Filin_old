@@ -32,6 +32,7 @@ struct HabitList: View {
             .sheet(isPresented: $isSheet) {
                 AddHabit()
                     .environmentObject(appSetting)
+                    .environmentObject(habitManager)
             }
         }
         .onAppear {
@@ -46,8 +47,9 @@ struct HabitList: View {
 
 struct HabitList_Previews: PreviewProvider {
     static var previews: some View {
-        _ = CoreDataPreview.shared
+        let coredataPreview = CoreDataPreview.shared
         return HabitList()
             .environmentObject(AppSetting())
+            .environmentObject(coredataPreview.habitcontextManager)
     }
 }

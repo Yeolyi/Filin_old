@@ -12,17 +12,17 @@ final class SummaryContext: ObservableObject, IDIdentifiable {
     
     let id: UUID
     @Published var name: String
-    @Published var first: HabitContext?
-    @Published var second: HabitContext?
-    @Published var third: HabitContext?
+    @Published var first: UUID?
+    @Published var second: UUID?
+    @Published var third: UUID?
     
     init(_ summary: Summary) {
         let habitManager = HabitContextManager.shared
         id = summary.id
         name = summary.name
-        first = habitManager.contents.first(where: {$0.id == summary.first})
-        self.second = habitManager.contents.first(where: {$0.id == summary.second})
-        self.third = habitManager.contents.first(where: {$0.id == summary.second})
+        first = summary.first
+        second = summary.second
+        third = summary.third
     }
     
     init(id: UUID, name: String) {
@@ -31,19 +31,19 @@ final class SummaryContext: ObservableObject, IDIdentifiable {
     }
     
     func contains(id: UUID) -> Bool {
-        id == first?.id || id == second?.id || id == third?.id
+        id == first || id == second || id == third
     }
     
     func setByNumber(_ num: Int, habit: HabitContext?) {
         switch num {
-        case 1: first = habit
-        case 2: second = habit
-        case 3: third = habit
+        case 1: first = habit?.id
+        case 2: second = habit?.id
+        case 3: third = habit?.id
         default:
             assertionFailure()
         }
     }
-    func getByNumber(_ num: Int) -> HabitContext? {
+    func getByNumber(_ num: Int) -> UUID? {
         switch num {
         case 1: return first
         case 2: return second
@@ -53,7 +53,7 @@ final class SummaryContext: ObservableObject, IDIdentifiable {
             return first
         }
     }
-    var habitArray: [HabitContext?] {
+    var habitArray: [UUID?] {
         [first, second, third]
     }
     var isEmpty: Bool {
@@ -70,6 +70,9 @@ final class SummaryContextManager: ContextEditable, ObservableObject {
     
     private init() {
         contents = fetched.map{ SummaryContext.init($0) }
+        if contents.isEmpty {
+            contents.append(.init(id: UUID(), name: "Default"))
+        }
     }
     
     static var shared = SummaryContextManager()
@@ -79,16 +82,16 @@ final class SummaryContextManager: ContextEditable, ObservableObject {
             if let index = fetched.firstIndex(where: {$0.id == objectContext.id}) {
                 let current = fetched[index]
                 current.name = objectContext.name
-                current.first = objectContext.first?.id
-                current.second = objectContext.second?.id
-                current.third = objectContext.third?.id
+                current.first = objectContext.first
+                current.second = objectContext.second
+                current.third = objectContext.third
             } else {
                 let newHabit = Summary(context: context)
                 newHabit.id = objectContext.id
                 newHabit.name = objectContext.name
-                newHabit.first = objectContext.first?.id
-                newHabit.second = objectContext.second?.id
-                newHabit.third = objectContext.third?.id
+                newHabit.first = objectContext.first
+                newHabit.second = objectContext.second
+                newHabit.third = objectContext.third
             }
         }
         do {

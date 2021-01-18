@@ -9,29 +9,33 @@ import SwiftUI
 
 struct RowBackground: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
+    let isBottomPadding: Bool
+    
+    init(_ isBottomPadding: Bool = true) {
+        self.isBottomPadding = isBottomPadding
+    }
     
     func body(content: Content) -> some View {
-        Group {
-            VStack(spacing: 0) {
-                content
-                    .padding(.top, 21)
-                    .padding(.bottom, 5)
-                Divider()
-            }
-            .padding(.horizontal, 20)
-        }
+        content
+            .padding(.top, 20)
+            .padding(.bottom, isBottomPadding ? 20 : 0)
+            .padding(.horizontal, 10)
+            .background(
+                Color(hex: colorScheme == .light ? "#F2F2F2" : "#202020")
+            )
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
     }
 }
 
 extension View {
-    func rowBackground() -> some View {
-        return modifier(RowBackground())
+    func rowBackground(_ isBottomPadding: Bool = true) -> some View {
+        return modifier(RowBackground(isBottomPadding))
     }
 }
 
 struct RowBackground_Previews: PreviewProvider {
     static var previews: some View {
-        Text("Hello")
-            .rowBackground()
+        HabitRow(habit: HabitContext(name: "Text"), showAdd: true)
     }
 }

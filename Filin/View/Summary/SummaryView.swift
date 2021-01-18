@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct SummaryView: View {
-
+    
     @State var updated = false
     @State var selectedDate = Date()
     @State var isSettingSheet = false
+    
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var summaryManager: SummaryContextManager
+    @EnvironmentObject var habitManager: HabitContextManager
     
     var body: some View {
         NavigationView {
@@ -24,11 +26,15 @@ struct SummaryView: View {
                     } else {
                         RingsCalendar(
                             selectedDate: $selectedDate,
-                            habit1: summaryManager.contents[0].first,
-                            habit2: summaryManager.contents[0].second,
-                            habit3: summaryManager.contents[0].third
+                            habit1: habitManager.contents.first(where: {$0.id == summaryManager.contents[0].first}),
+                            habit2: habitManager.contents.first(where: {$0.id == summaryManager.contents[0].second}),
+                            habit3: habitManager.contents.first(where: {$0.id == summaryManager.contents[0].third})
                         )
-                        ForEach(summaryManager.contents[0].habitArray.compactMap({$0}), id: \.id) { habit in
+                        ForEach(summaryManager.contents[0].habitArray.compactMap({ id in
+                            habitManager.contents.first(where: {
+                                $0.id == id
+                            })
+                        }), id: \.id) { habit in
                             HabitRow(habit: habit, showAdd: false, date: selectedDate)
                         }
                     }
@@ -47,21 +53,17 @@ struct SummaryView: View {
             ProfileSettingView()
                 .accentColor(ThemeColor.mainColor(colorScheme))
                 .environmentObject(summaryManager)
+                .environmentObject(habitManager)
         }
         .accentColor(ThemeColor.mainColor(colorScheme))
-        .onAppear {
-            if summaryManager.contents.isEmpty {
-                summaryManager.addObject(.init(id: UUID(), name: "Default"))
-            }
-        }
     }
 }
 
 /*
-struct CalendarSummaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        _ = CoreDataPreview.shared
-        return SummaryView()
-    }
-}
-*/
+ struct CalendarSummaryView_Previews: PreviewProvider {
+ static var previews: some View {
+ _ = CoreDataPreview.shared
+ return SummaryView()
+ }
+ }
+ */

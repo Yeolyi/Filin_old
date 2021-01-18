@@ -10,16 +10,14 @@ import Combine
 
 struct SettingView: View {
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appSetting: AppSetting
-    @Environment(\.managedObjectContext) var context
-    @State var isReorderSheet = false
-    @State var isDefaultTabExpanded = false
-    var appVersion: String {
-        (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
+    let appVersion: String
+    let build: String
+    
+    init() {
+        appVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
+        build = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? ""
     }
-    var build: String {
-        (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? ""
-    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -51,13 +49,21 @@ struct SettingView: View {
                         Text("\(build)")
                     }
                     .rowBackground()
+                    #if DEBUG
+                    HStack {
+                        Text("샘플")
+                            .bodyText()
+                        Spacer()
+                    }
+                    .onTapGesture {
+                        _ = CoreDataPreview.shared
+                    }
+                    .rowBackground()
+                    #endif
                 }
             }
             .padding(.top, 1)
             .navigationBarTitle("Setting".localized)
-        }
-        .sheet(isPresented: $isReorderSheet) {
-            ListReorderSheet()
         }
         .accentColor(ThemeColor.mainColor(colorScheme))
         .navigationViewStyle(StackNavigationViewStyle())

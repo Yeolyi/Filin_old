@@ -36,59 +36,55 @@ struct HabitRow: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                if showAdd {
-                    CheckButton(date: date)
-                        .environmentObject(habit)
-                }
-                ZStack {
-                    HStack {
-                        VStack {
-                            HStack {
-                                Text(subTitle)
-                                    .bodyText()
-                                Spacer()
-                            }
-                            HStack {
-                                Text(habit.name)
-                                    .foregroundColor(habit.color)
-                                    .headline()
-                                Spacer()
-                            }
-                        }
-                        if habit.dayOfWeek.contains(date.dayOfTheWeek) {
-                            ZStack {
-                                LinearProgressBar(color: habit.color, progress: habit.progress(at: date) ?? 0)
-                                HStack {
-                                    Spacer()
-                                    Text("\(habit.achievement[date.dictKey] ?? 0)/\(habit.numberOfTimes)")
-                                        .mainColor()
-                                        .opacity(0.8)
-                                        .bodyText()
-                                        .padding(.trailing, 5)
-                                }
-                                .zIndex(1)
-                            }
-                            .frame(width: 150, height: 20)
-                        }
-                    }
-                    NavigationLink(destination:
-                                    HabitDetailView(habit: habit).environmentObject(habit)
-                    ) {
-                        Rectangle()
-                            .opacity(0)
-                    }
-                }
-                .padding(.leading, 5)
+        HStack(spacing: 0) {
+            if showAdd {
+                CheckButton(date: date)
+                    .environmentObject(habit)
             }
-            .rowBackground()
+            NavigationLink(destination:
+                            HabitDetailView(habit: habit).environmentObject(habit)
+            ) {
+                HStack {
+                    VStack {
+                        HStack {
+                            Text(subTitle)
+                                .bodyText()
+                            Spacer()
+                        }
+                        HStack {
+                            Text(habit.name)
+                                .foregroundColor(habit.color)
+                                .headline()
+                            Spacer()
+                        }
+                    }
+                    if habit.dayOfWeek.contains(date.dayOfTheWeek) {
+                        ZStack {
+                            LinearProgressBar(color: habit.color, progress: habit.progress(at: date) ?? 0)
+                            HStack {
+                                Spacer()
+                                Text("\(habit.achievement[date.dictKey] ?? 0)/\(habit.numberOfTimes)")
+                                    .mainColor()
+                                    .opacity(0.8)
+                                    .bodyText()
+                                    .padding(.trailing, 5)
+                            }
+                            .zIndex(1)
+                        }
+                        .frame(width: 150, height: 20)
+                    }
+                }
+            }
+            .padding(.leading, 5)
         }
+        .rowBackground()
     }
 }
 
 struct HabitRow_Previews: PreviewProvider {
     static var previews: some View {
+        let coredataPreview = CoreDataPreview.shared
         HabitRow(habit: HabitContext(name: "Test"),showAdd: true)
+            .environmentObject(coredataPreview.habitcontextManager)
     }
 }

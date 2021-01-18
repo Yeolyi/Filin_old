@@ -9,12 +9,12 @@ import SwiftUI
 
 struct EditHabit: View {
     
-    @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var tempHabit: HabitContext
     let targetHabit: HabitContext
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var habitManager: HabitContextManager
+    @ObservedObject var tempHabit: HabitContext
     @State var showTimes = false
     @State var isDeleteAlert = false
-    
     @State var _isRequiredTime = false
     var isRequiredTime: Binding<Bool> {
         Binding(get: {_isRequiredTime}, set: {
@@ -37,7 +37,7 @@ struct EditHabit: View {
         Binding(get: {_second},
         set: {
             _second = $0
-            tempHabit.requiredSec = $0 * _minute * 60
+            tempHabit.requiredSec = $0 + _minute * 60
         })
     }
     
@@ -98,18 +98,26 @@ struct EditHabit: View {
             }
             ScrollView {
                 VStack(spacing: 8) {
-                    VStack {
-                        HStack {
-                            Text("Name".localized)
-                                .bodyText()
-                            Spacer()
-                        }
-                        TextFieldWithEndButton("Drink water".localized, text: $tempHabit.name)
+                    HStack {
+                        Text("Name".localized)
+                            .bodyText()
+                        Spacer()
                     }
-                    .rowBackground()
+                    .padding(.top, 10)
+                    .padding(.leading, 20)
+                    TextFieldWithEndButton("Drink water".localized, text: $tempHabit.name)
+                        .rowBackground()
+                    HStack {
+                        Text("Times".localized)
+                            .bodyText()
+                        Spacer()
+                    }
+                    .padding(.top, 10)
+                    .padding(.leading, 20)
                     VStack {
                         HStack {
-                            Text("Times".localized)
+                            Text("\(showTimes ? "Fold" : "Expand")".localized)
+                                .subColor()
                                 .bodyText()
                             Spacer()
                             BasicImage(imageName: showTimes ? "chevron.up" : "chevron.down")
@@ -121,24 +129,35 @@ struct EditHabit: View {
                             }
                         }
                         if showTimes {
-                            HStack {
-                                Text("Split into sets".localized)
-                                    .bodyText()
-                                Spacer()
-                                PaperToggle(isSet)
+                            Group {
+                                HStack {
+                                    Text("Split into sets".localized)
+                                        .bodyText()
+                                    Spacer()
+                                    PaperToggle(isSet)
+                                }
+                                if !isSet.wrappedValue {
+                                    PickerWithButton(str: "".localized, size: 100, number: $tempHabit.numberOfTimes)
+                                } else {
+                                    PickerWithButton(str: "Number of times per set".localized, size: 100, number: oneTapNum)
+                                    PickerWithButton(str: "Number of sets".localized, size: 30, number: setNum)
+                                }
                             }
-                            if !isSet.wrappedValue {
-                                PickerWithButton(str: "".localized, size: 100, number: $tempHabit.numberOfTimes)
-                            } else {
-                                PickerWithButton(str: "Number of times per set".localized, size: 100, number: oneTapNum)
-                                PickerWithButton(str: "Number of sets".localized, size: 30, number: setNum)
-                            }
+                            .padding(.top, 10)
                         }
                     }
                     .rowBackground()
+                    HStack {
+                        Text("Timer".localized)
+                            .bodyText()
+                        Spacer()
+                    }
+                    .padding(.top, 10)
+                    .padding(.leading, 20)
                     VStack {
                         HStack {
-                            Text("Timer".localized)
+                            Text("\(isRequiredTime.wrappedValue ? "On" : "Off")".localized)
+                                .subColor()
                                 .bodyText()
                             Spacer()
                             PaperToggle(isRequiredTime)
@@ -148,25 +167,37 @@ struct EditHabit: View {
                         }
                     }
                     .rowBackground()
-                    VStack {
+                    Group {
                         HStack {
                             Text("Repeat".localized)
                                 .bodyText()
+                                .padding(.top, 10)
+                                .padding(.leading, 20)
                             Spacer()
                         }
-                        DayOfWeekSelector(dayOfTheWeek: $tempHabit.dayOfWeek)
+                        HStack {
+                            Spacer()
+                            DayOfWeekSelector(dayOfTheWeek: $tempHabit.dayOfWeek)
+                            Spacer()
+                        }
+                        .rowBackground()
                     }
-                    .rowPadding()
-                    VStack {
+                    Group {
                         HStack {
                             Text("Color".localized)
                                 .bodyText()
+                                .padding(.top, 10)
+                                .padding(.leading, 20)
                             Spacer()
                         }
-                        ColorHorizontalPicker(selectedColor: $tempHabit.color)
+                        HStack {
+                            Spacer()
+                            ColorHorizontalPicker(selectedColor: $tempHabit.color)
+                            Spacer()
+                        }
+                        .rowBackground()
+                        .padding(.bottom, 30)
                     }
-                    .rowPadding()
-                    .padding(.bottom, 30)
                     Divider()
                     deleteButton
                 }
@@ -177,6 +208,7 @@ struct EditHabit: View {
         HeaderText("Save".localized) {
             guard isSaveAvailable else { return }
             targetHabit.update(to: tempHabit)
+            habitManager.objectWillChange.send()
             self.presentationMode.wrappedValue.dismiss()
         }
         .opacity(isSaveAvailable ? 1.0 : 0.5)
@@ -197,7 +229,7 @@ struct EditHabit: View {
             primaryButton: .default(Text("Cancel".localized)),
             secondaryButton: .destructive(Text("Delete".localized), action: {
                 for profile in SummaryContextManager.shared.contents {
-                    if let index = profile.habitArray.firstIndex(where: {$0?.id == tempHabit.id}) {
+                    if let index = profile.habitArray.firstIndex(where: {$0 == tempHabit.id}) {
                         profile.setByNumber(index + 1, habit: nil)
                     }
                 }

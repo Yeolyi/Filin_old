@@ -23,7 +23,11 @@ enum RoutineSheet: Identifiable {
 struct RoutineView: View {
     
     @State var isAddSheet: RoutineSheet?
+    
     @ObservedObject var routineManager = RoutineContextManager.shared
+    
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationView {
@@ -38,14 +42,11 @@ struct RoutineView: View {
                             }
                         }
                     } else {
-                        /*
-                        ForEach([
-                        ], id: \.self) { routine in
+                        ForEach([RoutineContext.sample1, RoutineContext.sample2], id: \.self) { routine in
                             RoutineRow(routine: routine, isSheet: $isAddSheet)
                         }
                         .opacity(0.5)
                         .disabled(true)
- */
                         Text("Group and repeat goals to make them a habit.".localized)
                             .bodyText()
                             .padding(.top, 34)
@@ -76,7 +77,4 @@ struct RoutineView: View {
         .accentColor(ThemeColor.mainColor(colorScheme))
         .navigationViewStyle(StackNavigationViewStyle())
     }
-    
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.presentationMode) var presentationMode
 }

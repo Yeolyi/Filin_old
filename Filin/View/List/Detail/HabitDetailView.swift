@@ -18,6 +18,7 @@ struct HabitDetailView: View {
     
     @ObservedObject var emojiManager = EmojiManager()
     @EnvironmentObject var habit: HabitContext
+    @EnvironmentObject var habitManager: HabitContextManager
     @State var activeSheet: DetailViewActiveSheet?
     @State var selectedDate = Date()
     
@@ -48,6 +49,7 @@ struct HabitDetailView: View {
             switch item {
             case .edit:
                 EditHabit(targetHabit: habit)
+                    .environmentObject(habitManager)
             case .emoji:
                 EmojiListEdit()
                     .environmentObject(emojiManager)

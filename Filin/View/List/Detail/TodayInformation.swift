@@ -49,7 +49,7 @@ struct TodayInformation: View {
                 }
             }
         }
-        .rowBackground()
+        .rowBackground(false)
     }
     func moveButton(isAdd: Bool) -> some View {
         BasicButton(isAdd ? "plus" : "minus") {

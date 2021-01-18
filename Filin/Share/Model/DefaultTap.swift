@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+/// Int값은 TabView의 태그값과 일치해야함.
 enum DefaultTap: Int, CaseIterable {
     var string: String {
         switch self {
@@ -16,8 +18,5 @@ enum DefaultTap: Int, CaseIterable {
         case .setting: return "Setting".localized
         }
     }
-    case list = 0
-    case summary = 1
-    case routine = 2
-    case setting = 3
+    case list, summary, routine, setting
 }

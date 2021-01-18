@@ -31,9 +31,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>NanumMyeongjoBold.ttf</string>
-		<string>NanumMyeongjo.ttf</string>
-		<string>NanumBarunpenR.ttf</string>
+		<string>GodoB.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

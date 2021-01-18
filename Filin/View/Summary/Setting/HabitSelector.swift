@@ -12,14 +12,14 @@ struct HabitSelector: View {
     let position: Int
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @Binding var targetHabit: HabitContext?
+    @Binding var targetHabit: UUID?
     
     var body: some View {
         ScrollView {
             VStack {
                 ForEach(HabitContextManager.shared.contents, id: \.self) { habit in
                     Button(action: {
-                        targetHabit = habit
+                        targetHabit = habit.id
                         self.presentationMode.wrappedValue.dismiss()
                     }) {
                         HStack {
@@ -27,7 +27,7 @@ struct HabitSelector: View {
                                 .mainColor()
                                 .bodyText()
                             Spacer()
-                            if targetHabit?.id == habit.id {
+                            if targetHabit == habit.id {
                                 Image(systemName: "checkmark")
                                     .mainColor()
                                     .bodyText()

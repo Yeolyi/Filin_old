@@ -18,10 +18,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         // Use this method to optionally configure and attach the UIWindow `window`
-        //to the provided UIWindowScene `scene`.
+        // to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or
-        //session are new (see `application:configurationForConnectingSceneSession` instead).
+        // session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Get the managed object context from the shared persistent container.
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
@@ -40,12 +40,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .environmentObject(appSetting)
             .environmentObject(HabitContextManager.shared)
             .environmentObject(SummaryContextManager.shared)
-        /*
+            .environmentObject(RoutineContextManager.shared)
+        
         for family in UIFont.familyNames.sorted() {
             let names = UIFont.fontNames(forFamilyName: family)
             print("Family: \(family) Font names: \(names)")
         }
-*/
+
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
@@ -63,6 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
         HabitContextManager.shared.save()
         SummaryContextManager.shared.save()
+        RoutineContextManager.shared.save()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -88,5 +90,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         HabitContextManager.shared.save()
         SummaryContextManager.shared.save()
+        RoutineContextManager.shared.save()
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct RoutineSetList: View {
     
     @ObservedObject var listData: ListData<UUID>
+    @Environment(\.presentationMode) var presentationMode
     
     init(listData: ListData<UUID>) {
         self.listData = listData
@@ -22,7 +23,7 @@ struct RoutineSetList: View {
                     .bodyText()
                     .padding(.bottom, 5)
                 ScrollView {
-                    ForEach(HabitContextManager.shared.ordered) { habit in
+                    ForEach(HabitContextManager.shared.contents) { habit in
                         HStack {
                             Text(habit.name)
                                 .bodyText()
@@ -57,11 +58,6 @@ struct RoutineSetList: View {
         }
         .navigationBarTitle(Text("List".localized))
     }
-    
-    @FetchRequest(entity: Habit.entity(), sortDescriptors: [])
-    var habitInfos: FetchedResults<Habit>
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.managedObjectContext) var managedObjectContext
     
 }
 

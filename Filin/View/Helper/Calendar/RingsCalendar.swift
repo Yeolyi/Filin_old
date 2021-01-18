@@ -21,7 +21,7 @@ struct RingsCalendar: View {
         [
             habit1.requiredSec == -1 ? nil : habit1,
             habit2.requiredSec == -1 ? nil : habit2,
-            habit3.requiredSec == -1 ? nil : habit1
+            habit3.requiredSec == -1 ? nil : habit3
         ]
     }
     

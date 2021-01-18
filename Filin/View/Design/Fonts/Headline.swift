@@ -11,7 +11,7 @@ struct Headline: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
     func body(content: Content) -> some View {
         content
-            .font(.system(size: 24, weight: .bold))
+            .font(.custom("GodoB", size: 24))
             .mainColor()
     }
 }

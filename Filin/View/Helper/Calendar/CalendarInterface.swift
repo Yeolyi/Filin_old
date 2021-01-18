@@ -75,7 +75,6 @@ struct CalendarInterface<Content: View>: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
             VStack(spacing: 0) {
                 HStack(spacing: 8) {
                     ForEach(1...7, id: \.self) { dayOfWeek in
@@ -90,11 +89,9 @@ struct CalendarInterface<Content: View>: View {
                     if isExpanded {
                         ForEach(1..<(selectedDate.weekInMonth ?? 2) + 1, id: \.self) { week in
                             content(week, true)
-                                .highPriorityGesture(gesture())
                         }
                     } else {
                         content(selectedDate.weekNum, false)
-                            .highPriorityGesture(gesture())
                     }
                 }
                 BasicButton(isExpanded ? "chevron.compact.up" : "chevron.compact.down") {
@@ -103,9 +100,9 @@ struct CalendarInterface<Content: View>: View {
                     }
                 }
             }
-            .rowBackground()
-            .highPriorityGesture(gesture())
         }
+        .rowBackground(false)
+        .highPriorityGesture(gesture())
     }
 }
 

@@ -24,8 +24,7 @@ struct RoutineRow: View {
             subTitleStr = "Every day".localized
         }
         if let time = routine.time {
-            let timeStr = Date(hourAndMinuteStr: time)
-            subTitleStr += " \(timeStr.localizedHourMinute)"
+            subTitleStr += " \(time.localizedHourMinute)"
         }
         return subTitleStr
     }

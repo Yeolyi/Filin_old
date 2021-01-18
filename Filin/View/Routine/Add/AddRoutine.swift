@@ -7,23 +7,24 @@
 
 import SwiftUI
 
+/// 새로운 루틴을 추가하는 뷰
 struct AddRoutine: View {
     
-    @State var name = ""
-    @State var currentPage = 1
-    @State var routineTime = Date()
-    @State var dayOfWeek: [Int] = [1, 2, 3, 4, 5, 6, 7]
-    @State var isReminder = true
     let totalPage = 4
     
+    @State var currentPage = 1
+    @State var isReminder = true
+    @State var tempRoutineTime = Date()
+    
+    @ObservedObject var newRoutine = RoutineContext()
     @ObservedObject var listData = ListData<UUID>(values: [], save: {_ in })
-    @Environment(\.managedObjectContext) var context
-    @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var routineManager: RoutineContextManager
+    @EnvironmentObject var habitManager: HabitContextManager
     
     var isNextAvailable: Bool {
         if currentPage == 1 {
-            return name != ""
+            return newRoutine.name != ""
         } else if currentPage == 2 {
             return !listData.list.isEmpty
         } else if currentPage == 3 {
@@ -31,40 +32,23 @@ struct AddRoutine: View {
         } else if currentPage == 4 {
             return true
         } else {
-            assertionFailure()
+            assertionFailure("페이지 범위를 벗어났습니다.")
             return true
         }
     }
     var body: some View {
         VStack(spacing: 0) {
             if currentPage == 1 {
-                VStack(spacing: 0) {
-                    LottieView(filename: "lottieStack")
-                        .frame(width: 130, height: 130)
-                        .padding(.bottom, 5)
-                        .padding(.top, 21)
-                    Text("Add routine".localized)
-                        .title()
-                        .padding(.bottom, 89)
-                    VStack {
-                        HStack {
-                            Text("Name".localized)
-                                .bodyText()
-                            Spacer()
-                        }
-                        TextFieldWithEndButton("After wake up".localized, text: $name)
-                    }
-                    .rowBackground()
-                }
+                RoutineName(name: $newRoutine.name)
             }
             if currentPage == 2 {
                 RoutineSetList(listData: listData)
             }
             if currentPage == 3 {
-                RoutineDate(dayOfTheWeek: $dayOfWeek)
+                RoutineDate(dayOfTheWeek: $newRoutine.dayOfWeek)
             }
             if currentPage == 4 {
-                RoutineTime(routineTime: $routineTime, isTimer: $isReminder)
+                RoutineTime(routineTime: $tempRoutineTime, isTimer: $isReminder)
             }
             Spacer()
             HStack {
@@ -94,7 +78,13 @@ struct AddRoutine: View {
             action: {
                 if isNextAvailable == false { return }
                 if currentPage == totalPage {
-                    #warning("Save function Needed")
+                    if isReminder {
+                        newRoutine.time = tempRoutineTime
+                    }
+                    newRoutine.list = listData.sortedValue.compactMap { id in
+                        habitManager.contents.first(where: {id == $0.id})
+                    }
+                    routineManager.addObject(newRoutine)
                     presentationMode.wrappedValue.dismiss()
                     return
                 }

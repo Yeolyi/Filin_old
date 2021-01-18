@@ -35,7 +35,7 @@ struct HabitScrollView: View {
                 Text("Today".localized)
                     .sectionText()
                 if !isTodayEmpty {
-                    ForEach(habitManager.ordered.filter(\.isTodayTodo)) { habitInfo in
+                    ForEach(habitManager.contents.filter(\.isTodayTodo)) { habitInfo in
                         HabitRow(habit: habitInfo, showAdd: true)
                             .environmentObject(habitInfo)
                     }
@@ -45,7 +45,7 @@ struct HabitScrollView: View {
                 Text("Others".localized)
                     .sectionText()
                 if !isGeneralEmpty {
-                    ForEach(habitManager.ordered.filter({!$0.isTodayTodo}), id: \.self) { habitInfo in
+                    ForEach(habitManager.contents.filter({!$0.isTodayTodo}), id: \.self) { habitInfo in
                         HabitRow(habit: habitInfo, showAdd: false)
                     }
                 } else {

@@ -9,17 +9,20 @@ import SwiftUI
 
 struct RunRoutine: View {
     
-    let routine: RoutineContext
-    let habitContent = HabitContextManager.shared.contents
+    @ObservedObject var routine: RoutineContext
+    
     @State var currentListIndex = 0
     @State var isTimeInit = false
-    
     @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var timeRemaining = 0
     @State var isCounting = false
+    
     var isComplete: Bool {
         timeRemaining == 0
     }
+    
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
@@ -27,26 +30,26 @@ struct RunRoutine: View {
             if currentListIndex > 0 {
                 VStack {
                     ForEach(0...currentListIndex - 1, id: \.self) { index in
-                        Text(habitContent[index].name)
+                        Text(routine.list[index].name)
                             .subColor()
                             .headline()
                     }
                 }
             }
             VStack {
-                Text(habitContent[currentListIndex].name)
+                Text(routine.list[currentListIndex].name)
                     .title()
                 LinearProgressBar(
                     color: ThemeColor.mainColor(colorScheme),
-                    progress: habitContent[currentListIndex].progress(at: Date()) ?? 0
+                    progress: routine.list[currentListIndex].progress(at: Date()) ?? 0
                 )
                 .frame(width: 200)
             }
             .padding(10)
-            if currentListIndex < habitContent.count - 1 {
+            if currentListIndex < routine.list.count - 1 {
                 VStack {
-                    ForEach(currentListIndex + 1...habitContent.count - 1, id: \.self) { index in
-                        Text(habitContent[index].name)
+                    ForEach(currentListIndex + 1...routine.list.count - 1, id: \.self) { index in
+                        Text(routine.list[index].name)
                             .subColor()
                             .headline()
                     }
@@ -70,7 +73,7 @@ struct RunRoutine: View {
         }
         .onAppear {
             if !isTimeInit {
-                timeRemaining = Int(habitInfos.first(where: {$0.id == routine.list[0]})!.requiredSecond)
+                timeRemaining = routine.list[0].requiredSec
                 isTimeInit = true
             }
         }
@@ -78,7 +81,7 @@ struct RunRoutine: View {
     
     var nextButton: some View {
         Button(action: {
-            if habitContent[currentListIndex].requiredSec != 0 && timeRemaining != 0 {
+            if routine.list[currentListIndex].requiredSec != 0 && timeRemaining != 0 {
                 if isCounting {
                     self.timer.upstream.connect().cancel()
                 } else {
@@ -90,26 +93,26 @@ struct RunRoutine: View {
             } else {
                 self.timer.upstream.connect().cancel()
                 isCounting = false
-                let id = habitContent[currentListIndex].id
                 withAnimation {
-                    habitContent[currentListIndex].calAchieve(at: Date(), isAdd: true)
+                    routine.list[currentListIndex].calAchieve(at: Date(), isAdd: true)
+                    routine.objectWillChange.send()
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                    if currentListIndex == habitContent.count - 1 {
+                    if currentListIndex == routine.list.count - 1 {
                         presentationMode.wrappedValue.dismiss()
                         return
                     }
                     withAnimation {
                         currentListIndex += 1
                     }
-                    timeRemaining = habitContent[currentListIndex].requiredSec
+                    timeRemaining = routine.list[currentListIndex].requiredSec
                 }
             }
         }) {
             ZStack {
-                if habitContent[currentListIndex].requiredSec != 0 {
+                if routine.list[currentListIndex].requiredSec != 0 {
                     if timeRemaining == 0 {
-                        Text(currentListIndex == habitContent.count - 1 ? "Complete".localized : "Next".localized)
+                        Text(currentListIndex == routine.list.count - 1 ? "Complete".localized : "Next".localized)
                             .foregroundColor(.white)
                             .zIndex(1)
                         Circle()
@@ -124,7 +127,7 @@ struct RunRoutine: View {
                             .foregroundColor(.clear)
                             .overlay(
                                 Circle()
-                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(habitContent[currentListIndex].requiredSec))
+                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(routine.list[currentListIndex].requiredSec))
                                     .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .square, lineJoin: .bevel))
                                     .mainColor()
                                     .rotationEffect(Angle(degrees: 270.0))
@@ -139,7 +142,7 @@ struct RunRoutine: View {
                             .foregroundColor(.clear)
                             .overlay(
                                 Circle()
-                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(habitContent[currentListIndex].requiredSec))
+                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(routine.list[currentListIndex].requiredSec))
                                     .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .square, lineJoin: .bevel))
                                     .mainColor()
                                     .rotationEffect(Angle(degrees: 270.0))
@@ -147,7 +150,7 @@ struct RunRoutine: View {
                             .frame(width: 100, height: 100)
                     }
                 } else {
-                    Text(currentListIndex == habitContent.count - 1 ? "Complete".localized : "Next".localized)
+                    Text(currentListIndex == routine.list.count - 1 ? "Complete".localized : "Next".localized)
                         .foregroundColor(.white)
                         .zIndex(1)
                     Circle()
@@ -158,14 +161,6 @@ struct RunRoutine: View {
             }
         }
     }
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.presentationMode) var presentationMode
-    @FetchRequest(
-        entity: Habit.entity(),
-        sortDescriptors: []
-    )
-    var habitInfos: FetchedResults<Habit>
-
 }
 
 /*

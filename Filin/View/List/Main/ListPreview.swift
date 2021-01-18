@@ -13,20 +13,22 @@ struct ListPreview: View {
     
     var body: some View {
         ScrollView {
-            Group {
-                HabitRow(habit: HabitContext(
-                    name: "A ten-minute walk".localized,
-                    dayOfWeek: [1, 3, 5, 7], numberOfTimes: 3, requiredSec: 600
-                ),showAdd: true)
-                HabitRow(habit: HabitContext(name: "Stretching".localized), showAdd: true)
+            VStack(spacing: 0) {
+                Group {
+                    HabitRow(habit: HabitContext(
+                        name: "A ten-minute walk".localized,
+                        numberOfTimes: 3, requiredSec: 600
+                    ) ,showAdd: true)
+                    HabitRow(habit: HabitContext(name: "Stretching".localized), showAdd: true)
+                }
+                .opacity(0.5)
+                .disabled(true)
+                Text("Set goals and execute them.".localized)
+                    .bodyText()
+                    .padding(.top, 34)
+                MainRectButton(action: { isAddSheet = true }, str: "Add new goal".localized)
+                    .padding(.top, 13)
             }
-            .opacity(0.5)
-            .disabled(true)
-            Text("Set goals and execute them.".localized)
-                .bodyText()
-                .padding(.top, 34)
-            MainRectButton(action: { isAddSheet = true }, str: "Add new goal".localized)
-                .padding(.top, 13)
         }
         .padding(.top, 1)
     }

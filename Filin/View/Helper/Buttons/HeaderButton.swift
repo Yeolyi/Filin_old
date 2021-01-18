@@ -13,7 +13,6 @@ struct BasicImage: View {
         Image(systemName: imageName)
             .subColor()
             .font(.system(size: 24, weight: .semibold))
-            .frame(width: 44, height: 44)
     }
 }
 
@@ -32,7 +31,7 @@ struct BasicButton: View {
                 .subColor()
                 .font(.system(size: 24, weight: .semibold))
         }
-        .frame(width: 44, height: 44)
+        .frame(width: 44, height: 35)
     }
 }
 
@@ -52,7 +51,7 @@ struct BasicTextButton: View {
                 .subColor()
                 .font(.system(size: 18, weight: .semibold))
         }
-        .frame(minWidth: 44, minHeight: 22)
+        .frame(width: 44, height: 35)
     }
 }
 
@@ -73,7 +72,7 @@ struct HeaderButton: View {
                 .font(.system(size: 18, weight: .semibold))
                 .mainColor()
         }
-        .frame(width: 44, height: 44)
+        .frame(width: 44, height: 35)
     }
 }
 
@@ -94,6 +93,6 @@ struct HeaderText: View {
                 .font(.system(size: 18, weight: .semibold))
                 .mainColor()
         }
-        .frame(minWidth: 44, minHeight: 22)
+        .frame(width: 44, height: 35)
     }
 }

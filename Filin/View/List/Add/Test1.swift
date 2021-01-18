@@ -15,6 +15,7 @@ struct NameSection: View {
         "Short", "Items", "Here", "And", "A", "Few", "More",
         "And then a very very very long one"
     ].shuffled()
+    @EnvironmentObject var habitManager: HabitContextManager
     
     var body: some View {
         ScrollView {
@@ -23,7 +24,10 @@ struct NameSection: View {
                     .frame(width: 120, height: 120)
                     .padding(.bottom, 5)
                     .padding(.top, 21)
-                Text(appSetting.isFirstRun && habitInfos.isEmpty ?
+                    .if(colorScheme == .dark) {
+                        $0.colorInvert()
+                    }
+                Text(appSetting.isFirstRun && habitManager.contents.isEmpty ?
                         "Make first goal".localized : "Make new goal".localized)
                     .title()
                     .padding(.bottom, 89)
@@ -54,12 +58,6 @@ struct NameSection: View {
             }
         }
     }
-    
-    @FetchRequest(
-        entity: Habit.entity(),
-        sortDescriptors: []
-    )
-    var habitInfos: FetchedResults<Habit>
     @EnvironmentObject var appSetting: AppSetting
     @Environment(\.colorScheme) var colorScheme
     

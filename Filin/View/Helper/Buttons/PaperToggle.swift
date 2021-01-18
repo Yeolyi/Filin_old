@@ -25,7 +25,7 @@ struct PaperToggle: View {
                 .mainColor()
                 .font(.system(size: 24, weight: .semibold))
         }
-        .frame(width: 44, height: 44)
+        .frame(width: 44)
     }
 }
 

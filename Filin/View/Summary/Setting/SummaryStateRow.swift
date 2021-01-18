@@ -10,7 +10,15 @@ import SwiftUI
 struct SummaryStateRow: View {
     
     let num: Int
-    @Binding var targetHabit: HabitContext?
+    var habit: HabitContext? {
+        habitManager.contents.first(where: {
+            $0.id == targetHabit
+        })
+    }
+    
+    @Binding var targetHabit: UUID?
+    
+    @EnvironmentObject var habitManager: HabitContextManager
     
     var description: String {
         switch num {
@@ -33,7 +41,7 @@ struct SummaryStateRow: View {
                     .bodyText()
                     .mainColor()
                 Spacer()
-                Text(targetHabit?.name ?? "Empty".localized)
+                Text(habit?.name ?? "Empty".localized)
                     .subColor()
                     .bodyText()
             }

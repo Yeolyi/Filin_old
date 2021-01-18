@@ -9,29 +9,31 @@ import SwiftUI
 
 struct EditRoutine: View {
     
-    @ObservedObject var routine: RoutineContext
-
-    @State var name = ""
-    @State var habitList: [UUID]
+    let targetRoutine: RoutineContext
+    
+    @ObservedObject var tempRoutine: RoutineContext
+    @ObservedObject var listData: ListData<UUID>
+    
     @State var isReminderUsed: Bool
     @State var reminderTime: Date
     @State var isDeleteAlert = false
-    @State var dayOfWeek: [Int]
-    @ObservedObject var listData: ListData<UUID>
+    
+    @EnvironmentObject var routineManager: RoutineContextManager
+    @EnvironmentObject var habitManager: HabitContextManager
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.colorScheme) var colorScheme
     
     init(routine: RoutineContext) {
-        self.routine = routine
-        _name = State(initialValue: routine.name)
-        _habitList = State(initialValue: routine.list)
-        _dayOfWeek = State(initialValue: routine.dayOfWeek)
+        targetRoutine = routine
+        tempRoutine = RoutineContext(copy: routine)
         if let time = routine.time {
             _isReminderUsed = State(initialValue: true)
-            _reminderTime = State(initialValue: Date(hourAndMinuteStr: time))
+            _reminderTime = State(initialValue: time)
         } else {
             _isReminderUsed = State(initialValue: true)
             _reminderTime = State(initialValue: Date())
         }
-        listData = ListData<UUID>(values: routine.list, save: {_ in})
+        listData = ListData<UUID>(values: routine.list.map(\.id), save: {_ in})
     }
     
     var body: some View {
@@ -39,11 +41,15 @@ struct EditRoutine: View {
             VStack(spacing: 0) {
                 VStack(spacing: 0) {
                     HStack {
-                        Text("\(routine.name)")
+                        Text("\(tempRoutine.name)")
                             .headline()
                         Spacer()
                         HeaderText("Save".localized) {
-                            #warning("Save function needs")
+                            tempRoutine.list = listData.sortedValue.compactMap{ id in
+                                habitManager.contents.first(where: {$0.id == id})
+                            }
+                            tempRoutine.time = isReminderUsed ? reminderTime : nil
+                            targetRoutine.update(to: tempRoutine)
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
@@ -52,27 +58,27 @@ struct EditRoutine: View {
                 }
                 ScrollView {
                     VStack(spacing: 8) {
-                        VStack {
                             HStack {
                                 Text("Name".localized)
                                     .bodyText()
                                 Spacer()
                             }
-                            TextFieldWithEndButton("Drink water".localized, text: $name)
-                        }
-                        .rowBackground()
-                        VStack(spacing: 15) {
+                            .padding(.leading, 20)
+                            .padding(.top, 20)
+                            TextFieldWithEndButton("Drink water".localized, text: $tempRoutine.name)
+                                .rowBackground()
                             HStack {
                                 Text("List".localized)
                                     .bodyText()
                                 Spacer()
                             }
+                            .padding(.leading, 20)
                             NavigationLink(destination:
                                             RoutineSetList(listData: listData)
                                             .navigationBarTitle(Text(""), displayMode: .inline)
                             ) {
                                 HStack {
-                                    Text(String(format: NSLocalizedString("Consists of %d goals", comment: ""), routine.list.count))
+                                    Text(String(format: NSLocalizedString("Consists of %d goals", comment: ""), tempRoutine.list.count))
                                         .bodyText()
                                     Spacer()
                                 }
@@ -80,15 +86,14 @@ struct EditRoutine: View {
                                 Image(systemName: "chevron.right")
                                     .mainColor()
                             }
-                        }
-                        .rowBackground()
+                            .rowBackground()
                         VStack {
                             HStack {
                                 Text("Repeat")
                                     .bodyText()
                                 Spacer()
                             }
-                            DayOfWeekSelector(dayOfTheWeek: $dayOfWeek)
+                            DayOfWeekSelector(dayOfTheWeek: $tempRoutine.dayOfWeek)
                         }
                         .rowPadding()
                         VStack {
@@ -122,19 +127,14 @@ struct EditRoutine: View {
     }
     var deleteAlert: Alert {
         Alert(
-            title: Text(String(format: NSLocalizedString("Delete %@?", comment: ""), routine.name)),
+            title: Text(String(format: NSLocalizedString("Delete %@?", comment: ""), tempRoutine.name)),
             message: nil,
             primaryButton: .default(Text("Cancel".localized)),
             secondaryButton: .destructive(Text("Delete".localized), action: {
-
+                routineManager.deleteObject(id: targetRoutine.id)
                 presentationMode.wrappedValue.dismiss()
             }))
     }
-    
-    @Environment(\.managedObjectContext) var context
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-    
 }
 
 /*

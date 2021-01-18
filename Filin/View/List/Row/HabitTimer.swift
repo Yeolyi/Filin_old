@@ -10,7 +10,6 @@ import SwiftUI
 struct HabitTimer: View {
     
     @EnvironmentObject var habit: HabitContext
-    @Environment(\.presentationMode) var presentationMode
     let date: Date
     @State var timeRemaining = 0
     @State var isCounting = false
@@ -18,6 +17,7 @@ struct HabitTimer: View {
     
     var body: some View {
         VStack {
+            HabitRow(habit: habit, showAdd: false)
             Spacer()
             ZStack {
                 Circle()
@@ -37,19 +37,6 @@ struct HabitTimer: View {
                                 .zIndex(0)
                         }
                     )
-                Rectangle()
-                    .foregroundColor(habit.color)
-                    .frame(width: 10, height: 90)
-                    .cornerRadius(10)
-                    .offset(y: -40)
-                    .rotationEffect(.degrees(Double(360/habit.requiredSec*(habit.requiredSec - timeRemaining))))
-                    .animation(.linear)
-                Rectangle()
-                    .foregroundColor(habit.color)
-                    .frame(width: 10, height: 90)
-                    .cornerRadius(10)
-                    .offset(y: -40)
-                    .animation(.linear)
                 VStack(spacing: 0) {
                     Text("\(timeRemaining)")
                         .title()
@@ -65,10 +52,9 @@ struct HabitTimer: View {
                             self.timer.upstream.connect().cancel()
                         }
                     Text("Sec".localized)
-                        .bodyText()
+                        .headline()
                         .subColor()
                 }
-                .offset(y: 60)
             }
             .frame(width: 250, height: 250)
             .fixedSize()
@@ -80,7 +66,7 @@ struct HabitTimer: View {
                     timeRemaining = habit.requiredSec
                 }) {
                     Image(systemName: "arrow.triangle.2.circlepath")
-                        .subColor()
+                        .mainColor()
                         .title()
                 }
                 .frame(width: 50)
@@ -90,7 +76,6 @@ struct HabitTimer: View {
                             habit.calAchieve(at: date, isAdd: true)
                         }
                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        self.presentationMode.wrappedValue.dismiss()
                     }
                     if isCounting {
                         self.timer.upstream.connect().cancel()
@@ -101,14 +86,14 @@ struct HabitTimer: View {
                     isCounting.toggle()
                 }) {
                     Image(systemName: timeRemaining == 0 ? "plus" : (isCounting ? "pause" : "play"))
-                        .subColor()
+                        .mainColor()
                         .title()
                 }
                 .frame(width: 50)
             }
             Spacer()
         }
-        .navigationBarTitle(habit.name)
+        .navigationBarTitle(Text(habit.name), displayMode: .inline)
         .onAppear {
             timeRemaining = habit.requiredSec
         }
@@ -120,7 +105,7 @@ struct HabitTimer_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             HabitTimer(date: Date())
-                .environmentObject(HabitContext(name: "Text"))
+                .environmentObject(HabitContext(name: "Test", color: .blue, requiredSec: 10))
         }
     }
 }

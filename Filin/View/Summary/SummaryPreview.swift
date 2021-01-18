@@ -12,8 +12,16 @@ struct SummaryPreview: View {
     @Binding var isSettingSheet: Bool
     
     var body: some View {
-        RingCalendar(
-            selectedDate: .constant(Date()), habit: HabitContext(name: "Test"))
+        Group {
+            RingsCalendar(
+                selectedDate: .constant(Date()),
+                habit1: HabitContext.sample1,
+                habit2: HabitContext.sample2,
+                habit3: nil
+            )
+            HabitRow(habit: HabitContext.sample1, showAdd: false)
+            HabitRow(habit: HabitContext.sample2, showAdd: false)
+        }
         .opacity(0.5)
         .disabled(true)
         Text("See information of goals at once.")

@@ -8,27 +8,26 @@
 import SwiftUI
 import UserNotifications
 
-enum NotificationError: Error {
-    case error
-}
-
-class RoutineNotiManager {
-    static func add(id: UUID, name: String, date: Date, dayOfWeek: [Int], completion: @escaping (Bool) -> Void) {
-        
+extension RoutineContext {
+    func addNoti(completion: @escaping (Bool) -> Void) {
+        guard let time = self.time else {
+            completion(false)
+            return
+        }
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
                 let content = UNMutableNotificationContent()
-                content.title = name
+                content.title = self.name
                 content.body = "Time to start routine.".localized
                 content.sound = UNNotificationSound.default
                 
                 // Configure the recurring date.
                 var dateComponents = DateComponents()
                 dateComponents.calendar = Calendar.current
-                dateComponents.hour = date.hour
-                dateComponents.minute = date.minute
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
                 
-                for dayOfWeekComp in dayOfWeek {
+                for dayOfWeekComp in self.dayOfWeek {
                 
                     dateComponents.weekday = dayOfWeekComp
 
@@ -38,7 +37,7 @@ class RoutineNotiManager {
                     )
 
                     // Create the request
-                    let uuidString = id.uuidString + String(dayOfWeekComp)
+                    let uuidString = self.id.uuidString + String(dayOfWeekComp)
                     let request = UNNotificationRequest(
                         identifier: uuidString,
                         content: content,
@@ -64,10 +63,10 @@ class RoutineNotiManager {
             }
         }
     }
-    static func delete(id: UUID) {
+    func deleteNoti() {
         var idList: [String] = []
         for dayOfWeek in [1, 2, 3, 4, 5, 6, 7].map({String($0)}) {
-            idList.append(id.uuidString + dayOfWeek)
+            idList.append(self.id.uuidString + dayOfWeek)
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: idList)
     }

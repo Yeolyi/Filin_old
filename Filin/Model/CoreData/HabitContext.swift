@@ -12,6 +12,26 @@ infix operator <<
 
 class HabitContext: IDIdentifiable, Identifiable, ObservableObject, Hashable {
     
+    static var sample1: HabitContext {
+        let habit = HabitContext(name: "Stretching".localized, id: UUID(), numberOfTimes: 10, requiredSec: 10)
+        var tempAchievement: [DateKey: Int] = [:]
+        for i in -7...0 {
+            tempAchievement[Date().addDate(i)!.dictKey] = Int.random(in: 0...10)
+        }
+        habit.achievement = tempAchievement
+        return habit
+    }
+    
+    static var sample2: HabitContext {
+        let habit = HabitContext(name: "Drink water".localized, id: UUID(), numberOfTimes: 8, requiredSec: 0)
+        var tempAchievement: [DateKey: Int] = [:]
+        for i in -7...0 {
+            tempAchievement[Date().addDate(i)!.dictKey] = Int.random(in: 0...8)
+        }
+        habit.achievement = tempAchievement
+        return habit
+    }
+    
     func hash(into hasher: inout Hasher) {
             hasher.combine(id)
     }
@@ -112,18 +132,6 @@ final class HabitContextManager: ObservableObject, ContextEditable {
     typealias ObjectContext = HabitContext
     
     @Published var contents: [HabitContext] = []
-    var ordered: [HabitContext] {
-        habitOrder.compactMap { orderedId in
-            contents.first(where: {$0.id == orderedId})
-        }
-    }
-    
-    @AutoSave("habitOrder", defaultValue: [])
-    var habitOrder: [UUID] {
-        didSet {
-            objectWillChange.send()
-        }
-    }
     
     @AutoSave("addUnit", defaultValue: [:])
     var addUnit: [UUID: Int] {
@@ -140,6 +148,8 @@ final class HabitContextManager: ObservableObject, ContextEditable {
     
     static var shared = HabitContextManager()
     
+    private var deleteID: [UUID] = []
+    
     func save() {
         for objectContext in contents {
             addUnit[objectContext.id] = objectContext.addUnit
@@ -155,6 +165,11 @@ final class HabitContextManager: ObservableObject, ContextEditable {
         } catch {
             assertionFailure("Habit 저장 실패")
         }
+        for id in deleteID {
+            if let habit = fetched.first(where: {$0.id == id}) {
+                context.delete(habit)
+            }
+        }
     }
     
     func deleteObject(id: UUID) {
@@ -163,15 +178,23 @@ final class HabitContextManager: ObservableObject, ContextEditable {
             return
         }
         contents.remove(at: index)
-        if let index = habitOrder.firstIndex(where: {$0 == id}) {
-            habitOrder.remove(at: index)
-        } else {
-            assertionFailure()
+        deleteID.append(id)
+        let summaryContext = SummaryContextManager.shared.contents[0]
+        if summaryContext.first == id {
+            summaryContext.first = nil
+            print("1")
+        }
+        if summaryContext.second == id {
+            summaryContext.second = nil
+            print("2")
+        }
+        if summaryContext.third == id {
+            summaryContext.third = nil
+            print("3")
         }
     }
     
     func addObject(_ object: HabitContext) {
         contents.append(object)
-        habitOrder.append(object.id)
     }
 }

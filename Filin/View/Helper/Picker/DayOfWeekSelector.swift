@@ -16,33 +16,24 @@ struct DayOfWeekSelector: View {
     }
     
     var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                ForEach(1..<7) { dayOfTheWeekInt in
-                    Rectangle()
-                        .foregroundColor(isNextChecked(dayOfTheWeekInt) ? ThemeColor.mainColor(colorScheme) : .clear)
-                        .frame(width: 48, height: 40)
-                }
-            }
-            HStack(spacing: 8) {
-                ForEach(1..<8) { dayOfTheWeekInt in
-                    ZStack {
-                        if dayOfTheWeek.contains(dayOfTheWeekInt) {
-                            Circle()
-                                .foregroundColor(ThemeColor.mainColor(colorScheme))
-                        }
-                        Text(Date.dayOfTheWeekShortStr(dayOfTheWeekInt))
-                            .foregroundColor(dayOfTheWeek.contains(dayOfTheWeekInt) ? .white : .black)
-                            .bodyText()
+        HStack(spacing: 0) {
+            ForEach(1..<8) { dayOfTheWeekInt in
+                ZStack {
+                    if dayOfTheWeek.contains(dayOfTheWeekInt) {
+                        Rectangle()
+                            .foregroundColor(ThemeColor.mainColor(colorScheme))
                     }
-                    .frame(width: 40, height: 40)
-                    .zIndex(0)
-                    .onTapGesture {
-                        if dayOfTheWeek.contains(dayOfTheWeekInt) {
-                            dayOfTheWeek.remove(at: dayOfTheWeek.firstIndex(of: dayOfTheWeekInt)!)
-                        } else {
-                            dayOfTheWeek.append(dayOfTheWeekInt)
-                        }
+                    Text(Date.dayOfTheWeekShortStr(dayOfTheWeekInt))
+                        .foregroundColor(dayOfTheWeek.contains(dayOfTheWeekInt) ? .white : .black)
+                        .bodyText()
+                }
+                .frame(width: 44, height: 44)
+                .zIndex(0)
+                .onTapGesture {
+                    if dayOfTheWeek.contains(dayOfTheWeekInt) {
+                        dayOfTheWeek.remove(at: dayOfTheWeek.firstIndex(of: dayOfTheWeekInt)!)
+                    } else {
+                        dayOfTheWeek.append(dayOfTheWeekInt)
                     }
                 }
             }
