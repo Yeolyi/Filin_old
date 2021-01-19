@@ -21,7 +21,7 @@ struct RoutineSetList: View {
             VStack(spacing: 0) {
                 Text("Add the desired goal to the routine. Duplicates are also possible.".localized)
                     .bodyText()
-                    .padding(.bottom, 5)
+                    .padding(10)
                 ScrollView {
                     ForEach(HabitContextManager.shared.contents) { habit in
                         HStack {
@@ -35,8 +35,8 @@ struct RoutineSetList: View {
                         }
                     }
                 }
+                .rowBackground()
             }
-            .rowBackground()
             .padding(.bottom, 8)
             VStack(spacing: 0) {
                 HStack {
@@ -49,7 +49,7 @@ struct RoutineSetList: View {
                         BasicButton("minus") {
                             listData.delete(id: id)
                         }
-                        Text( HabitContextManager.shared.contents.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "Test")
+                        Text(HabitContextManager.shared.contents.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "Test")
                             .bodyText()
                     }
                 })
@@ -61,10 +61,8 @@ struct RoutineSetList: View {
     
 }
 
-/*
 struct RoutineSetList_Previews: PreviewProvider {
     static var previews: some View {
-        
+        RoutineSetList(listData: ListData(values: RoutineContext.sample1.list.map(\.id), save: {_ in}))
     }
 }
-*/

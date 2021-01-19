@@ -58,47 +58,56 @@ struct EditRoutine: View {
                 }
                 ScrollView {
                     VStack(spacing: 8) {
-                            HStack {
-                                Text("Name".localized)
-                                    .bodyText()
-                                Spacer()
-                            }
-                            .padding(.leading, 20)
-                            .padding(.top, 20)
-                            TextFieldWithEndButton("Drink water".localized, text: $tempRoutine.name)
-                                .rowBackground()
-                            HStack {
-                                Text("List".localized)
-                                    .bodyText()
-                                Spacer()
-                            }
-                            .padding(.leading, 20)
-                            NavigationLink(destination:
-                                            RoutineSetList(listData: listData)
-                                            .navigationBarTitle(Text(""), displayMode: .inline)
-                            ) {
-                                HStack {
-                                    Text(String(format: NSLocalizedString("Consists of %d goals", comment: ""), tempRoutine.list.count))
-                                        .bodyText()
-                                    Spacer()
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .mainColor()
-                            }
-                            .rowBackground()
-                        VStack {
-                            HStack {
-                                Text("Repeat")
-                                    .bodyText()
-                                Spacer()
-                            }
-                            DayOfWeekSelector(dayOfTheWeek: $tempRoutine.dayOfWeek)
+                        HStack {
+                            Text("Name".localized)
+                                .bodyText()
+                            Spacer()
                         }
-                        .rowPadding()
+                        .padding(.leading, 20)
+                        .padding(.top, 20)
+                        TextFieldWithEndButton("Drink water".localized, text: $tempRoutine.name)
+                            .rowBackground()
+                        HStack {
+                            Text("List".localized)
+                                .bodyText()
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        NavigationLink(destination:
+                                        RoutineSetList(listData: listData)
+                                        .navigationBarTitle(Text(""), displayMode: .inline)
+                        ) {
+                            HStack {
+                                Text(String(format: NSLocalizedString("Consists of %d goals", comment: ""), tempRoutine.list.count))
+                                    .bodyText()
+                                Spacer()
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .mainColor()
+                        }
+                        .rowBackground()
+                        HStack {
+                            Text("Repeat")
+                                .bodyText()
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        HStack {
+                            Spacer()
+                            DayOfWeekSelector(dayOfTheWeek: $tempRoutine.dayOfWeek)
+                            Spacer()
+                        }
+                        .rowBackground()
+                        HStack {
+                            Text("Reminder".localized)
+                                .bodyText()
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
                         VStack {
                             HStack {
-                                Text("Use reminder".localized)
+                                Text("\(isReminderUsed ? "On" : "Off")".localized)
                                     .bodyText()
                                 Spacer()
                                 if isReminderUsed {
@@ -110,6 +119,7 @@ struct EditRoutine: View {
                             }
                         }
                         .rowBackground()
+                        Divider()
                         Button(action: {self.isDeleteAlert = true}) {
                             Text("Delete".localized)
                                 .foregroundColor(.red)
@@ -137,12 +147,11 @@ struct EditRoutine: View {
     }
 }
 
-/*
 struct EditRoutine_Previews: PreviewProvider {
     static var previews: some View {
         let coreDataPreview = CoreDataPreview.shared
-        EditRoutine(routine: coreDataPreview.sampleRoutine(name: "Default", dayOfTheWeek: [1, 2, 3, 4], time: "12-03"))
-            .environment(\.managedObjectContext, coreDataPreview.context)
+        EditRoutine(routine: RoutineContext.sample1)
+            .environmentObject(coreDataPreview.routineManager)
+            .environmentObject(coreDataPreview.habitcontextManager)
     }
 }
-*/

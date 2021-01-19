@@ -28,6 +28,7 @@ struct RoutineView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var habitManager: HabitContextManager
     
     var body: some View {
         NavigationView {
@@ -67,8 +68,12 @@ struct RoutineView: View {
                     switch sheetType {
                     case RoutineSheet.add:
                         AddRoutine()
+                            .environmentObject(habitManager)
+                            .environmentObject(routineManager)
                     case RoutineSheet.edit(let routine):
                         EditRoutine(routine: routine)
+                            .environmentObject(habitManager)
+                            .environmentObject(routineManager)
                             .accentColor(ThemeColor.mainColor(colorScheme))
                     }
                 }

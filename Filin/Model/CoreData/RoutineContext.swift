@@ -20,7 +20,7 @@ class RoutineContext: ObservableObject, IDIdentifiable, Hashable, Identifiable {
     
     static var sample1: RoutineContext {
         let sample = RoutineContext(UUID(), name: "After wake up".localized)
-        sample.list = [HabitContext.sample1, HabitContext.sample2]
+        sample.list = [HabitContext.sample1, HabitContext.sample2, HabitContext.sample2, HabitContext.sample1, HabitContext.sample2]
         return sample
     }
     
@@ -44,7 +44,7 @@ class RoutineContext: ObservableObject, IDIdentifiable, Hashable, Identifiable {
     init(_ routine: Routine) {
         id = routine.id
         name = routine.name
-        list = routine.list.compactMap{ id in
+        list = routine.list.compactMap { id in
             HabitContextManager.shared.contents.first(where: {$0.id == id})
         }
         if let timeStr = routine.time {
@@ -63,6 +63,7 @@ class RoutineContext: ObservableObject, IDIdentifiable, Hashable, Identifiable {
         time = copy.time
         dayOfWeek = copy.dayOfWeek
     }
+    
     
     func update(to routine: RoutineContext) {
         name = routine.name

@@ -25,52 +25,42 @@ struct RunRoutine: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack {
-            Spacer()
-            if currentListIndex > 0 {
-                VStack {
-                    ForEach(0...currentListIndex - 1, id: \.self) { index in
-                        Text(routine.list[index].name)
-                            .subColor()
-                            .headline()
+        ZStack {
+            VStack(spacing: 0) {
+                HabitRow(habit: routine.list[currentListIndex], showAdd: false)
+                    .disabled(true)
+                if currentListIndex < routine.list.count - 1 {
+                    VStack(spacing: 0) {
+                        ForEach(currentListIndex + 1...routine.list.count - 1, id: \.self) { index in
+                            HabitRow(habit: routine.list[index], showAdd: false)
+                                .opacity(0.2)
+                                .disabled(true)
+                        }
                     }
                 }
+                Spacer()
             }
             VStack {
-                Text(routine.list[currentListIndex].name)
-                    .title()
-                LinearProgressBar(
-                    color: ThemeColor.mainColor(colorScheme),
-                    progress: routine.list[currentListIndex].progress(at: Date()) ?? 0
-                )
-                .frame(width: 200)
-            }
-            .padding(10)
-            if currentListIndex < routine.list.count - 1 {
-                VStack {
-                    ForEach(currentListIndex + 1...routine.list.count - 1, id: \.self) { index in
-                        Text(routine.list[index].name)
-                            .subColor()
-                            .headline()
+                Spacer()
+                Text("\(currentListIndex)/\(routine.list.count)")
+                    .headline()
+                nextButton
+                    .padding(.bottom, 50)
+                    .onReceive(timer) { _ in
+                        guard isCounting else { return }
+                        withAnimation {
+                            self.timeRemaining = max(0, self.timeRemaining - 1)
+                        }
                     }
-                }
-            }
-            Spacer()
-            nextButton
-                .padding(.bottom, 50)
-                .onReceive(timer) { _ in
-                    guard isCounting else { return }
-                    withAnimation {
-                        self.timeRemaining = max(0, self.timeRemaining - 1)
+                    .onReceive(NotificationCenter.default.publisher(
+                                for: UIApplication.willResignActiveNotification)
+                    ) { _ in
+                        isCounting = false
+                        self.timer.upstream.connect().cancel()
                     }
-                }
-                .onReceive(NotificationCenter.default.publisher(
-                            for: UIApplication.willResignActiveNotification)
-                ) { _ in
-                    isCounting = false
-                    self.timer.upstream.connect().cancel()
-                }
+            }
         }
+        .navigationBarTitle(Text(routine.name))
         .onAppear {
             if !isTimeInit {
                 timeRemaining = routine.list[0].requiredSec
@@ -163,12 +153,9 @@ struct RunRoutine: View {
     }
 }
 
-/*
 struct RunRoutine_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview.shared
-        return RunRoutine(routine: coreDataPreview.sampleRoutine(name: "Sample", dayOfTheWeek: [1, 3, 5], time: "13-00"))
+        RunRoutine(routine: RoutineContext.sample1)
     }
 }
 
-*/

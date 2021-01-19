@@ -11,11 +11,13 @@ struct RingsCalendar: View {
     
     @Binding var selectedDate: Date
     @State var isExpanded = false
-    @Environment(\.colorScheme) var colorScheme
     @State var isEmojiView = false
+    
     @ObservedObject var habit1: HabitContext
     @ObservedObject var habit2: HabitContext
     @ObservedObject var habit3: HabitContext
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appSetting: AppSetting
     
     var habitsWrapped: [HabitContext?] {
         [
@@ -49,7 +51,7 @@ struct RingsCalendar: View {
                     return AnyView(EmojiCalendarRow(week: week, isExpanded: isExpanded, habit: habitsWrapped.compactMap({$0})[0], selectedDate: $selectedDate))
                 } else {
                     return AnyView(HStack(spacing: 8) {
-                        ForEach(selectedDate.containedWeek(week: week), id: \.self) { date in
+                        ForEach(selectedDate.containedWeek(week: week, from: appSetting.isMondayStart ? 2 : 1), id: \.self) { date in
                             CircleProgress(getRingTuple(at: date)) {
                                 Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
                                     .foregroundColor(textColor(at: date))

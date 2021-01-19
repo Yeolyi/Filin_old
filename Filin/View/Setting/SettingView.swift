@@ -10,6 +10,7 @@ import Combine
 
 struct SettingView: View {
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appSetting: AppSetting
     let appVersion: String
     let build: String
     
@@ -36,29 +37,26 @@ struct SettingView: View {
                         }
                     }
                     HStack {
-                        Text("App Version".localized)
+                        Text("Start week on Monday".localized)
                             .bodyText()
                         Spacer()
-                        Text("\(appVersion)")
-                    }
-                    .rowBackground()
-                    HStack {
-                        Text("Build".localized)
-                            .bodyText()
-                        Spacer()
-                        Text("\(build)")
+                        PaperToggle($appSetting.isMondayStart)
                     }
                     .rowBackground()
                     #if DEBUG
-                    HStack {
-                        Text("샘플")
-                            .bodyText()
-                        Spacer()
-                    }
-                    .onTapGesture {
+                    Button(action: {
                         _ = CoreDataPreview.shared
+                    }) {
+                        HStack {
+                            Text("샘플")
+                                .bodyText()
+                            Spacer()
+                        }
+                        .onTapGesture {
+                            
+                        }
+                        .rowBackground()
                     }
-                    .rowBackground()
                     #endif
                 }
             }
@@ -73,5 +71,6 @@ struct SettingView: View {
 struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
         SettingView()
+            .environmentObject(AppSetting())
     }
 }

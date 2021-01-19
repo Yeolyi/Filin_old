@@ -18,6 +18,7 @@ struct AddRoutine: View {
     
     @ObservedObject var newRoutine = RoutineContext()
     @ObservedObject var listData = ListData<UUID>(values: [], save: {_ in })
+    
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var routineManager: RoutineContextManager
     @EnvironmentObject var habitManager: HabitContextManager

@@ -17,6 +17,12 @@ class AppSetting: ObservableObject {
             objectWillChange.send()
         }
     }
+    @AutoSave("mondayCalendar", defaultValue: false)
+    var isMondayStart: Bool {
+        didSet {
+            objectWillChange.send()
+        }
+    }
     var isFirstRun: Bool {
         runCount == 1
     }

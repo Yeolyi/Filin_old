@@ -86,22 +86,6 @@ extension Date {
         components.day = 1
         return Calendar.current.date(from: components)
     }
-    static func dayOfTheWeekStr(_ num: Int) -> String {
-        var dateCursor = Date()
-        let currentDayOfWeek = dateCursor.dayOfTheWeek
-        dateCursor = dateCursor.addDate(num-currentDayOfWeek)!
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E"
-        return dateFormatter.string(from: dateCursor)
-    }
-    static func dayOfTheWeekShortStr(_ num: Int) -> String {
-        var dateCursor = Date()
-        let currentDayOfWeek = dateCursor.dayOfTheWeek
-        dateCursor = dateCursor.addDate(num-currentDayOfWeek)!
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEEE"
-        return dateFormatter.string(from: dateCursor)
-    }
     var dictKey: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -129,34 +113,6 @@ extension Date {
         }
         return dateIterate
     }
-    var localizedYearMonth: String {
-        let df = DateFormatter()
-        let userFormat = DateFormatter.dateFormat(
-            fromTemplate: "yyyyMMM", options: 0, locale: Locale.current
-        ) ?? "yyyyMMM"
-        df.setLocalizedDateFormatFromTemplate(userFormat)
-        return df.string(from: self)
-    }
-    var localizedYearMonthDay: String {
-        let df = DateFormatter()
-        let userFormat = DateFormatter.dateFormat(
-            fromTemplate: "yyyyMMMd", options: 0, locale: Locale.current
-        ) ?? "yyyyMMMd"
-        df.setLocalizedDateFormatFromTemplate(userFormat)
-        return df.string(from: self)
-    }
-    var localizedMonthDay: String {
-        let df = DateFormatter()
-        let userFormat = DateFormatter.dateFormat(fromTemplate: "MMMd", options: 0, locale: Locale.current) ?? "MMMd"
-        df.setLocalizedDateFormatFromTemplate(userFormat)
-        return df.string(from: self)
-    }
-    var localizedHourMinute: String {
-        let df = DateFormatter()
-        let userFormat = DateFormatter.dateFormat(fromTemplate: "hh:mm a", options: 0, locale: Locale.current) ?? "MMMd"
-        df.setLocalizedDateFormatFromTemplate(userFormat)
-        return df.string(from: self)
-    }
     func monthShift(contains dayOfWeek: [Int], isAdd: Bool) -> Date {
         var plusCursor = Calendar.current.date(
             byAdding: .month, value: isAdd ? 1 : -1, to: self
@@ -181,10 +137,14 @@ extension Date {
         }
         return plusCount > minusCount ? minusCursor : plusCursor
     }
-    func containedWeek(week: Int) -> [Date] {
+    
+    /// Self를 포함하는 달의 특정 주에 포함되는 Date 배열을 반환합니다.
+    /// - Parameters:
+    ///   - baseDayOfWeek: 시작 날짜의 요일을 설정합니다. 1은 일요일, 7은 토요일을 의미합니다.
+    func containedWeek(week: Int, from baseDayOfWeek: Int = 1) -> [Date] {
         var tempDateList: [Date] = []
         let firstDayOfWeek = self.firstDayOfWeek ?? 1
-        for diff in 1 - firstDayOfWeek ..< 8 - firstDayOfWeek {
+        for diff in baseDayOfWeek - firstDayOfWeek ..< baseDayOfWeek + 7 - firstDayOfWeek {
             let newDate = Calendar.current.date(
                 byAdding: .day,
                 value: diff + 7 * (week - 1),

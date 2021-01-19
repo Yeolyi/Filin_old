@@ -9,15 +9,19 @@ import SwiftUI
 
 struct CalendarInterface<Content: View>: View {
     
+    @State var lastDragPosition: DragGesture.Value?
+    @State var isAnimation = false
+    
     @Binding var selectedDate: Date
     @Binding var isExpanded: Bool
     @Binding var isEmojiView: Bool
-    @Environment(\.colorScheme) var colorScheme
+    
     let content: (_ week: Int, _ isExpanded: Bool) -> Content
     let move: (Bool) -> Date
     let color: Color
-    @State var lastDragPosition: DragGesture.Value?
-    @State var isAnimation = false
+    
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appSetting: AppSetting
     
     func gesture() -> some Gesture {
         DragGesture(minimumDistance: 10, coordinateSpace: .global)
@@ -77,7 +81,7 @@ struct CalendarInterface<Content: View>: View {
             }
             VStack(spacing: 0) {
                 HStack(spacing: 8) {
-                    ForEach(1...7, id: \.self) { dayOfWeek in
+                    ForEach(appSetting.isMondayStart ? [2, 3, 4, 5, 6, 7, 1] : [1, 2, 3, 4, 5, 6, 7], id: \.self) { dayOfWeek in
                         Text(Date.dayOfTheWeekStr(dayOfWeek))
                             .bodyText()
                             .foregroundColor(.gray)

@@ -13,8 +13,8 @@ import SwiftUI
 struct DefaultTabSetting: View {
     @EnvironmentObject var appSetting: AppSetting
     var body: some View {
-        VStack {
-            ForEach(DefaultTap.allCases, id: \.self) { tapName in
+        VStack(spacing: 0) {
+            ForEach([DefaultTap.list, .routine, .summary], id: \.self) { tapName in
                 Button(action: {
                     appSetting.defaultTap = tapName.rawValue
                 }) {

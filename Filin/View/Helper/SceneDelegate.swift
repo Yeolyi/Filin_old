@@ -41,12 +41,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .environmentObject(HabitContextManager.shared)
             .environmentObject(SummaryContextManager.shared)
             .environmentObject(RoutineContextManager.shared)
-        
+        /*
         for family in UIFont.familyNames.sorted() {
             let names = UIFont.fontNames(forFamilyName: family)
             print("Family: \(family) Font names: \(names)")
         }
-
+         */
+        
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)

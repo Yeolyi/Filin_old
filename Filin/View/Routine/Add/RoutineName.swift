@@ -26,9 +26,10 @@ struct RoutineName: View {
                         .bodyText()
                     Spacer()
                 }
+                .padding(.leading, 20)
                 TextFieldWithEndButton("After wake up".localized, text: $name)
+                    .rowBackground()
             }
-            .rowBackground()
         }
     }
 }
