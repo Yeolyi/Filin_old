@@ -19,6 +19,7 @@ struct HabitTimer: View {
         ScrollView {
             VStack(spacing: 20) {
                 HabitRow(habit: habit, showAdd: false)
+                    .disabled(true)
                 Spacer()
                 ZStack {
                     Circle()

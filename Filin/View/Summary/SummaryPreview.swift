@@ -13,7 +13,7 @@ struct SummaryPreview: View {
     
     var body: some View {
         Group {
-            RingsCalendar(
+            RingCalendar(
                 selectedDate: .constant(Date()),
                 habit1: HabitContext.sample1,
                 habit2: HabitContext.sample2,

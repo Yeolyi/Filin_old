@@ -25,7 +25,7 @@ struct SummaryView: View {
                     if summaryManager.contents.isEmpty || summaryManager.contents[0].isEmpty {
                         SummaryPreview(isSettingSheet: $isSettingSheet)
                     } else {
-                        RingsCalendar(
+                        RingCalendar(
                             selectedDate: $selectedDate,
                             habit1: habitManager.contents.first(where: {$0.id == summaryManager.contents[0].first}),
                             habit2: habitManager.contents.first(where: {$0.id == summaryManager.contents[0].second}),

@@ -41,7 +41,6 @@ struct ContentView: View {
                 }
                 .tag(DefaultTap.setting.rawValue)
         }
-        .accentColor(ThemeColor.mainColor(colorScheme))
     }
 }
 

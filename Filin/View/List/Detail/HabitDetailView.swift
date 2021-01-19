@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum DetailViewActiveSheet: Identifiable {
-    case edit, emoji
+    case edit, emoji, share
     var id: UUID {
         UUID()
     }
@@ -31,21 +31,13 @@ struct HabitDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                RingCalendar(selectedDate: $selectedDate, habit: habit)
+                RingCalendar(selectedDate: $selectedDate, habit1: habit)
                 TodayInformation(selectedDate: $selectedDate)
                 EmojiPicker(selectedDate: $selectedDate, habit: habit, emojiManager: emojiManager, activeSheet: $activeSheet)
                 Text("")
                     .font(.system(size: 30))
             }
         }
-        .padding(.top, 1)
-        .navigationBarTitle(habit.name)
-        .navigationBarItems(
-            trailing:
-                HeaderText("Edit".localized) {
-                    activeSheet = DetailViewActiveSheet.edit
-                }
-        )
         .sheet(item: $activeSheet) { item in
             switch item {
             case .edit:
@@ -54,8 +46,23 @@ struct HabitDetailView: View {
             case .emoji:
                 EmojiListEdit()
                     .environmentObject(emojiManager)
+            case .share:
+                HabitShare(habit: habit)
             }
         }
+        .padding(.top, 1)
+        .navigationBarTitle(habit.name)
+        .navigationBarItems(
+            trailing:
+                HStack {
+                    HeaderButton("square.and.arrow.up") {
+                        activeSheet = DetailViewActiveSheet.share
+                    }
+                    HeaderText("Edit".localized) {
+                        activeSheet = DetailViewActiveSheet.edit
+                    }
+                }
+        )
         .onAppear {
             selectedDate = appSetting.mainDate
         }

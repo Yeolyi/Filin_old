@@ -19,6 +19,7 @@ struct CalendarInterface<Content: View>: View {
     let content: (_ week: Int, _ isExpanded: Bool) -> Content
     let move: (Bool) -> Date
     let color: Color
+    let captureMode: Bool
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appSetting: AppSetting
@@ -45,8 +46,8 @@ struct CalendarInterface<Content: View>: View {
             }
     }
     
-    init(selectedDate: Binding<Date>, color: Color, isExpanded: Binding<Bool>, isEmojiView: Binding<Bool>, move: @escaping (Bool) -> Date,
-        content: @escaping (_ week: Int, _ isExpanded: Bool) -> Content
+    init(_ captureMode: Bool = false, selectedDate: Binding<Date>, color: Color, isExpanded: Binding<Bool>, isEmojiView: Binding<Bool>, move: @escaping (Bool) -> Date,
+         content: @escaping (_ week: Int, _ isExpanded: Bool) -> Content
     ) {
         self._selectedDate = selectedDate
         self._isExpanded = isExpanded
@@ -54,6 +55,7 @@ struct CalendarInterface<Content: View>: View {
         self.content = content
         self.move = move
         self.color = color
+        self.captureMode = captureMode
     }
     var body: some View {
         VStack(spacing: 0) {
@@ -62,7 +64,7 @@ struct CalendarInterface<Content: View>: View {
                     HStack {
                         Group {
                             if isExpanded {
-                                Text(selectedDate.localizedYearMonthDay)
+                                Text(selectedDate.localizedYearMonth)
                             } else {
                                 Text(selectedDate.localizedMonthDay)
                             }
@@ -73,12 +75,15 @@ struct CalendarInterface<Content: View>: View {
                     }
                 }
                 Spacer()
-                BasicButton(isEmojiView ? "face.smiling.fill" : "face.smiling") {
-                    withAnimation {
-                        isEmojiView.toggle()
+                if !captureMode {
+                    BasicButton(isEmojiView ? "face.smiling.fill" : "face.smiling") {
+                        withAnimation {
+                            isEmojiView.toggle()
+                        }
                     }
                 }
             }
+            .padding(.bottom, 5)
             VStack(spacing: 0) {
                 HStack(spacing: 8) {
                     ForEach(appSetting.isMondayStart ? [2, 3, 4, 5, 6, 7, 1] : [1, 2, 3, 4, 5, 6, 7], id: \.self) { dayOfWeek in
@@ -98,14 +103,26 @@ struct CalendarInterface<Content: View>: View {
                         content(selectedDate.weekNum, false)
                     }
                 }
-                BasicButton(isExpanded ? "chevron.compact.up" : "chevron.compact.down") {
-                    withAnimation {
-                        self.isExpanded.toggle()
+                if !captureMode {
+                    BasicButton(isExpanded ? "chevron.compact.up" : "chevron.compact.down") {
+                        withAnimation {
+                            self.isExpanded.toggle()
+                        }
                     }
                 }
             }
         }
-        .rowBackground(false)
+        .if(!captureMode) {
+            $0.rowBackground(false)
+        }
+        .if(captureMode) {
+            $0.padding(.top, 20)
+                .padding(.bottom, 20)
+                .padding(.horizontal, 10)
+                .background(
+                    Color(hex: colorScheme == .light ? "#F2F2F2" : "#202020")
+                )
+        }
         .highPriorityGesture(gesture())
     }
 }
