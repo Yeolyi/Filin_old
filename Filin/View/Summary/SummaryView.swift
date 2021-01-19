@@ -16,6 +16,7 @@ struct SummaryView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var summaryManager: SummaryContextManager
     @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var appSetting: AppSetting
     
     var body: some View {
         NavigationView {
@@ -56,6 +57,9 @@ struct SummaryView: View {
                 .environmentObject(habitManager)
         }
         .accentColor(ThemeColor.mainColor(colorScheme))
+        .onAppear {
+            selectedDate = appSetting.mainDate
+        }
     }
 }
 

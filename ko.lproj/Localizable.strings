@@ -116,3 +116,6 @@
 "App Version" = "앱 버전";
 "Build" = "빌드";
 "Start week on Monday" = "한 주의 시작을 월요일로";
+"The End of the Day" = "하루가 끝나는 시간";
+"Choose time to initialize info." = "정보를 초기화할 시간을 선택하세요";
+

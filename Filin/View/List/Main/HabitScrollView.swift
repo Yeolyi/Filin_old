@@ -10,13 +10,14 @@ import SwiftUI
 struct HabitScrollView: View {
     
     @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var appSetting: AppSetting
     @State var searchWord = ""
     
     var isTodayEmpty: Bool {
-        habitManager.contents.filter(\.isTodayTodo).isEmpty
+        habitManager.contents.filter({$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)}).isEmpty
     }
     var isGeneralEmpty: Bool {
-        (habitManager.contents.count - habitManager.contents.filter(\.isTodayTodo).count) == 0
+        (habitManager.contents.count - habitManager.contents.filter({$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)}).count) == 0
     }
     
     var emptyIndicatingRow: some View {
@@ -35,7 +36,7 @@ struct HabitScrollView: View {
                 Text("Today".localized)
                     .sectionText()
                 if !isTodayEmpty {
-                    ForEach(habitManager.contents.filter(\.isTodayTodo)) { habitInfo in
+                    ForEach(habitManager.contents.filter({$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)})) { habitInfo in
                         HabitRow(habit: habitInfo, showAdd: true)
                             .environmentObject(habitInfo)
                     }
@@ -45,11 +46,11 @@ struct HabitScrollView: View {
                 Text("Others".localized)
                     .sectionText()
                 if !isGeneralEmpty {
-                    ForEach(habitManager.contents.filter({!$0.isTodayTodo}), id: \.self) { habitInfo in
+                    ForEach(habitManager.contents.filter({!$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)}), id: \.self) { habitInfo in
                         HabitRow(habit: habitInfo, showAdd: false)
                     }
                 } else {
-                   emptyIndicatingRow
+                    emptyIndicatingRow
                 }
                 
             }
@@ -60,11 +61,12 @@ struct HabitScrollView: View {
 
 struct MainList_Previews: PreviewProvider {
     static var previews: some View {
-        _ = CoreDataPreview.shared
+        let coredataPreview = CoreDataPreview.shared
         return
             NavigationView {
                 HabitScrollView()
-                .environmentObject(AppSetting())
+                    .environmentObject(AppSetting())
+                    .environmentObject(coredataPreview.habitcontextManager)
                     .navigationBarTitle(Text("Test"))
             }
     }

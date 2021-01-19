@@ -106,9 +106,6 @@ class HabitContext: IDIdentifiable, Identifiable, ObservableObject, Hashable {
     func isTodo(at dayOfWeekInt: Int) -> Bool {
         dayOfWeek.contains(dayOfWeekInt)
     }
-    var isTodayTodo: Bool {
-        isTodo(at: Date().dayOfTheWeek)
-    }
     var isDaily: Bool {
         dayOfWeek.count == 7
     }

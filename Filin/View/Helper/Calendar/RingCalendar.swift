@@ -43,7 +43,7 @@ struct RingCalendar: View {
                     return AnyView(HStack(spacing: 8) {
                         ForEach(selectedDate.containedWeek(week: week, from: appSetting.isMondayStart ? 2 : 1), id: \.self) { date in
                             CircleProgress(getRingTuple(at: date)) {
-                                Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
+                                Text(appSetting.mainDate.dictKey == date.dictKey ? "✓" : String(date.day))
                                     .foregroundColor(textColor(at: date))
                                     .bodyText()
                             }

@@ -12,6 +12,7 @@ struct HabitRow: View {
     
     @ObservedObject var habit: HabitContext
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appSetting: AppSetting
     @State var isTapping = false
     let date: Date
     let showAdd: Bool
@@ -58,7 +59,7 @@ struct HabitRow: View {
                             Spacer()
                         }
                     }
-                    if habit.dayOfWeek.contains(date.dayOfTheWeek) {
+                    if habit.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek) {
                         ZStack {
                             LinearProgressBar(color: habit.color, progress: habit.progress(at: date) ?? 0)
                             HStack {

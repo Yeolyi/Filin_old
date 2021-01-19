@@ -22,7 +22,7 @@ struct HabitList: View {
                     HabitScrollView()
                 }
             }
-            .navigationBarTitle(Date().localizedMonthDay)
+            .navigationBarTitle(appSetting.mainDate.localizedMonthDay)
             .navigationBarItems(
                 trailing:
                     HeaderButton("plus") {

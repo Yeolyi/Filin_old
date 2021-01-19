@@ -38,7 +38,7 @@ struct RingsCalendar: View {
     init(selectedDate: Binding<Date>, isExpanded: Bool = false, habit1: HabitContext?, habit2: HabitContext?, habit3: HabitContext?) {
         self._selectedDate = selectedDate
         self._isExpanded = State(initialValue: isExpanded)
-        var nilHabit = HabitContext(name: "Nil")
+        let nilHabit = HabitContext(name: "Nil")
         nilHabit.requiredSec = -1
         self.habit1 = habit1 == nil ? nilHabit : habit1!
         self.habit2 = habit2 == nil ? nilHabit : habit2!
@@ -53,7 +53,7 @@ struct RingsCalendar: View {
                     return AnyView(HStack(spacing: 8) {
                         ForEach(selectedDate.containedWeek(week: week, from: appSetting.isMondayStart ? 2 : 1), id: \.self) { date in
                             CircleProgress(getRingTuple(at: date)) {
-                                Text(Date().dictKey == date.dictKey ? "✓" : String(date.day))
+                                Text(appSetting.mainDate.dictKey == date.dictKey ? "✓" : String(date.day))
                                     .foregroundColor(textColor(at: date))
                                     .bodyText()
                             }

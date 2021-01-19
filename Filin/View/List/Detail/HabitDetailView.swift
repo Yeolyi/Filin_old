@@ -19,6 +19,7 @@ struct HabitDetailView: View {
     @ObservedObject var emojiManager = EmojiManager()
     @EnvironmentObject var habit: HabitContext
     @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var appSetting: AppSetting
     @State var activeSheet: DetailViewActiveSheet?
     @State var selectedDate = Date()
     
@@ -54,6 +55,9 @@ struct HabitDetailView: View {
                 EmojiListEdit()
                     .environmentObject(emojiManager)
             }
+        }
+        .onAppear {
+            selectedDate = appSetting.mainDate
         }
     }
 }

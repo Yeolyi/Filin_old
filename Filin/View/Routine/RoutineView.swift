@@ -29,6 +29,17 @@ struct RoutineView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var appSetting: AppSetting
+    
+    var emptyIndicatingRow: some View {
+        HStack {
+            Spacer()
+            Text("Empty".localized)
+                .subColor()
+            Spacer()
+        }
+        .rowBackground()
+    }
     
     var body: some View {
         NavigationView {
@@ -37,10 +48,25 @@ struct RoutineView: View {
                     if !routineManager.contents.isEmpty {
                         Text("Today".localized)
                             .sectionText()
-                        VStack(spacing: 0) {
-                            ForEach(routineManager.contents) { routine in
-                                RoutineRow(routine: routine, isSheet: $isAddSheet)
+                        if !routineManager.contents.filter({$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)}).isEmpty {
+                            VStack(spacing: 0) {
+                                ForEach(routineManager.contents.filter({$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)})) { routine in
+                                    RoutineRow(routine: routine, isSheet: $isAddSheet)
+                                }
                             }
+                        } else {
+                            emptyIndicatingRow
+                        }
+                        Text("Others".localized)
+                            .sectionText()
+                        if !routineManager.contents.filter({!$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)}).isEmpty {
+                            VStack(spacing: 0) {
+                                ForEach(routineManager.contents.filter({!$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)})) { routine in
+                                    RoutineRow(routine: routine, isSheet: $isAddSheet)
+                                }
+                            }
+                        } else {
+                            emptyIndicatingRow
                         }
                     } else {
                         ForEach([RoutineContext.sample1, RoutineContext.sample2], id: \.self) { routine in
