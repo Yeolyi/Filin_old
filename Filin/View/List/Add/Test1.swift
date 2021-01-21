@@ -11,11 +11,15 @@ struct NameSection: View {
     
     @Binding var name: String
     @State var nameExamples = [
-        "Some long item", "And then some longer one",
-        "Short", "Items", "Here", "And", "A", "Few", "More",
-        "And then a very very very long one"
-    ].shuffled()
+        "Foreign language", "Reading",
+        "Get Certified", "Playing musical instruments",
+        "Eating vitamins", "Push-up", "Diet", "Morning jogging",
+        "Yoga", "Stretching"
+    ].shuffled().map({$0.localized})
+    
     @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var appSetting: AppSetting
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ScrollView {
@@ -40,7 +44,6 @@ struct NameSection: View {
                 TextFieldWithEndButton("Drink water".localized, text: $name)
                     .rowBackground()
                     .padding(.bottom, 15)
-                /*
                 FlowLayout(mode: .scrollable, items: nameExamples) { text in
                     Button(action: { name = text }) {
                     Text(text)
@@ -54,12 +57,9 @@ struct NameSection: View {
                     }
                 }
                 .rowPadding()
- */
             }
         }
     }
-    @EnvironmentObject var appSetting: AppSetting
-    @Environment(\.colorScheme) var colorScheme
     
 }
 
@@ -68,12 +68,11 @@ struct Test1_Previews: PreviewProvider {
     struct StateWrapper: View {
         @State var selectedText = "Text"
         var body: some View {
-            let coreDataPreview = CoreDataPreview.shared
+            _ = CoreDataPreview.shared
             return NameSection(name: $selectedText)
                 .environmentObject(AppSetting())
         }
     }
-    
     static var previews: some View {
         StateWrapper()
     }

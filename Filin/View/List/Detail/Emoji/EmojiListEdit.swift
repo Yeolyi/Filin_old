@@ -66,6 +66,9 @@ struct EmojiListEdit: View {
             self.listData = ListData(values: emojiManager.emojiList, save: { _ in
             })
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
+            presentationMode.wrappedValue.dismiss()
+         }
     }
     
     @Environment(\.presentationMode) var presentationMode

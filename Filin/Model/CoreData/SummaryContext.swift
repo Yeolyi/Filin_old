@@ -74,7 +74,7 @@ final class SummaryContextManager: ContextEditable, ObservableObject {
             contents.append(.init(id: UUID(), name: "Default"))
         }
     }
-    
+
     static var shared = SummaryContextManager()
     
     func save() {

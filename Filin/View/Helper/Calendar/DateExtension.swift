@@ -29,8 +29,12 @@ extension Date {
     var dayOfTheWeek: Int {
         Calendar.current.component(.weekday, from: self)
     }
-    var weekNum: Int {
-        Calendar.current.component(.weekOfMonth, from: self)
+    func weekNum(startFromMon: Bool) -> Int {
+        if startFromMon && self.dayOfTheWeek == 1 {
+            return Calendar.current.component(.weekOfMonth, from: self) - 1
+        } else {
+            return Calendar.current.component(.weekOfMonth, from: self)
+        }
     }
     var hourAndMinuteStr: String {
         "\(hour)-\(minute)"
@@ -60,14 +64,14 @@ extension Date {
         let range = calendar.range(of: .day, in: .month, for: date)!
         return range.count
     }
-    var weekInMonth: Int? {
+    func weekInMonth(isMondayStart: Bool) -> Int {
         let calendar = Calendar.current
         let weekRange = calendar.range(
             of: .weekOfMonth,
             in: .month,
             for: self
-        )
-        return weekRange?.count
+        )!
+        return weekRange.count - (isMondayStart && lastDayOfWeek == 1 ? 1 : 0)
     }
     var firstDayOfWeek: Int? {
         let calendar = Calendar.current

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SharingHandler {
-    static func instagramStory(imageData: Data) {
+    static func instagramStory(imageData: Data, colorScheme: ColorScheme) {
         guard let instagramUrl = URL(string: "instagram://app") else {
             return
         }
@@ -19,7 +19,10 @@ struct SharingHandler {
                 if UIApplication.shared.canOpenURL(urlScheme) {
                     // Assign background image asset to pasteboard
                     let pasteboardItems: [[String: Any]]?
-                        = [["com.instagram.sharedSticker.backgroundImage": imageData]]
+                        = [
+                            ["com.instagram.sharedSticker.backgroundImage": imageData
+                            ]
+                        ]
                     let pasteboardOptions = [UIPasteboard.OptionsKey.expirationDate: Date().addingTimeInterval(60 * 5)]
                     // This call is iOS 10+, can use 'setItems' depending on what versions you support
                     if let pasteboardItems = pasteboardItems {

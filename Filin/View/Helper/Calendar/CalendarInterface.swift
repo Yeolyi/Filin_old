@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CalendarInterface<Content: View>: View {
     
-    @State var lastDragPosition: DragGesture.Value?
+    @State var showCalendarSelect = false
     @State var isAnimation = false
     
     @Binding var selectedDate: Date
@@ -19,34 +19,11 @@ struct CalendarInterface<Content: View>: View {
     let content: (_ week: Int, _ isExpanded: Bool) -> Content
     let move: (Bool) -> Date
     let color: Color
-    let captureMode: Bool
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appSetting: AppSetting
     
-    func gesture() -> some Gesture {
-        DragGesture(minimumDistance: 10, coordinateSpace: .global)
-            .onChanged { value in
-                self.lastDragPosition = value
-            }
-            .onEnded { value in
-                let timeDiff = value.time.timeIntervalSince(lastDragPosition?.time ?? Date())
-                let speed: CGFloat = CGFloat(value.translation.height - (lastDragPosition?.translation.height ?? 0)) / CGFloat(timeDiff)
-                if abs(speed) > 50 && abs(value.translation.height/value.translation.width) < 1 {
-                    if value.translation.width < 0 {
-                        withAnimation {
-                            selectedDate = move(true)
-                        }
-                    } else if value.translation.width > 0 {
-                        withAnimation {
-                            selectedDate = move(false)
-                        }
-                    }
-                }
-            }
-    }
-    
-    init(_ captureMode: Bool = false, selectedDate: Binding<Date>, color: Color, isExpanded: Binding<Bool>, isEmojiView: Binding<Bool>, move: @escaping (Bool) -> Date,
+    init(selectedDate: Binding<Date>, color: Color, isExpanded: Binding<Bool>, isEmojiView: Binding<Bool>, move: @escaping (Bool) -> Date,
          content: @escaping (_ week: Int, _ isExpanded: Bool) -> Content
     ) {
         self._selectedDate = selectedDate
@@ -55,82 +32,102 @@ struct CalendarInterface<Content: View>: View {
         self.content = content
         self.move = move
         self.color = color
-        self.captureMode = captureMode
     }
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                VStack {
+        VStack {
+            VStack(spacing: 0) {
+                if showCalendarSelect {
+                    DatePicker("", selection: $selectedDate, displayedComponents: .date)
+                        .datePickerStyle(WheelDatePickerStyle())
+                        .labelsHidden()
+                        .frame(maxWidth: .infinity)
+                } else {
                     HStack {
-                        Group {
-                            if isExpanded {
-                                Text(selectedDate.localizedYearMonth)
-                            } else {
-                                Text(selectedDate.localizedMonthDay)
+                        VStack {
+                            HStack {
+                                Group {
+                                    if isExpanded {
+                                        Text(selectedDate.localizedYearMonth)
+                                    } else {
+                                        Text(selectedDate.localizedMonthDay)
+                                    }
+                                }
+                                .foregroundColor(color)
+                                .headline()
+                                Spacer()
                             }
                         }
-                        .foregroundColor(color)
-                        .headline()
                         Spacer()
                     }
-                }
-                Spacer()
-                if !captureMode {
-                    BasicButton(isEmojiView ? "face.smiling.fill" : "face.smiling") {
-                        withAnimation {
-                            isEmojiView.toggle()
+                    .padding(.bottom, 8)
+                    VStack(spacing: 0) {
+                        HStack(spacing: 8) {
+                            ForEach(appSetting.isMondayStart ? [2, 3, 4, 5, 6, 7, 1] : [1, 2, 3, 4, 5, 6, 7], id: \.self) { dayOfWeek in
+                                Text(Date.dayOfTheWeekStr(dayOfWeek))
+                                    .bodyText()
+                                    .foregroundColor(.gray)
+                                    .frame(width: 40)
+                            }
+                        }
+                        .padding(.bottom, 8)
+                        VStack {
+                            if isExpanded {
+                                ForEach(1..<selectedDate.weekInMonth(isMondayStart: appSetting.isMondayStart) + 1, id: \.self) { week in
+                                    content(week, true)
+                                }
+                            } else {
+                                content(selectedDate.weekNum(startFromMon: appSetting.isMondayStart), false)
+                            }
+                        }
+                        BasicButton(isExpanded ? "chevron.compact.up" : "chevron.compact.down") {
+                            withAnimation {
+                                self.isExpanded.toggle()
+                            }
                         }
                     }
                 }
             }
-            .padding(.bottom, 5)
-            VStack(spacing: 0) {
-                HStack(spacing: 8) {
-                    ForEach(appSetting.isMondayStart ? [2, 3, 4, 5, 6, 7, 1] : [1, 2, 3, 4, 5, 6, 7], id: \.self) { dayOfWeek in
-                        Text(Date.dayOfTheWeekStr(dayOfWeek))
+            .rowBackground(false)
+            HStack(spacing: 5) {
+                Button(action: {
+                    withAnimation {
+                        isEmojiView.toggle()
+                    }
+                }) {
+                    HStack {
+                        Spacer()
+                        BasicImage(imageName: isEmojiView ? "percent" : "face.smiling")
+                        Text(isEmojiView ? "Show progress".localized : "Show Emoji".localized)
                             .bodyText()
-                            .foregroundColor(.gray)
-                            .frame(width: 40)
+                        Spacer()
                     }
+                    .rowBackground(true, 10, 0)
+                    .padding(.bottom, 3)
                 }
-                .padding(.bottom, 8)
-                VStack {
-                    if isExpanded {
-                        ForEach(1..<(selectedDate.weekInMonth ?? 2) + 1, id: \.self) { week in
-                            content(week, true)
-                        }
-                    } else {
-                        content(selectedDate.weekNum, false)
+                Button(action: {
+                    withAnimation {
+                        showCalendarSelect.toggle()
                     }
-                }
-                if !captureMode {
-                    BasicButton(isExpanded ? "chevron.compact.up" : "chevron.compact.down") {
-                        withAnimation {
-                            self.isExpanded.toggle()
-                        }
+                }) {
+                    HStack {
+                        Spacer()
+                        BasicImage(imageName: showCalendarSelect ? "checkmark" : "calendar")
+                        Text(showCalendarSelect ? "Done" : "Select Date")
+                            .bodyText()
+                        Spacer()
                     }
+                    .rowBackground(true, 10, 0)
+                    .padding(.bottom, 3)
                 }
             }
         }
-        .if(!captureMode) {
-            $0.rowBackground(false)
-        }
-        .if(captureMode) {
-            $0.padding(.top, 20)
-                .padding(.bottom, 20)
-                .padding(.horizontal, 10)
-                .background(
-                    Color(hex: colorScheme == .light ? "#F2F2F2" : "#202020")
-                )
-        }
-        .highPriorityGesture(gesture())
+        .padding(.bottom, 5)
     }
 }
 
-/*
- struct CustomCalendar_Previews: PreviewProvider {
- static var previews: some View {
- CalendarRow(selectedDate: .constant(Date()), habit: , isExpanded: true)
- }
- }
- */
+struct CustomCalendar_Previews: PreviewProvider {
+    static var previews: some View {
+        RingCalendar(selectedDate: .constant(Date()), isExpanded: true, habit1: HabitContext.sample1)
+            .environmentObject(AppSetting())
+    }
+}

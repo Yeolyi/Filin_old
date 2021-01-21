@@ -9,8 +9,6 @@ import SwiftUI
 
 struct RingCalendar: View {
     
-    let captureMode: Bool
-    
     @Binding var selectedDate: Date
     @State var isExpanded = false
     @State var isEmojiView = false
@@ -37,21 +35,23 @@ struct RingCalendar: View {
         }
     }
     
-    init(_ captureMode: Bool = false, selectedDate: Binding<Date>, isExpanded: Bool = false, habit1: HabitContext? = nil, habit2: HabitContext? = nil, habit3: HabitContext? = nil) {
+    init(selectedDate: Binding<Date>, isExpanded: Bool = false,
+         isEmojiView: Bool = false,
+         habit1: HabitContext? = nil, habit2: HabitContext? = nil, habit3: HabitContext? = nil) {
         self._selectedDate = selectedDate
         self._isExpanded = State(initialValue: isExpanded)
+        self._isEmojiView = State(initialValue: isEmojiView)
         let nilHabit = HabitContext(name: "Nil")
         nilHabit.requiredSec = -1
         self.habit1 = habit1 == nil ? nilHabit : habit1!
         self.habit2 = habit2 == nil ? nilHabit : habit2!
         self.habit3 = habit3 == nil ? nilHabit : habit3!
-        self.captureMode = captureMode
     }
     
     var body: some View {
-        CalendarInterface(captureMode, selectedDate: $selectedDate, color: color, isExpanded: $isExpanded, isEmojiView: $isEmojiView, move: move, content: { week, isExpanded -> AnyView in
+        CalendarInterface(selectedDate: $selectedDate, color: color, isExpanded: $isExpanded, isEmojiView: $isEmojiView, move: move, content: { week, isExpanded -> AnyView in
                 if isEmojiView && !habitsWrapped.compactMap({$0}).isEmpty {
-                    return AnyView(EmojiCalendarRow(week: week, isExpanded: isExpanded, habit: habitsWrapped.compactMap({$0})[0], selectedDate: $selectedDate))
+                    return AnyView(EmojiCalendarRow(week: week, isExpanded: isExpanded, selectedDate: $selectedDate, habit: habitsWrapped.compactMap({$0})[0]))
                 } else {
                     return AnyView(HStack(spacing: 8) {
                         ForEach(selectedDate.containedWeek(week: week, from: appSetting.isMondayStart ? 2 : 1), id: \.self) { date in
@@ -87,7 +87,6 @@ struct RingCalendar: View {
             return Calendar.current.date(byAdding: .weekOfMonth, value: addedValue, to: selectedDate) ?? Date()
         }
     }
-    
     
     func isButtonActive(at date: Date) -> Bool {
         if habitsWrapped.compactMap({$0}).count != 1 {

@@ -17,6 +17,8 @@
 "Off" = "끄기";
 "Share" = "공유하기";
 "Instagram Story" = "인스타그램 스토리";
+"Emoji" = "이모지";
+"Date" = "날짜";
 
 // 리스트 탭
 "List" = "목록";
@@ -54,6 +56,15 @@
 "Number of times per set" = "세트 당 횟수";
 "Number of sets" = "세트 개수";
 "Vitamins" = "비타민";
+"Morning jogging" = "아침 조깅";
+"Reading" = "독서";
+"Push-up" = "팔굽혀펴기";
+"Eating vitamins" = "비타민 먹기";
+"Foreign language" = "외국어";
+"Yoga" = "요가";
+"Diet" = "다이어트";
+"Get Certified" = "자격증 따기";
+"Playing musical instruments" = "악기 연습";
 
 // 목표 자세히 보기
 "Calendar" = "달력";
@@ -69,6 +80,13 @@
 "Since" = "시작일";
 "Trends are based on how your metrics have moved over the last specific days as compared to the last 100 days." = "추세는 지난 100일과 비교하여 특정 기간동안 수치가 어떻게 변화했는지를 바탕으로 측정됩니다.";
 "Needs more data" = "데이터가 더 필요함";
+"Show Emoji" = "이모지 보기";
+"Select Date" = "날짜 선택";
+"Show progress" = "달성량 보기";
+"Image Save/Share" = "사진 저장/공유";
+"Preview" = "미리보기";
+"Free" = "자유";
+"Square" = "정방형";
 
 //목표 수정
 "Name" = "이름";

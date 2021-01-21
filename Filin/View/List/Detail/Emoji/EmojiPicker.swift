@@ -39,15 +39,6 @@ struct EmojiPicker: View {
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
-                    Button(action: {
-                        habit.dailyEmoji[selectedDate.dictKey] = nil
-                        save()
-                    }) {
-                        Image(systemName: "xmark.circle")
-                            .font(.system(size: 25))
-                            .mainColor()
-                            .opacity(habit.dailyEmoji[selectedDate.dictKey] == nil ? 1 : 0.5)
-                    }
                     ForEach(emojiManager.emojiList, id: \.self) { emoji in
                         Button(action: {
                             habit.dailyEmoji[selectedDate.dictKey] = emoji
@@ -57,6 +48,15 @@ struct EmojiPicker: View {
                                 .font(.system(size: 25))
                                 .opacity(habit.dailyEmoji[selectedDate.dictKey] == emoji ? 1 : 0.5)
                         }
+                    }
+                    Button(action: {
+                        habit.dailyEmoji[selectedDate.dictKey] = nil
+                        save()
+                    }) {
+                        Image(systemName: "xmark.circle")
+                            .font(.system(size: 25))
+                            .subColor()
+                            .opacity(habit.dailyEmoji[selectedDate.dictKey] == nil ? 1 : 0.5)
                     }
                     Button(action: {
                         activeSheet = DetailViewActiveSheet.emoji

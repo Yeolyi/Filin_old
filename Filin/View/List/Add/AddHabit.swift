@@ -28,7 +28,7 @@ struct AddHabit: View {
     }
     
     var body: some View {
-        VStack {
+        ZStack {
             if currentPage == 1 {
                 NameSection(name: $tempHabit.name)
             }
@@ -44,11 +44,14 @@ struct AddHabit: View {
             if currentPage == 5 {
                 ThemeSection(color: $tempHabit.color)
             }
-            HStack {
-                previousButton
+            VStack {
                 Spacer()
+                HStack {
+                    previousButton
+                    Spacer()
+                }
+                nextButton
             }
-            nextButton
         }
         .padding(.bottom, 20)
     }

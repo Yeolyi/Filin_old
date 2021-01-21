@@ -85,7 +85,7 @@ class RoutineContextManager: ObservableObject, ContextEditable {
     private init() {
         contents = fetched.map({RoutineContext($0)})
     }
-    
+
     static var shared = RoutineContextManager()
     
     func addObject(_ object: ObjectContext) {

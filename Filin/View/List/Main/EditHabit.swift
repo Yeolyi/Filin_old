@@ -203,6 +203,9 @@ struct EditHabit: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
+            presentationMode.wrappedValue.dismiss()
+         }
     }
     var saveButton: some View {
         HeaderText("Save".localized) {

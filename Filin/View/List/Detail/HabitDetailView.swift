@@ -38,18 +38,6 @@ struct HabitDetailView: View {
                     .font(.system(size: 30))
             }
         }
-        .sheet(item: $activeSheet) { item in
-            switch item {
-            case .edit:
-                EditHabit(targetHabit: habit)
-                    .environmentObject(habitManager)
-            case .emoji:
-                EmojiListEdit()
-                    .environmentObject(emojiManager)
-            case .share:
-                HabitShare(habit: habit)
-            }
-        }
         .padding(.top, 1)
         .navigationBarTitle(habit.name)
         .navigationBarItems(
@@ -63,6 +51,19 @@ struct HabitDetailView: View {
                     }
                 }
         )
+        .sheet(item: $activeSheet) { item in
+            switch item {
+            case .edit:
+                EditHabit(targetHabit: habit)
+                    .environmentObject(habitManager)
+            case .emoji:
+                EmojiListEdit()
+                    .environmentObject(emojiManager)
+            case .share:
+                HabitShare(habit: habit)
+                    .environmentObject(appSetting)
+            }
+        }
         .onAppear {
             selectedDate = appSetting.mainDate
         }

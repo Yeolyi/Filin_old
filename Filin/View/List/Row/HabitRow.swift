@@ -14,6 +14,7 @@ struct HabitRow: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appSetting: AppSetting
     @State var isTapping = false
+    @State var activeSheet: DetailViewActiveSheet?
     let date: Date
     let showAdd: Bool
     

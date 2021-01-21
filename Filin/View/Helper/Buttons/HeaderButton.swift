@@ -51,7 +51,6 @@ struct BasicTextButton: View {
                 .subColor()
                 .font(.system(size: 18, weight: .semibold))
         }
-        .frame(width: 44, height: 35)
     }
 }
 

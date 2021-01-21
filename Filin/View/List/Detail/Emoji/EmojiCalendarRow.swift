@@ -10,12 +10,15 @@ import SwiftUI
 struct EmojiCalendarRow: View {
     let week: Int
     let isExpanded: Bool
-    @ObservedObject var habit: HabitContext
+    
     @Binding var selectedDate: Date
+    
+    @ObservedObject var habit: HabitContext
+    @EnvironmentObject var appSetting: AppSetting
     
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(selectedDate.containedWeek(week: week), id: \.self) { date in
+            ForEach(selectedDate.containedWeek(week: week, from: appSetting.isMondayStart ? 2 : 1), id: \.self) { date in
                 Button(action: { self.selectedDate = date }) {
                     VStack {
                         Text(String(date.day))

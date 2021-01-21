@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension Summary: IDIdentifiable {
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Summary> {
