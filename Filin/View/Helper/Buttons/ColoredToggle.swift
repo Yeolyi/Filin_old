@@ -22,7 +22,7 @@ struct ColoredToggleStyle: ToggleStyle {
                 withAnimation {
                     configuration.isOn.toggle()
                 }
-            } ) {
+            }) {
                 RoundedRectangle(cornerRadius: 16, style: .circular)
                     .fill(configuration.isOn ? onColor : offColor)
                     .frame(width: 50, height: 29)

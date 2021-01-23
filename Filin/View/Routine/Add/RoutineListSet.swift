@@ -49,7 +49,11 @@ struct RoutineSetList: View {
                         BasicButton("minus") {
                             listData.remove(id)
                         }
-                        Text(HabitManager.shared.contents.first(where: {$0.id == listData.value(of: id)})?.name ?? "Test")
+                        Text(
+                            HabitManager.shared.contents.first(
+                                where: {$0.id == listData.value(of: id)}
+                            )?.name ?? "Test"
+                        )
                             .bodyText()
                     }
                 })

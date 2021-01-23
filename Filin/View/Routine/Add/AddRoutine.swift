@@ -16,7 +16,7 @@ struct AddRoutine: View {
     @State var isReminder = true
     @State var tempRoutineTime = Date()
     
-    @ObservedObject var newRoutine = FlRoutine(UUID(), name: "Temp")
+    @ObservedObject var newRoutine = FlRoutine(UUID(), name: "")
     @ObservedObject var listData = EditableList<UUID>(values: [], save: {_ in })
     
     @Environment(\.presentationMode) var presentationMode

@@ -23,7 +23,10 @@ struct TodayInformation: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("\(habit.achievement.content[selectedDate.dictKey] ?? 0)\(" times".localized)/\(habit.achievement.numberOfTimes)\(" times".localized)")
+                Text("""
+                    \(habit.achievement.content[selectedDate.dictKey] ?? 0)\(" times".localized)/ \
+                    \(habit.achievement.numberOfTimes)\(" times".localized)
+                    """)
                     .foregroundColor(habit.color)
                     .headline()
                 Spacer()
@@ -34,7 +37,8 @@ struct TodayInformation: View {
             HStack {
                 LinearProgressBar(
                     color: habit.color,
-                    progress: Double(habit.achievement.content[selectedDate.dictKey] ?? 0)/Double(habit.achievement.numberOfTimes)
+                    progress: Double(habit.achievement.content[selectedDate.dictKey] ?? 0)
+                        / Double(habit.achievement.numberOfTimes)
                 )
                 moveButton(isAdd: false)
                 moveButton(isAdd: true)
@@ -49,7 +53,7 @@ struct TodayInformation: View {
                 }
             }
         }
-        .rowBackground(false)
+        .rowBackground(innerBottomPadding: false)
     }
     func moveButton(isAdd: Bool) -> some View {
         BasicButton(isAdd ? "plus" : "minus") {

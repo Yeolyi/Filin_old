@@ -16,7 +16,7 @@ struct PaperToggle: View {
     }
     
     var body: some View {
-        Button(action:  {
+        Button(action: {
             withAnimation {
                 isOn.toggle()
             }

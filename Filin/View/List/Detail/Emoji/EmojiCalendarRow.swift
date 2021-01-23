@@ -18,11 +18,15 @@ struct EmojiCalendarRow: View {
     
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(selectedDate.containedWeek(week: week, from: appSetting.isMondayStart ? 2 : 1), id: \.self) { date in
+            ForEach(
+                selectedDate.daysInSameWeek(week: week, from: appSetting.isMondayStart ? 2 : 1), id: \.self
+            ) { date in
                 Button(action: { self.selectedDate = date }) {
                     VStack {
                         Text(String(date.day))
-                            .foregroundColor(selectedDate.dictKey == date.dictKey ? habit.color : ThemeColor.mainColor(colorScheme))
+                            .foregroundColor(
+                                selectedDate.dictKey == date.dictKey ? habit.color : ThemeColor.mainColor(colorScheme)
+                            )
                             .bodyText()
                         Text(habit.dailyEmoji[date.dictKey] ?? "")
                             .headline()

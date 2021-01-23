@@ -119,7 +119,10 @@ struct RunRoutine: View {
                             .foregroundColor(.clear)
                             .overlay(
                                 Circle()
-                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(routine.list[currentListIndex].requiredSec))
+                                    .trim(
+                                        from: 0.0,
+                                        to: CGFloat(timeRemaining)/CGFloat(routine.list[currentListIndex].requiredSec)
+                                    )
                                     .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .square, lineJoin: .bevel))
                                     .mainColor()
                                     .rotationEffect(Angle(degrees: 270.0))
@@ -134,7 +137,10 @@ struct RunRoutine: View {
                             .foregroundColor(.clear)
                             .overlay(
                                 Circle()
-                                    .trim(from: 0.0, to: CGFloat(timeRemaining)/CGFloat(routine.list[currentListIndex].requiredSec))
+                                    .trim(
+                                        from: 0.0,
+                                        to: CGFloat(timeRemaining)/CGFloat(routine.list[currentListIndex].requiredSec)
+                                    )
                                     .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .square, lineJoin: .bevel))
                                     .mainColor()
                                     .rotationEffect(Angle(degrees: 270.0))
@@ -160,4 +166,3 @@ struct RunRoutine_Previews: PreviewProvider {
         RunRoutine(routine: DataSample.shared.routine1)
     }
 }
-

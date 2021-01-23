@@ -76,7 +76,10 @@ struct EditHabit: View {
     init(targetHabit: FlHabit) {
         self.targetHabit = targetHabit
         tempHabit = FlHabit(name: "Temp")
-        __setNum = State(initialValue: targetHabit.addUnit != 1 ? targetHabit.achievement.numberOfTimes / targetHabit.achievement.addUnit : 1)
+        __setNum = State(
+            initialValue: targetHabit.addUnit != 1 ?
+                targetHabit.achievement.numberOfTimes / targetHabit.achievement.addUnit : 1
+        )
         __minute = State(initialValue: targetHabit.requiredSec/60)
         __second = State(initialValue: targetHabit.requiredSec%60)
         __isRequiredTime = State(initialValue: targetHabit.requiredSec != 0)
@@ -137,10 +140,16 @@ struct EditHabit: View {
                                     PaperToggle(isSet)
                                 }
                                 if !isSet.wrappedValue {
-                                    PickerWithButton(str: "".localized, size: 100, number: $tempHabit.achievement.numberOfTimes)
+                                    PickerWithButton(
+                                        str: "".localized, size: 100, number: $tempHabit.achievement.numberOfTimes
+                                    )
                                 } else {
-                                    PickerWithButton(str: "Number of times per set".localized, size: 100, number: oneTapNum)
-                                    PickerWithButton(str: "Number of sets".localized, size: 30, number: setNum)
+                                    PickerWithButton(
+                                        str: "Number of times per set".localized, size: 100, number: oneTapNum
+                                    )
+                                    PickerWithButton(
+                                        str: "Number of sets".localized, size: 30, number: setNum
+                                    )
                                 }
                             }
                             .padding(.top, 10)

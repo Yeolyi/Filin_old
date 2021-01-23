@@ -17,7 +17,10 @@ struct HabitScrollView: View {
         habitManager.contents.filter({$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)}).isEmpty
     }
     var isGeneralEmpty: Bool {
-        (habitManager.contents.count - habitManager.contents.filter({$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)}).count) == 0
+        (
+            habitManager.contents.count -
+            habitManager.contents.filter({$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)}).count
+        ) == 0
     }
     
     var emptyIndicatingRow: some View {
@@ -36,7 +39,9 @@ struct HabitScrollView: View {
                 Text("Today".localized)
                     .sectionText()
                 if !isTodayEmpty {
-                    ForEach(habitManager.contents.filter({$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)})) { habitInfo in
+                    ForEach(
+                        habitManager.contents.filter { $0.isTodo(at: appSetting.mainDate.dayOfTheWeek) }
+                    ) { habitInfo in
                         HabitRow(habit: habitInfo, showAdd: true)
                             .environmentObject(habitInfo)
                     }
@@ -46,7 +51,9 @@ struct HabitScrollView: View {
                 Text("Others".localized)
                     .sectionText()
                 if !isGeneralEmpty {
-                    ForEach(habitManager.contents.filter({!$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)}), id: \.self) { habitInfo in
+                    ForEach(
+                        habitManager.contents.filter({!$0.isTodo(at: appSetting.mainDate.dayOfTheWeek)})
+                    ) { habitInfo in
                         HabitRow(habit: habitInfo, showAdd: false)
                     }
                 } else {

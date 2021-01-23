@@ -17,7 +17,9 @@ struct CalendarRingDesign {
         }
     }
     
-    static func getRingTuple(at date: Date, habits: [FlHabit?], selectedDate: Date, colorScheme: ColorScheme) -> RingGroup {
+    static func getRingTuple(
+        at date: Date, habits: [FlHabit?], selectedDate: Date, colorScheme: ColorScheme
+    ) -> RingGroup {
         guard isButtonActive(at: date, habits: habits) else {
             return RingGroup([nil])
         }
@@ -41,7 +43,9 @@ struct CalendarRingDesign {
         return RingGroup(tempRingTuple)
     }
     
-    static func textColor(at date: Date, habits: [FlHabit?], selectedDate: Date, isExpanded: Bool, colorScheme: ColorScheme) -> Color {
+    static func textColor(
+        at date: Date, habits: [FlHabit?], selectedDate: Date, isExpanded: Bool, colorScheme: ColorScheme
+    ) -> Color {
         guard isButtonActive(at: date, habits: habits) else {
             return ThemeColor.subColor(colorScheme)
         }

@@ -110,7 +110,7 @@ extension Date {
     /// Self를 포함하는 달의 특정 주에 포함되는 Date 배열을 반환합니다.
     /// - Parameters:
     ///   - baseDayOfWeek: 시작 날짜의 요일을 설정합니다. 1은 일요일, 7은 토요일을 의미합니다.
-    func containedWeek(week: Int, from baseDayOfWeek: Int = 1) -> [Date] {
+    func daysInSameWeek(week: Int, from baseDayOfWeek: Int = 1) -> [Date] {
         var tempDateList: [Date] = []
         let firstDayOfWeek = self.firstDayOfWeekOfMonth
         

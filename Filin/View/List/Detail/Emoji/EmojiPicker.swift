@@ -79,4 +79,3 @@ struct EmojiPicker: View {
         }
     }
 }
-

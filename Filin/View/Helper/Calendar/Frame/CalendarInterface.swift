@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// - Note: AppSetting이 전달되어야함. 근데 왜 body 변수는 연산 프로퍼티일까?
 struct CalendarInterface<Content: View>: View {
     
     @State var showCalendarSelect = false
@@ -17,22 +18,20 @@ struct CalendarInterface<Content: View>: View {
     @Binding var isEmojiView: Bool
     
     let content: (_ week: Int, _ isExpanded: Bool) -> Content
-    let move: (Bool) -> Date
     let color: Color
     
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appSetting: AppSetting
     
-    init(selectedDate: Binding<Date>, color: Color, isExpanded: Binding<Bool>, isEmojiView: Binding<Bool>, move: @escaping (Bool) -> Date,
-         content: @escaping (_ week: Int, _ isExpanded: Bool) -> Content
+    init(selectedDate: Binding<Date>, color: Color, isExpanded: Binding<Bool>, isEmojiView: Binding<Bool>,
+         @ViewBuilder content: @escaping (_ week: Int, _ isExpanded: Bool) -> Content
     ) {
         self._selectedDate = selectedDate
         self._isExpanded = isExpanded
         self._isEmojiView = isEmojiView
         self.content = content
-        self.move = move
         self.color = color
     }
+    
     var body: some View {
         VStack {
             VStack(spacing: 0) {
@@ -43,26 +42,24 @@ struct CalendarInterface<Content: View>: View {
                         .frame(maxWidth: .infinity)
                 } else {
                     HStack {
-                        VStack {
-                            HStack {
-                                Group {
-                                    if isExpanded {
-                                        Text(selectedDate.localizedYearMonth)
-                                    } else {
-                                        Text(selectedDate.localizedMonthDay)
-                                    }
-                                }
-                                .foregroundColor(color)
-                                .headline()
-                                Spacer()
+                        Group {
+                            if isExpanded {
+                                Text(selectedDate.localizedYearMonth)
+                            } else {
+                                Text(selectedDate.localizedMonthDay)
                             }
                         }
+                        .foregroundColor(color)
+                        .headline()
                         Spacer()
                     }
                     .padding(.bottom, 8)
                     VStack(spacing: 0) {
                         HStack(spacing: 8) {
-                            ForEach(appSetting.isMondayStart ? [2, 3, 4, 5, 6, 7, 1] : [1, 2, 3, 4, 5, 6, 7], id: \.self) { dayOfWeek in
+                            ForEach(
+                                appSetting.isMondayStart ? [2, 3, 4, 5, 6, 7, 1] : [1, 2, 3, 4, 5, 6, 7],
+                                id: \.self
+                            ) { dayOfWeek in
                                 Text(Date.dayOfTheWeekStr(dayOfWeek))
                                     .bodyText()
                                     .foregroundColor(.gray)
@@ -72,7 +69,10 @@ struct CalendarInterface<Content: View>: View {
                         .padding(.bottom, 8)
                         VStack {
                             if isExpanded {
-                                ForEach(1..<selectedDate.weekNuminMonth(isMondayStart: appSetting.isMondayStart) + 1, id: \.self) { week in
+                                ForEach(
+                                    1..<selectedDate.weekNuminMonth(isMondayStart: appSetting.isMondayStart) + 1,
+                                    id: \.self
+                                ) { week in
                                     content(week, true)
                                 }
                             } else {
@@ -87,41 +87,37 @@ struct CalendarInterface<Content: View>: View {
                     }
                 }
             }
-            .rowBackground(false)
-            HStack(spacing: 5) {
-                Button(action: {
-                    withAnimation {
-                        isEmojiView.toggle()
-                    }
-                }) {
-                    HStack {
-                        Spacer()
-                        BasicImage(imageName: isEmojiView ? "percent" : "face.smiling")
-                        Text(isEmojiView ? "Show progress".localized : "Show Emoji".localized)
-                            .bodyText()
-                        Spacer()
-                    }
-                    .rowBackground(true, 10, 0)
-                    .padding(.bottom, 3)
-                }
-                Button(action: {
-                    withAnimation {
-                        showCalendarSelect.toggle()
-                    }
-                }) {
-                    HStack {
-                        Spacer()
-                        BasicImage(imageName: showCalendarSelect ? "checkmark" : "calendar")
-                        Text(showCalendarSelect ? "Done" : "Select Date")
-                            .bodyText()
-                        Spacer()
-                    }
-                    .rowBackground(true, 10, 0)
-                    .padding(.bottom, 3)
-                }
-            }
+            .rowBackground(innerBottomPadding: false)
+            controller
         }
         .padding(.bottom, 5)
+    }
+    
+    var controller: some View {
+        HStack(spacing: 5) {
+            Button(action: { withAnimation { isEmojiView.toggle() } }) {
+                HStack {
+                    Spacer()
+                    BasicImage(imageName: isEmojiView ? "percent" : "face.smiling")
+                    Text(isEmojiView ? "Show progress".localized : "Show Emoji".localized)
+                        .bodyText()
+                    Spacer()
+                }
+                .rowBackground(innerBottomPadding: true, 10, 0)
+                .padding(.bottom, 3)
+            }
+            Button(action: { withAnimation { showCalendarSelect.toggle() } }) {
+                HStack {
+                    Spacer()
+                    BasicImage(imageName: showCalendarSelect ? "checkmark" : "calendar")
+                    Text(showCalendarSelect ? "Done" : "Select Date")
+                        .bodyText()
+                    Spacer()
+                }
+                .rowBackground(innerBottomPadding: true, 10, 0)
+                .padding(.bottom, 3)
+            }
+        }
     }
 }
 

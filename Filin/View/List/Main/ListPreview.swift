@@ -18,7 +18,7 @@ struct ListPreview: View {
                     HabitRow(habit: FlHabit(
                         name: "A ten-minute walk".localized,
                         numberOfTimes: 3, requiredSec: 600
-                    ) ,showAdd: true)
+                    ), showAdd: true)
                     HabitRow(habit: FlHabit(name: "Stretching".localized), showAdd: true)
                 }
                 .opacity(0.5)

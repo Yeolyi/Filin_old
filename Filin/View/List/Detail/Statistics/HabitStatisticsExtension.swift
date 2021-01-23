@@ -22,7 +22,9 @@ extension FlHabit {
             let dateFromtoday = Date(dictKey: $0.key).daysFromToday
             return dateFromtoday <= 100 && dateFromtoday > 0
         }
-        return yearAchievement.reduce(0, {$0 + Double($1.value)}) / max(1, min(Double(abs(firstDay.daysFromToday)), 100))
+        return
+            yearAchievement.reduce(0, {$0 + Double($1.value)})
+            / max(1, min(Double(abs(firstDay.daysFromToday)), 100))
     }
     
     func weeklyAverage(at date: Date) -> Double {
@@ -53,7 +55,8 @@ extension FlHabit {
         guard !achievementList.isEmpty else {
             return 0
         }
-        return Double(achievementList.reduce(0, {$0 + Int($1)}))/Double(Calendar.current.dateComponents([.day], from: datePointer, to: date).day!)
+        return Double(achievementList.reduce(0, {$0 + Int($1)}))
+            / Double(Calendar.current.dateComponents([.day], from: datePointer, to: date).day!)
     }
 }
 
@@ -87,7 +90,7 @@ extension FlHabit {
             count[firstDayofWeekIndex + 1 > 6 ? 0 : firstDayofWeekIndex + 1] += 1
             count[firstDayofWeekIndex + 2 > 6 ? firstDayofWeekIndex - 6 : firstDayofWeekIndex + 2] += 1
         }
-        return dayOfWeekAchievement.enumerated().map{Double($1)/Double(max(1, count[$0]))}
+        return dayOfWeekAchievement.enumerated().map { Double($1)/Double(max(1, count[$0])) }
     }
 }
 

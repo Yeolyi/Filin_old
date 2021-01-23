@@ -25,11 +25,11 @@ struct DayOfWeekChart: View {
             weeklyData[datePointer.dayOfTheWeek - 1] = Int(habit.achievement.content[datePointer.dictKey] ?? 0)
         }
         let dayOfWeekAverage = habit.dayOfWeekAverage
-        let trendOriginal = weeklyData.enumerated().map{Double($1) - dayOfWeekAverage[$0]}
+        let trendOriginal = weeklyData.enumerated().map { Double($1) - dayOfWeekAverage[$0] }
         dayOfWeekTrend = trendOriginal.map(roundAndCut)
         self.color = habit.color
         
-        trendToGraphHeight = dayOfWeekTrend.map{
+        trendToGraphHeight = dayOfWeekTrend.map {
             let realValue = CGFloat($0 * 120 / Double(habit.achievement.numberOfTimes))
             return min(59, max(-59, realValue))
         }

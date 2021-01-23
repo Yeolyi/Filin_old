@@ -47,9 +47,15 @@ struct RoutineView: View {
                     if !routineManager.contents.isEmpty {
                         Text("Today".localized)
                             .sectionText()
-                        if !routineManager.contents.filter({$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)}).isEmpty {
+                        if !routineManager.contents.filter({
+                            $0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)
+                        }).isEmpty {
                             VStack(spacing: 0) {
-                                ForEach(routineManager.contents.filter({$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)})) { routine in
+                                ForEach(
+                                    routineManager.contents.filter {
+                                        $0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)
+                                    }
+                                ) { routine in
                                     RoutineRow(routine: routine, isSheet: $isAddSheet)
                                 }
                             }
@@ -58,9 +64,15 @@ struct RoutineView: View {
                         }
                         Text("Others".localized)
                             .sectionText()
-                        if !routineManager.contents.filter({!$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)}).isEmpty {
+                        if !routineManager.contents.filter({
+                            !$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)
+                        }).isEmpty {
                             VStack(spacing: 0) {
-                                ForEach(routineManager.contents.filter({!$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)})) { routine in
+                                ForEach(
+                                    routineManager.contents.filter {
+                                        !$0.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek)
+                                    }
+                                ) { routine in
                                     RoutineRow(routine: routine, isSheet: $isAddSheet)
                                 }
                             }

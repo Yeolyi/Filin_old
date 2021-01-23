@@ -43,7 +43,7 @@ struct RowBackground: ViewModifier {
 }
 
 extension View {
-    func rowBackground(_ innerBottomPadding: Bool = true, _ verticalPadding: CGFloat = 20,
+    func rowBackground(innerBottomPadding: Bool = true, _ verticalPadding: CGFloat = 20,
                        _ outerVerticalPadding: CGFloat = 10, _ horizontalPadding: CGFloat = 10) -> some View {
         modifier(RowBackground(innerBottomPadding, verticalPadding, outerVerticalPadding, horizontalPadding))
     }

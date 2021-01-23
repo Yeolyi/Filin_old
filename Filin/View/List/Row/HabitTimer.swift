@@ -27,7 +27,11 @@ struct HabitTimer: View {
                         .overlay(
                             ZStack {
                                 Circle()
-                                    .trim(from: 0.0, to: (CGFloat(habit.requiredSec) - CGFloat(timeRemaining))/CGFloat(habit.requiredSec))
+                                    .trim(
+                                        from: 0.0,
+                                        to: (CGFloat(habit.requiredSec)
+                                                - CGFloat(timeRemaining))/CGFloat(habit.requiredSec)
+                                    )
                                     .stroke(style: StrokeStyle(lineWidth: 15, lineCap: .square, lineJoin: .bevel))
                                     .foregroundColor(habit.color)
                                     .rotationEffect(Angle(degrees: 270.0))

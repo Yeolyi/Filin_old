@@ -50,10 +50,19 @@ struct TimesSection: View {
                     PaperToggle(isSet)
                 }
                 if !isSet.wrappedValue {
-                    PickerWithButton(str: "How many times do you want to achieve your goal in a day?".localized, size: 100, number: $numberOfTimes)
+                    PickerWithButton(
+                        str: "How many times do you want to achieve your goal in a day?".localized,
+                        size: 100, number: $numberOfTimes
+                    )
                 } else {
-                    PickerWithButton(str: "How many times do you proceed in one set?".localized, size: 100, number: oneTapNum)
-                    PickerWithButton(str: "How many sets are there?".localized, size: 30, number: setNum)
+                    PickerWithButton(
+                        str: "How many times do you proceed in one set?".localized,
+                        size: 100, number: oneTapNum
+                    )
+                    PickerWithButton(
+                        str: "How many sets are there?".localized,
+                        size: 30, number: setNum
+                    )
                     Divider()
                     Text("Total: \(numberOfTimes)")
                         .headline()

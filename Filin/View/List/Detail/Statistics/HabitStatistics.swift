@@ -96,7 +96,10 @@ struct HabitStatistics: View {
                     Spacer()
                 }
             }
-            Text("Trends are based on how your metrics have moved over the last specific days as compared to the last 100 days.")
+            Text("""
+                Trends are based on how your metrics have moved over the \
+                last specific days as compared to the last 100 days.
+                """)
                 .subColor()
                 .bodyText()
                 .padding(.top, 8)

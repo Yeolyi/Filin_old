@@ -65,7 +65,9 @@ struct HabitRow: View {
                             LinearProgressBar(color: habit.color, progress: habit.achievement.progress(at: date) ?? 0)
                             HStack {
                                 Spacer()
-                                Text("\(habit.achievement.content[date.dictKey] ?? 0)/\(habit.achievement.numberOfTimes)")
+                                Text("""
+                                    \(habit.achievement.content[date.dictKey] ?? 0)/\(habit.achievement.numberOfTimes)
+                                    """)
                                     .mainColor()
                                     .opacity(0.8)
                                     .bodyText()
@@ -86,7 +88,7 @@ struct HabitRow: View {
 struct HabitRow_Previews: PreviewProvider {
     static var previews: some View {
         let coredataPreview = DataSample.shared
-        HabitRow(habit: FlHabit(name: "Test"),showAdd: true)
+        HabitRow(habit: FlHabit(name: "Test"), showAdd: true)
             .environmentObject(coredataPreview.habitManager)
     }
 }

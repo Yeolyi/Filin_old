@@ -93,14 +93,18 @@ struct HabitShare: View {
                     HStack {
                         Spacer()
                         VStack(spacing: 5) {
-                            BasicImage(imageName: isExpanded ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right")
+                            BasicImage(
+                                imageName: isExpanded ?
+                                    "arrow.down.right.and.arrow.up.left" :
+                                    "arrow.up.left.and.arrow.down.right"
+                            )
                             Text(isExpanded ? "Fold".localized : "Expand".localized)
                                 .subColor()
                                 .bodyText()
                         }
                         Spacer()
                     }
-                    .rowBackground(true, 8)
+                    .rowBackground(8)
                 }
                 Button(action: {
                     withAnimation {
@@ -117,7 +121,7 @@ struct HabitShare: View {
                         }
                         Spacer()
                     }
-                    .rowBackground(true, 8)
+                    .rowBackground(8)
                 }
                 Button(action: {
                     withAnimation {
@@ -134,7 +138,7 @@ struct HabitShare: View {
                         }
                         Spacer()
                     }
-                    .rowBackground(true, 8)
+                    .rowBackground(8)
                 }
             }
             .padding(.horizontal, 10)
@@ -146,7 +150,7 @@ struct HabitShare: View {
                         imageAspect = .free
                     }
                 }
-                .rowBackground(true, 5, 0, 5)
+                .rowBackground(5, 0, 5)
                 if isExpanded == false {
                 HStack(spacing: 3) {
                     Image(systemName: imageAspect == .square ? "square.fill" : "square")
@@ -155,7 +159,7 @@ struct HabitShare: View {
                         imageAspect = .square
                     }
                 }
-                .rowBackground(true, 5, 0, 5)
+                .rowBackground(5, 0, 5)
                 HStack(spacing: 3) {
                     Image(systemName: imageAspect == .fourThree ? "rectangle.fill" : "rectangle")
                         .subColor()
@@ -163,7 +167,7 @@ struct HabitShare: View {
                         imageAspect = .fourThree
                     }
                 }
-                .rowBackground(true, 5, 0, 5)
+                .rowBackground(5, 0, 5)
                 }
                 HStack(spacing: 3) {
                     Image(systemName: imageAspect == .fourFive ? "rectangle.portrait.fill" : "rectangle.portrait")
@@ -172,7 +176,7 @@ struct HabitShare: View {
                         imageAspect = .fourFive
                     }
                 }
-                .rowBackground(true, 5, 0, 5)
+                .rowBackground(5, 0, 5)
             }
             .padding(.bottom, 8)
             .padding(.horizontal, 5)
@@ -187,7 +191,7 @@ struct HabitShare: View {
                             .bodyText()
                         Spacer()
                     }
-                    .rowBackground(true, 15)
+                    .rowBackground(innerBottomPadding: true, 15)
                 }
                 Button(action: {
                     SharingHandler.instagramStory(imageData: calendarImage.pngData()!, colorScheme: colorScheme)
@@ -198,7 +202,7 @@ struct HabitShare: View {
                             .bodyText()
                         Spacer()
                     }
-                    .rowBackground(true, 15)
+                    .rowBackground(innerBottomPadding: true, 15)
                 }
             }
             .padding(.top, 1)

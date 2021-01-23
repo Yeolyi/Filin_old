@@ -45,7 +45,7 @@ struct EditRoutine: View {
                             .headline()
                         Spacer()
                         HeaderText("Save".localized) {
-                            tempRoutine.list = listData.allValues.compactMap{ id in
+                            tempRoutine.list = listData.allValues.compactMap { id in
                                 habitManager.contents.first(where: {$0.id == id})
                             }
                             tempRoutine.time = isReminderUsed ? reminderTime : nil
@@ -78,7 +78,12 @@ struct EditRoutine: View {
                                         .navigationBarTitle(Text(""), displayMode: .inline)
                         ) {
                             HStack {
-                                Text(String(format: NSLocalizedString("Consists of %d goals", comment: ""), tempRoutine.list.count))
+                                Text(
+                                    String(
+                                        format: NSLocalizedString("Consists of %d goals", comment: ""),
+                                        tempRoutine.list.count
+                                    )
+                                )
                                     .bodyText()
                                 Spacer()
                             }

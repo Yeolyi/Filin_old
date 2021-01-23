@@ -33,7 +33,9 @@ struct HabitDetailView: View {
             VStack(spacing: 0) {
                 RingCalendar(selectedDate: $selectedDate, habit1: habit)
                 TodayInformation(selectedDate: $selectedDate)
-                EmojiPicker(selectedDate: $selectedDate, habit: habit, emojiManager: emojiManager, activeSheet: $activeSheet)
+                EmojiPicker(
+                    selectedDate: $selectedDate, habit: habit, emojiManager: emojiManager, activeSheet: $activeSheet
+                )
                 Text("")
                     .font(.system(size: 30))
             }
