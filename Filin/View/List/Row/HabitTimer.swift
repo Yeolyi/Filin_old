@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HabitTimer: View {
     
-    @EnvironmentObject var habit: HabitContext
+    @EnvironmentObject var habit: FlHabit
     let date: Date
     @State var timeRemaining = 0
     @State var isCounting = false
@@ -74,7 +74,9 @@ struct HabitTimer: View {
                     Button(action: {
                         if timeRemaining == 0 {
                             withAnimation {
-                                habit.calAchieve(at: date, isAdd: true)
+                                habit.achievement.set(at: date) { current, addUnit in
+                                    current + addUnit
+                                }
                             }
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         }
@@ -108,7 +110,7 @@ struct HabitTimer_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             HabitTimer(date: Date())
-                .environmentObject(HabitContext(name: "Test", color: .blue, requiredSec: 10))
+                .environmentObject(FlHabit(name: "Test", color: .blue, requiredSec: 10))
         }
     }
 }

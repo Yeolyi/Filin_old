@@ -9,7 +9,7 @@ import SwiftUI
 
 enum RoutineSheet: Identifiable {
     case add
-    case edit(RoutineContext)
+    case edit(FlRoutine)
     var id: Int {
         switch self {
         case .add:
@@ -24,12 +24,11 @@ struct RoutineView: View {
     
     @State var isAddSheet: RoutineSheet?
     
-    @ObservedObject var routineManager = RoutineContextManager.shared
-    
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var habitManager: HabitManager
     @EnvironmentObject var appSetting: AppSetting
+    @EnvironmentObject var routineManager: RoutineManager
     
     var emptyIndicatingRow: some View {
         HStack {
@@ -69,7 +68,7 @@ struct RoutineView: View {
                             emptyIndicatingRow
                         }
                     } else {
-                        ForEach([RoutineContext.sample1, RoutineContext.sample2], id: \.self) { routine in
+                        ForEach([DataSample.shared.routine1, DataSample.shared.routine2], id: \.self) { routine in
                             RoutineRow(routine: routine, isSheet: $isAddSheet)
                         }
                         .opacity(0.5)

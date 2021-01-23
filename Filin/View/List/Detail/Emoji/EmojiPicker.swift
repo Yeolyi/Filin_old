@@ -12,7 +12,7 @@ struct EmojiPicker: View {
     
     @Binding var selectedDate: Date
     @Environment(\.managedObjectContext) var managedObjectContext
-    @ObservedObject var habit: HabitContext
+    @ObservedObject var habit: FlHabit
     @ObservedObject var emojiManager: EmojiManager
     @Binding var activeSheet: DetailViewActiveSheet?
     var emoji: String? {

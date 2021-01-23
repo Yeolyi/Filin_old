@@ -17,7 +17,7 @@ struct HabitSelector: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(HabitContextManager.shared.contents, id: \.self) { habit in
+                ForEach(HabitManager.shared.contents, id: \.self) { habit in
                     Button(action: {
                         targetHabit = habit.id
                         self.presentationMode.wrappedValue.dismiss()

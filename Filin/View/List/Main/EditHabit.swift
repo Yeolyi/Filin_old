@@ -9,10 +9,10 @@ import SwiftUI
 
 struct EditHabit: View {
     
-    let targetHabit: HabitContext
+    let targetHabit: FlHabit
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var habitManager: HabitContextManager
-    @ObservedObject var tempHabit: HabitContext
+    @EnvironmentObject var habitManager: HabitManager
+    @ObservedObject var tempHabit: FlHabit
     @State var showTimes = false
     @State var isDeleteAlert = false
     @State var _isRequiredTime = false
@@ -46,7 +46,7 @@ struct EditHabit: View {
         Binding(get: { _isSet}, set: {
             _isSet = $0
             if $0 {
-                tempHabit.addUnit = tempHabit.numberOfTimes
+                tempHabit.addUnit = tempHabit.achievement.numberOfTimes
                 _setNum = 1
             } else {
                 tempHabit.addUnit = 1
@@ -58,25 +58,25 @@ struct EditHabit: View {
     var setNum: Binding<Int> {
         Binding(get: { _setNum }, set: {
             _setNum = $0
-            tempHabit.numberOfTimes = $0 * tempHabit.addUnit
+            tempHabit.achievement.numberOfTimes = $0 * tempHabit.achievement.addUnit
         })
     }
     
     var oneTapNum: Binding<Int> {
         Binding(get: {tempHabit.addUnit}, set: {
             tempHabit.addUnit = $0
-            tempHabit.numberOfTimes = _setNum * $0
+            tempHabit.achievement.numberOfTimes = _setNum * $0
         })
     }
     
     var isSaveAvailable: Bool {
-        tempHabit.name != "" && !tempHabit.dayOfWeek.isEmpty && tempHabit.numberOfTimes > 0
+        tempHabit.name != "" && !tempHabit.dayOfWeek.isEmpty && tempHabit.achievement.numberOfTimes > 0
     }
     
-    init(targetHabit: HabitContext) {
+    init(targetHabit: FlHabit) {
         self.targetHabit = targetHabit
-        tempHabit = HabitContext(name: "Temp")
-        __setNum = State(initialValue: targetHabit.addUnit != 1 ? targetHabit.numberOfTimes / targetHabit.addUnit : 1)
+        tempHabit = FlHabit(name: "Temp")
+        __setNum = State(initialValue: targetHabit.addUnit != 1 ? targetHabit.achievement.numberOfTimes / targetHabit.achievement.addUnit : 1)
         __minute = State(initialValue: targetHabit.requiredSec/60)
         __second = State(initialValue: targetHabit.requiredSec%60)
         __isRequiredTime = State(initialValue: targetHabit.requiredSec != 0)
@@ -137,7 +137,7 @@ struct EditHabit: View {
                                     PaperToggle(isSet)
                                 }
                                 if !isSet.wrappedValue {
-                                    PickerWithButton(str: "".localized, size: 100, number: $tempHabit.numberOfTimes)
+                                    PickerWithButton(str: "".localized, size: 100, number: $tempHabit.achievement.numberOfTimes)
                                 } else {
                                     PickerWithButton(str: "Number of times per set".localized, size: 100, number: oneTapNum)
                                     PickerWithButton(str: "Number of sets".localized, size: 30, number: setNum)
@@ -231,12 +231,12 @@ struct EditHabit: View {
             message: nil,
             primaryButton: .default(Text("Cancel".localized)),
             secondaryButton: .destructive(Text("Delete".localized), action: {
-                for profile in SummaryContextManager.shared.contents {
+                for profile in SummaryManager.shared.contents {
                     if let index = profile.habitArray.firstIndex(where: {$0 == tempHabit.id}) {
-                        profile.setByNumber(index + 1, habit: nil)
+                        profile[index + 1] = nil
                     }
                 }
-                HabitContextManager.shared.deleteObject(id: targetHabit.id)
+                HabitManager.shared.remove(withID: targetHabit.id, summary: SummaryManager.shared.contents[0])
                 self.presentationMode.wrappedValue.dismiss()
             })
         )
@@ -245,6 +245,6 @@ struct EditHabit: View {
 
 struct EditHabit_Previews: PreviewProvider {
     static var previews: some View {
-        EditHabit(targetHabit: HabitContext(name: "Asd"))
+        EditHabit(targetHabit: FlHabit(name: "Asd"))
     }
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct DayOfWeekSelector: View {
-    @Binding var dayOfTheWeek: [Int]
-    @Environment(\.colorScheme) var colorScheme
+    
+    @Binding var dayOfTheWeek: Set<Int>
     
     func isNextChecked(_ index: Int) -> Bool {
         dayOfTheWeek.contains(index) && dayOfTheWeek.contains(index + 1)
@@ -21,7 +21,7 @@ struct DayOfWeekSelector: View {
                 ZStack {
                     if dayOfTheWeek.contains(dayOfTheWeekInt) {
                         Rectangle()
-                            .foregroundColor(ThemeColor.mainColor(colorScheme))
+                            .mainColor()
                     }
                     Text(Date.dayOfTheWeekShortStr(dayOfTheWeekInt))
                         .foregroundColor(dayOfTheWeek.contains(dayOfTheWeekInt) ? .white : .black)
@@ -33,7 +33,7 @@ struct DayOfWeekSelector: View {
                     if dayOfTheWeek.contains(dayOfTheWeekInt) {
                         dayOfTheWeek.remove(at: dayOfTheWeek.firstIndex(of: dayOfTheWeekInt)!)
                     } else {
-                        dayOfTheWeek.append(dayOfTheWeekInt)
+                        dayOfTheWeek.insert(dayOfTheWeekInt)
                     }
                 }
             }
@@ -44,7 +44,7 @@ struct DayOfWeekSelector: View {
 struct DayOfWeekSelector_Previews: PreviewProvider {
     
     struct PreviewWrapper: View {
-        @State var dayOfWeek: [Int] = [1, 2, 3, 4, 5, 6, 7]
+        @State var dayOfWeek: Set<Int> = [1, 2, 3, 4, 5, 6, 7]
         var body: some View {
             DayOfWeekSelector(dayOfTheWeek: $dayOfWeek)
         }

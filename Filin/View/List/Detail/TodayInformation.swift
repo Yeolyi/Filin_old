@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TodayInformation: View {
     
-    @EnvironmentObject var habit: HabitContext
+    @EnvironmentObject var habit: FlHabit
     @Binding var selectedDate: Date
     @State var tappingMinus = false
     @State var tappingPlus = false
@@ -23,7 +23,7 @@ struct TodayInformation: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("\(habit.achievement[selectedDate.dictKey] ?? 0)\(" times".localized)/\(habit.numberOfTimes)\(" times".localized)")
+                Text("\(habit.achievement.content[selectedDate.dictKey] ?? 0)\(" times".localized)/\(habit.achievement.numberOfTimes)\(" times".localized)")
                     .foregroundColor(habit.color)
                     .headline()
                 Spacer()
@@ -34,7 +34,7 @@ struct TodayInformation: View {
             HStack {
                 LinearProgressBar(
                     color: habit.color,
-                    progress: Double(habit.achievement[selectedDate.dictKey] ?? 0)/Double(habit.numberOfTimes)
+                    progress: Double(habit.achievement.content[selectedDate.dictKey] ?? 0)/Double(habit.achievement.numberOfTimes)
                 )
                 moveButton(isAdd: false)
                 moveButton(isAdd: true)
@@ -56,15 +56,15 @@ struct TodayInformation: View {
             let addVal = isSetMode ? habit.addUnit : 1
             withAnimation {
                 if isAdd {
-                    habit.achievement[selectedDate.dictKey] =
-                        (habit.achievement[selectedDate.dictKey] ?? 0) + addVal
+                    habit.achievement.content[selectedDate.dictKey] =
+                        (habit.achievement.content[selectedDate.dictKey] ?? 0) + addVal
                 } else {
-                    habit.achievement[selectedDate.dictKey] =
-                        max(0, (habit.achievement[selectedDate.dictKey] ?? 0) - addVal)
+                    habit.achievement.content[selectedDate.dictKey] =
+                        max(0, (habit.achievement.content[selectedDate.dictKey] ?? 0) - addVal)
                 }
             }
-            if habit.achievement[selectedDate.dictKey] == 0 {
-                habit.achievement[selectedDate.dictKey] = nil
+            if habit.achievement.content[selectedDate.dictKey] == 0 {
+                habit.achievement.content[selectedDate.dictKey] = nil
             }
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }

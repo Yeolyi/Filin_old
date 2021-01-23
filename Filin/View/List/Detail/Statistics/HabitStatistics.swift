@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HabitStatistics: View {
     
-    @ObservedObject var habit: HabitContext
+    @ObservedObject var habit: FlHabit
     
     var weeklyTrend: Double? {
         guard habit.firstDay.daysFromToday >= 6 else {

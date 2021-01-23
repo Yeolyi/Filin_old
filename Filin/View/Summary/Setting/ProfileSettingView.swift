@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfileSettingView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var summaryManager: SummaryContextManager
+    @EnvironmentObject var summaryManager: SummaryManager
 
     var body: some View {
         NavigationView {
@@ -39,7 +39,7 @@ struct ProfileSettingView: View {
 
 struct ProfileSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        _ = CoreDataPreview.shared
+        _ = DataSample.shared
         return ProfileSettingView()
     }
 }

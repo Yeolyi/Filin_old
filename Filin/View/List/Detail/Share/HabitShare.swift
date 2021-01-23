@@ -28,7 +28,7 @@ struct HabitShare: View {
         }
     }
     
-    let habit: HabitContext
+    let habit: FlHabit
 
     @State var isExpanded = false
     @State var selectedDate = Date()
@@ -40,7 +40,7 @@ struct HabitShare: View {
     @EnvironmentObject var appSetting: AppSetting
     @Environment(\.presentationMode) var presentationMode
     
-    init(habit: HabitContext) {
+    init(habit: FlHabit) {
         self.habit = habit
     }
     
@@ -229,7 +229,7 @@ func share(
 
 struct HabitShare_Previews: PreviewProvider {
     static var previews: some View {
-        HabitShare(habit: HabitContext.sample1)
+        HabitShare(habit: DataSample.shared.habit1)
             .environmentObject(AppSetting())
     }
 }

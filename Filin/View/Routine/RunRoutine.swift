@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RunRoutine: View {
     
-    @ObservedObject var routine: RoutineContext
+    @ObservedObject var routine: FlRoutine
     
     @State var currentListIndex = 0
     @State var isTimeInit = false
@@ -84,7 +84,9 @@ struct RunRoutine: View {
                 self.timer.upstream.connect().cancel()
                 isCounting = false
                 withAnimation {
-                    routine.list[currentListIndex].calAchieve(at: Date(), isAdd: true)
+                    routine.list[currentListIndex].achievement.set(at: Date()) { current, addUnit in
+                        current + addUnit
+                    }
                     routine.objectWillChange.send()
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
@@ -155,7 +157,7 @@ struct RunRoutine: View {
 
 struct RunRoutine_Previews: PreviewProvider {
     static var previews: some View {
-        RunRoutine(routine: RoutineContext.sample1)
+        RunRoutine(routine: DataSample.shared.routine1)
     }
 }
 

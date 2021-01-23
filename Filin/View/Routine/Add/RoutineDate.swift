@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RoutineDate: View {
     
-    @Binding var dayOfTheWeek: [Int]
+    @Binding var dayOfTheWeek: Set<Int>
     
     var body: some View {
         HabitAddBadgeView(title: "Repeat".localized, imageName: "calendar") {
@@ -19,7 +19,7 @@ struct RoutineDate: View {
                     .multilineTextAlignment(.center)
                 Spacer()
             }
-            .padding(.leading, DesignValues.horizontalBorderPadding)
+            .padding(.leading, 20)
             DayOfWeekSelector(dayOfTheWeek: $dayOfTheWeek)
                 .padding(.top, 21)
         }

@@ -16,12 +16,12 @@ struct AddRoutine: View {
     @State var isReminder = true
     @State var tempRoutineTime = Date()
     
-    @ObservedObject var newRoutine = RoutineContext()
-    @ObservedObject var listData = ListData<UUID>(values: [], save: {_ in })
+    @ObservedObject var newRoutine = FlRoutine(UUID(), name: "Temp")
+    @ObservedObject var listData = EditableList<UUID>(values: [], save: {_ in })
     
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var routineManager: RoutineContextManager
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var routineManager: RoutineManager
+    @EnvironmentObject var habitManager: HabitManager
     
     var isNextAvailable: Bool {
         if currentPage == 1 {
@@ -82,10 +82,10 @@ struct AddRoutine: View {
                     if isReminder {
                         newRoutine.time = tempRoutineTime
                     }
-                    newRoutine.list = listData.sortedValue.compactMap { id in
+                    newRoutine.list = listData.allValues.compactMap { id in
                         habitManager.contents.first(where: {id == $0.id})
                     }
-                    routineManager.addObject(newRoutine)
+                    routineManager.append(newRoutine)
                     presentationMode.wrappedValue.dismiss()
                     return
                 }

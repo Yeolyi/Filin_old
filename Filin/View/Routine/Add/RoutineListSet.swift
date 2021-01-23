@@ -9,10 +9,10 @@ import SwiftUI
 
 struct RoutineSetList: View {
     
-    @ObservedObject var listData: ListData<UUID>
+    @ObservedObject var listData: EditableList<UUID>
     @Environment(\.presentationMode) var presentationMode
     
-    init(listData: ListData<UUID>) {
+    init(listData: EditableList<UUID>) {
         self.listData = listData
     }
     
@@ -23,14 +23,14 @@ struct RoutineSetList: View {
                     .bodyText()
                     .padding(10)
                 ScrollView {
-                    ForEach(HabitContextManager.shared.contents) { habit in
+                    ForEach(HabitManager.shared.contents) { habit in
                         HStack {
                             Text(habit.name)
                                 .bodyText()
                             Spacer()
                             BasicButton("plus") {
                                 let id = habit.id
-                                listData.add(value: id)
+                                listData.append(id)
                             }
                         }
                     }
@@ -44,12 +44,12 @@ struct RoutineSetList: View {
                         .headline()
                     Spacer()
                 }
-                ReorderableList(listData: listData, maxHeight: 250, view: { id in
+                EditableListView(listData: listData, view: { id in
                     HStack {
                         BasicButton("minus") {
-                            listData.delete(id: id)
+                            listData.remove(id)
                         }
-                        Text(HabitContextManager.shared.contents.first(where: {$0.id == listData.internalIDToValue(id)})?.name ?? "Test")
+                        Text(HabitManager.shared.contents.first(where: {$0.id == listData.value(of: id)})?.name ?? "Test")
                             .bodyText()
                     }
                 })
@@ -63,6 +63,6 @@ struct RoutineSetList: View {
 
 struct RoutineSetList_Previews: PreviewProvider {
     static var previews: some View {
-        RoutineSetList(listData: ListData(values: RoutineContext.sample1.list.map(\.id), save: {_ in}))
+        RoutineSetList(listData: EditableList(values: DataSample.shared.routine1.list.map(\.id), save: {_ in}))
     }
 }

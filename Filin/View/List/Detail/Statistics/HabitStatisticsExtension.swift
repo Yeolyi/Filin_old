@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-extension HabitContext {
+extension FlHabit {
     
     var firstDayKeyStr: String {
-        Array(achievement.keys).sorted(by: <).first ?? Date().dictKey
+        Array(achievement.content.keys).sorted(by: <).first ?? Date().dictKey
     }
     
     var firstDay: Date {
@@ -18,7 +18,7 @@ extension HabitContext {
     }
 
     var yearAverage: Double {
-        let yearAchievement = achievement.filter {
+        let yearAchievement = achievement.content.filter {
             let dateFromtoday = Date(dictKey: $0.key).daysFromToday
             return dateFromtoday <= 100 && dateFromtoday > 0
         }
@@ -31,7 +31,7 @@ extension HabitContext {
             weekList.append(date.addDate(i)!)
         }
         let achievementList = weekList.compactMap { date in
-            self.achievement[date.dictKey] ?? 0
+            self.achievement.content[date.dictKey] ?? 0
         }
         guard !achievementList.isEmpty else {
             return 0
@@ -48,7 +48,7 @@ extension HabitContext {
             datePointer = datePointer.addDate(-1)!
         }
         let achievementList = weekList.compactMap { date in
-            self.achievement[date.dictKey] ?? 0
+            self.achievement.content[date.dictKey] ?? 0
         }
         guard !achievementList.isEmpty else {
             return 0
@@ -57,10 +57,10 @@ extension HabitContext {
     }
 }
 
-extension HabitContext {
+extension FlHabit {
     var dayOfWeekAchievement: [Int] {
         var temp = [Int](repeating: 0, count: 7)
-        let achievementFiltered = achievement.filter {
+        let achievementFiltered = achievement.content.filter {
             let dateFromtoday = Date(dictKey: $0.key).daysFromToday
             return dateFromtoday < 100 && dateFromtoday > 0
         }

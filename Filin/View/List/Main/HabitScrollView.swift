@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HabitScrollView: View {
     
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var habitManager: HabitManager
     @EnvironmentObject var appSetting: AppSetting
     @State var searchWord = ""
     
@@ -61,12 +61,12 @@ struct HabitScrollView: View {
 
 struct MainList_Previews: PreviewProvider {
     static var previews: some View {
-        let coredataPreview = CoreDataPreview.shared
+        let coredataPreview = DataSample.shared
         return
             NavigationView {
                 HabitScrollView()
                     .environmentObject(AppSetting())
-                    .environmentObject(coredataPreview.habitcontextManager)
+                    .environmentObject(coredataPreview.habitManager)
                     .navigationBarTitle(Text("Test"))
             }
     }

@@ -20,7 +20,6 @@ struct LinearProgressBar: View {
         GeometryReader { geo in
             Rectangle()
                 .foregroundColor(color)
-                //.fill(LinearGradient(gradient: Gradient(colors: [color.opacity(0.5), color.opacity(0.5 * progress + 0.5)]), startPoint: .leading, endPoint: .trailing))
                 .frame(width: CGFloat(progress) * geo.size.width + (progress == 0 ? 5 : 0), height: 24)
                 .offset(x: 2, y: 4)
                 .if(isAnimation) {

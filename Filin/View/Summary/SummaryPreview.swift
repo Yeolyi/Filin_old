@@ -15,12 +15,12 @@ struct SummaryPreview: View {
         Group {
             RingCalendar(
                 selectedDate: .constant(Date()),
-                habit1: HabitContext.sample1,
-                habit2: HabitContext.sample2,
+                habit1: DataSample.shared.habit1,
+                habit2: DataSample.shared.habit2,
                 habit3: nil
             )
-            HabitRow(habit: HabitContext.sample1, showAdd: false)
-            HabitRow(habit: HabitContext.sample2, showAdd: false)
+            HabitRow(habit: DataSample.shared.habit1, showAdd: false)
+            HabitRow(habit: DataSample.shared.habit2, showAdd: false)
         }
         .opacity(0.5)
         .disabled(true)

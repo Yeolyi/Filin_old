@@ -33,7 +33,7 @@ struct SettingView: View {
                                 Text("Change Default Tab".localized)
                                     .bodyText()
                                 Spacer()
-                                Text(DefaultTap(rawValue: appSetting.defaultTap)!.string)
+                                Text(DefaultTap(rawValue: appSetting.defaultTap)!.description)
                                     .subColor()
                                     .bodyText()
                             }
@@ -45,7 +45,7 @@ struct SettingView: View {
                             title: Text("Choose Tab".localized),
                             message: nil,
                             buttons: [DefaultTap.list, .summary, .routine].map { tap in
-                                Alert.Button.default(Text(tap.string)) {
+                                Alert.Button.default(Text(tap.description)) {
                                     appSetting.defaultTap = tap.rawValue
                                 }
                             } + [Alert.Button.cancel()]
@@ -85,7 +85,7 @@ struct SettingView: View {
                     .rowBackground()
                     #if DEBUG
                     Button(action: {
-                        _ = CoreDataPreview.shared
+                        _ = DataSample.shared
                     }) {
                         HStack {
                             Text("샘플")

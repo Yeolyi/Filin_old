@@ -10,7 +10,7 @@ import AVFoundation
 
 struct HabitRow: View {
     
-    @ObservedObject var habit: HabitContext
+    @ObservedObject var habit: FlHabit
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appSetting: AppSetting
     @State var isTapping = false
@@ -18,7 +18,7 @@ struct HabitRow: View {
     let date: Date
     let showAdd: Bool
     
-    init(habit: HabitContext, showAdd: Bool, date: Date = Date()) {
+    init(habit: FlHabit, showAdd: Bool, date: Date = Date()) {
         self.habit = habit
         self.showAdd = showAdd
         self.date = date
@@ -62,10 +62,10 @@ struct HabitRow: View {
                     }
                     if habit.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek) {
                         ZStack {
-                            LinearProgressBar(color: habit.color, progress: habit.progress(at: date) ?? 0)
+                            LinearProgressBar(color: habit.color, progress: habit.achievement.progress(at: date) ?? 0)
                             HStack {
                                 Spacer()
-                                Text("\(habit.achievement[date.dictKey] ?? 0)/\(habit.numberOfTimes)")
+                                Text("\(habit.achievement.content[date.dictKey] ?? 0)/\(habit.achievement.numberOfTimes)")
                                     .mainColor()
                                     .opacity(0.8)
                                     .bodyText()
@@ -85,8 +85,8 @@ struct HabitRow: View {
 
 struct HabitRow_Previews: PreviewProvider {
     static var previews: some View {
-        let coredataPreview = CoreDataPreview.shared
-        HabitRow(habit: HabitContext(name: "Test"),showAdd: true)
-            .environmentObject(coredataPreview.habitcontextManager)
+        let coredataPreview = DataSample.shared
+        HabitRow(habit: FlHabit(name: "Test"),showAdd: true)
+            .environmentObject(coredataPreview.habitManager)
     }
 }

@@ -18,7 +18,7 @@ struct ThemeSection: View {
                     .bodyText()
                 Spacer()
             }
-            .padding(.leading, DesignValues.horizontalBorderPadding)
+            .padding(.leading, 20)
             ColorHorizontalPicker(selectedColor: $color)
                 .padding(.top, 21)
                 .padding(.leading, 20)

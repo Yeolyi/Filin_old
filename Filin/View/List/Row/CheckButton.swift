@@ -11,13 +11,13 @@ import AVFoundation
 struct CheckButton: View {
 
     var showCheck: Bool {
-        habit.isComplete(at: date)
+        habit.achievement.isDone(at: date)
     }
     let date: Date
-    @EnvironmentObject var habit: HabitContext
+    @EnvironmentObject var habit: FlHabit
     
     var body: some View {
-        if habit.isTimer{
+        if habit.isTimer {
             NavigationLink(
                 destination:
                     HabitTimer(date: date).environmentObject(habit)
@@ -30,7 +30,9 @@ struct CheckButton: View {
         } else {
             Button(action: {
                 withAnimation {
-                    habit.calAchieve(at: Date(), isAdd: true)
+                    habit.achievement.set(at: Date(), using: { current, addUnit in
+                        current + addUnit
+                    })
                 }
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             }) {
@@ -46,6 +48,6 @@ struct CheckButton: View {
 struct HabitCheckButton_Previews: PreviewProvider {
     static var previews: some View {
         CheckButton(date: Date())
-            .environmentObject(HabitContext(name: "Test"))
+            .environmentObject(FlHabit(name: "Test"))
     }
 }

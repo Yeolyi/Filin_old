@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RoutineRow: View {
     
-    @ObservedObject var routine: RoutineContext
+    @ObservedObject var routine: FlRoutine
     @Binding var isSheet: RoutineSheet?
     
     var subTitle: String {

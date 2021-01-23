@@ -45,7 +45,7 @@ struct FlowLayout<T: Hashable, V: View>: View {
                 self.viewMapping(item)
                     .padding([.horizontal, .vertical], 4)
                     .alignmentGuide(.leading, computeValue: { d in
-                        if (abs(width - d.width) > g.size.width) {
+                        if abs(width - d.width) > g.size.width {
                             width = 0
                             height -= d.height
                         }
@@ -57,7 +57,7 @@ struct FlowLayout<T: Hashable, V: View>: View {
                         }
                         return result
                     })
-                    .alignmentGuide(.top, computeValue: { d in
+                    .alignmentGuide(.top, computeValue: { _ in
                         let result = height
                         if item == self.items.last {
                             height = 0
@@ -83,7 +83,6 @@ struct FlowLayout<T: Hashable, V: View>: View {
         case scrollable, vstack
     }
 }
-
 
 struct FlowLayout_Previews: PreviewProvider {
     static var previews: some View {

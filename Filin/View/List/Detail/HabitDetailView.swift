@@ -17,13 +17,13 @@ enum DetailViewActiveSheet: Identifiable {
 struct HabitDetailView: View {
     
     @ObservedObject var emojiManager = EmojiManager()
-    @EnvironmentObject var habit: HabitContext
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var habit: FlHabit
+    @EnvironmentObject var habitManager: HabitManager
     @EnvironmentObject var appSetting: AppSetting
     @State var activeSheet: DetailViewActiveSheet?
     @State var selectedDate = Date()
     
-    init(habit: HabitContext) {
+    init(habit: FlHabit) {
         if !habit.isDaily {
             _selectedDate = State(initialValue: Date().nearDayOfWeekDate((habit.dayOfWeek).map {Int($0)}))
         }

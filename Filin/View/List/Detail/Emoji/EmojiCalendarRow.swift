@@ -13,7 +13,7 @@ struct EmojiCalendarRow: View {
     
     @Binding var selectedDate: Date
     
-    @ObservedObject var habit: HabitContext
+    @ObservedObject var habit: FlHabit
     @EnvironmentObject var appSetting: AppSetting
     
     var body: some View {

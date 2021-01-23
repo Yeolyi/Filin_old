@@ -12,13 +12,13 @@ struct AddHabit: View {
     @Environment(\.presentationMode) var presentationMode
     @State var currentPage = 1
     let totalPage = 5
-    @ObservedObject var tempHabit = HabitContext(name: "")
+    @ObservedObject var tempHabit = FlHabit(name: "")
     var isNextAvailable: Bool {
         switch currentPage {
         case 1:
             return tempHabit.name != ""
         case 2: return !tempHabit.dayOfWeek.isEmpty
-        case 3: return tempHabit.numberOfTimes > 0
+        case 3: return tempHabit.achievement.numberOfTimes > 0
         case 4: return !tempHabit.isTimer || tempHabit.requiredSec > 0
         case 5: return true
         default:
@@ -36,7 +36,7 @@ struct AddHabit: View {
                 DateSection(dayOfTheWeek: $tempHabit.dayOfWeek)
             }
             if currentPage == 3 {
-                TimesSection(numberOfTimes: $tempHabit.numberOfTimes, addUnit: $tempHabit.addUnit)
+                TimesSection(numberOfTimes: $tempHabit.achievement.numberOfTimes, addUnit: $tempHabit.addUnit)
             }
             if currentPage == 4 {
                 TimerSection(time: $tempHabit.requiredSec)
@@ -81,7 +81,7 @@ struct AddHabit: View {
         .opacity(isNextAvailable ? 1.0 : 0.5)
     }
     func saveAndQuit() {
-        HabitContextManager.shared.addObject(tempHabit)
+        HabitManager.shared.append(tempHabit)
         self.presentationMode.wrappedValue.dismiss()
     }
     

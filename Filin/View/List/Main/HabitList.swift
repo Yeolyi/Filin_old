@@ -10,7 +10,7 @@ import SwiftUI
 struct HabitList: View {
     
     @State var isSheet = false
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var habitManager: HabitManager
     @EnvironmentObject var appSetting: AppSetting
     
     var body: some View {
@@ -47,9 +47,9 @@ struct HabitList: View {
 
 struct HabitList_Previews: PreviewProvider {
     static var previews: some View {
-        let coredataPreview = CoreDataPreview.shared
+        let coredataPreview = DataSample.shared
         return HabitList()
             .environmentObject(AppSetting())
-            .environmentObject(coredataPreview.habitcontextManager)
+            .environmentObject(coredataPreview.habitManager)
     }
 }

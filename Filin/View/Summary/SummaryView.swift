@@ -14,8 +14,8 @@ struct SummaryView: View {
     @State var isSettingSheet = false
     
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var summaryManager: SummaryContextManager
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var summaryManager: SummaryManager
+    @EnvironmentObject var habitManager: HabitManager
     @EnvironmentObject var appSetting: AppSetting
     
     var body: some View {

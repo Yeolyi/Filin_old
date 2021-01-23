@@ -10,21 +10,20 @@ import SwiftUI
 struct ColorHorizontalPicker: View {
     
     @Binding var selectedColor: Color
-    let accentColors = ThemeColor.colorList.sorted(by: {Color(hex: $0).hue < Color(hex: $1).hue})
     
     var body: some View {
         HStack {
-            ForEach(accentColors, id: \.self) { color in
-                Button(action: { self.selectedColor = Color(hex: color) }) {
+            ForEach(ThemeColor.colorList, id: \.self) { color in
+                Button(action: { self.selectedColor = color }) {
                     ZStack {
                         Circle()
-                            .foregroundColor(Color(hex: color))
+                            .foregroundColor(color)
                             .frame(width: 40, height: 40)
                             .zIndex(0)
-                        if selectedColor == Color(hex: color) {
+                        if selectedColor == color {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 20, weight: .bold))
-                                .foregroundColor(Color(hex: color))
+                                .foregroundColor(color)
                                 .brightness(0.2)
                                 .zIndex(1)
                         }

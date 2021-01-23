@@ -9,23 +9,23 @@ import SwiftUI
 
 struct EditRoutine: View {
     
-    let targetRoutine: RoutineContext
+    let targetRoutine: FlRoutine
     
-    @ObservedObject var tempRoutine: RoutineContext
-    @ObservedObject var listData: ListData<UUID>
+    @ObservedObject var tempRoutine: FlRoutine
+    @ObservedObject var listData: EditableList<UUID>
     
     @State var isReminderUsed: Bool
     @State var reminderTime: Date
     @State var isDeleteAlert = false
     
-    @EnvironmentObject var routineManager: RoutineContextManager
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var routineManager: RoutineManager
+    @EnvironmentObject var habitManager: HabitManager
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     
-    init(routine: RoutineContext) {
+    init(routine: FlRoutine) {
         targetRoutine = routine
-        tempRoutine = RoutineContext(copy: routine)
+        tempRoutine = FlRoutine(copyExceptID: routine)
         if let time = routine.time {
             _isReminderUsed = State(initialValue: true)
             _reminderTime = State(initialValue: time)
@@ -33,7 +33,7 @@ struct EditRoutine: View {
             _isReminderUsed = State(initialValue: true)
             _reminderTime = State(initialValue: Date())
         }
-        listData = ListData<UUID>(values: routine.list.map(\.id), save: {_ in})
+        listData = EditableList<UUID>(values: routine.list.map(\.id), save: {_ in})
     }
     
     var body: some View {
@@ -45,7 +45,7 @@ struct EditRoutine: View {
                             .headline()
                         Spacer()
                         HeaderText("Save".localized) {
-                            tempRoutine.list = listData.sortedValue.compactMap{ id in
+                            tempRoutine.list = listData.allValues.compactMap{ id in
                                 habitManager.contents.first(where: {$0.id == id})
                             }
                             tempRoutine.time = isReminderUsed ? reminderTime : nil
@@ -141,7 +141,7 @@ struct EditRoutine: View {
             message: nil,
             primaryButton: .default(Text("Cancel".localized)),
             secondaryButton: .destructive(Text("Delete".localized), action: {
-                routineManager.deleteObject(id: targetRoutine.id)
+                routineManager.remove(withID: targetRoutine.id)
                 presentationMode.wrappedValue.dismiss()
             }))
     }
@@ -149,9 +149,9 @@ struct EditRoutine: View {
 
 struct EditRoutine_Previews: PreviewProvider {
     static var previews: some View {
-        let coreDataPreview = CoreDataPreview.shared
-        EditRoutine(routine: RoutineContext.sample1)
+        let coreDataPreview = DataSample.shared
+        EditRoutine(routine: DataSample.shared.routine1)
             .environmentObject(coreDataPreview.routineManager)
-            .environmentObject(coreDataPreview.habitcontextManager)
+            .environmentObject(coreDataPreview.habitManager)
     }
 }

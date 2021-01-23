@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EmojiListEdit: View {
     
-    @State var listData: ListData<String> = ListData(values: [], save: {_ in})
+    @State var listData: EditableList<String> = EditableList(values: [], save: {_ in})
     @State var newEmoji = ""
     
     var body: some View {
@@ -20,7 +20,7 @@ struct EmojiListEdit: View {
                         .headline()
                     Spacer()
                     Button(action: {
-                        emojiManager.emojiList = listData.sortedValue
+                        emojiManager.emojiList = listData.allValues
                         self.presentationMode.wrappedValue.dismiss()
                     }) {
                         Text("Save".localized)
@@ -36,7 +36,7 @@ struct EmojiListEdit: View {
                     .frame(height: 30)
                 Button(action: {
                     if let emoji = newEmoji.first?.description {
-                        listData.add(value: emoji)
+                        listData.append(emoji)
                         newEmoji = ""
                     }
                     UIApplication.shared.endEditing()
@@ -48,22 +48,22 @@ struct EmojiListEdit: View {
                 }
             }
             .rowBackground()
-            ReorderableList(listData: listData) { emoji in
+            EditableListView(listData: listData) { emoji in
                 HStack(spacing: 10) {
                     Button(action: {
-                        listData.delete(id: emoji)
+                        listData.remove(emoji)
                     }) {
                         Image(systemName: "minus.circle")
                             .font(.system(size: 20))
                             .mainColor()
                     }
-                    Text(listData.internalIDToValue(emoji))
+                    Text(listData.value(of: emoji))
                 }
             }
             .padding(.horizontal, 20)
         }
         .onAppear {
-            self.listData = ListData(values: emojiManager.emojiList, save: { _ in
+            self.listData = EditableList(values: emojiManager.emojiList, save: { _ in
             })
         }
         .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in

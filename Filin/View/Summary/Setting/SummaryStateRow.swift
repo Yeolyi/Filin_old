@@ -10,7 +10,7 @@ import SwiftUI
 struct SummaryStateRow: View {
     
     let num: Int
-    var habit: HabitContext? {
+    var habit: FlHabit? {
         habitManager.contents.first(where: {
             $0.id == targetHabit
         })
@@ -18,7 +18,7 @@ struct SummaryStateRow: View {
     
     @Binding var targetHabit: UUID?
     
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var habitManager: HabitManager
     
     var description: String {
         switch num {

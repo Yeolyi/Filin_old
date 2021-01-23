@@ -17,7 +17,7 @@ struct NameSection: View {
         "Yoga", "Stretching"
     ].shuffled().map({$0.localized})
     
-    @EnvironmentObject var habitManager: HabitContextManager
+    @EnvironmentObject var habitManager: HabitManager
     @EnvironmentObject var appSetting: AppSetting
     @Environment(\.colorScheme) var colorScheme
     
@@ -40,7 +40,7 @@ struct NameSection: View {
                         .bodyText()
                     Spacer()
                 }
-                .padding(.leading, DesignValues.horizontalBorderPadding)
+                .padding(.leading, 20)
                 TextFieldWithEndButton("Drink water".localized, text: $name)
                     .rowBackground()
                     .padding(.bottom, 15)
@@ -68,7 +68,7 @@ struct Test1_Previews: PreviewProvider {
     struct StateWrapper: View {
         @State var selectedText = "Text"
         var body: some View {
-            _ = CoreDataPreview.shared
+            _ = DataSample.shared
             return NameSection(name: $selectedText)
                 .environmentObject(AppSetting())
         }
