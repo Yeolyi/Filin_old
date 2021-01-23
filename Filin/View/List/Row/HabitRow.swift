@@ -23,11 +23,12 @@ struct HabitRow: View {
         self.showAdd = showAdd
         self.date = date
     }
+    
     var subTitle: String {
         var subTitleStr = ""
         if !habit.isDaily {
-            for dayOfWeekInt16 in habit.dayOfWeek {
-                subTitleStr += "\(Date.dayOfTheWeekStr(Int(dayOfWeekInt16))), "
+            for dayOfWeek in habit.dayOfWeek.sorted() {
+                subTitleStr += "\(Date.dayOfTheWeekStr(dayOfWeek)), "
             }
             _ = subTitleStr.popLast()
             _ = subTitleStr.popLast()
