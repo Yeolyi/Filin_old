@@ -34,7 +34,7 @@ struct RowBackground: ViewModifier {
                     .cornerRadius(10)
                     .shadow(
                         color: (colorScheme == .light ? Color.gray.opacity(0.6) : Color.gray.opacity(0.45)),
-                        radius: 5, x: 3, y: 3
+                        radius: 4, x: 2.5, y: 2.5
                     )
             )
             .padding(.horizontal, horizontalPadding)

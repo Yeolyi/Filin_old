@@ -9,44 +9,77 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State var currentTab: Int
     @Environment(\.colorScheme) var colorScheme
-    @State var defaultTap: Int
-    init(defaultTap: Int) {
-        self._defaultTap = State(initialValue: defaultTap)
+    
+    init(defaultTab: Int) {
+        _currentTab = State(initialValue: defaultTab)
     }
     
     var body: some View {
-        TabView(selection: $defaultTap) {
-            HabitList()
-                .tabItem {
-                    Image(systemName: "list.dash")
-                    Text("List".localized)
+        ZStack {
+            Group {
+                HabitList()
+                    .opacity(currentTab == 0 ? 1 : 0)
+                SummaryView()
+                    .opacity(currentTab == 1 ? 1 : 0)
+                RoutineView()
+                    .opacity(currentTab == 2 ? 1 : 0)
+                SettingView()
+                    .opacity(currentTab == 3 ? 1 : 0)
+            }
+            .padding(.bottom, 55)
+            VStack(spacing: 0) {
+                Spacer()
+                HStack {
+                    Image(systemName: currentTab == 0 ? "rectangle.grid.1x2.fill" : "rectangle.grid.1x2")
+                        .font(.system(size: 20))
+                        .mainColor()
+                        .frame(width: 75, height: 55)
+                        .onTapGesture {
+                            currentTab = 0
+                        }
+                    Spacer()
+                    Image(systemName: currentTab == 1 ? "pin.fill" : "pin")
+                        .font(.system(size: 20))
+                        .mainColor()
+                        .frame(width: 75, height: 55)
+                        .onTapGesture {
+                            currentTab = 1
+                        }
+                    Spacer()
+                    Image(systemName: currentTab == 2 ? "alarm.fill" : "alarm")
+                        .font(.system(size: 20))
+                        .mainColor()
+                        .frame(width: 75, height: 55)
+                        .onTapGesture {
+                            currentTab = 2
+                        }
+                    Spacer()
+                    Image(systemName: currentTab == 3 ? "gearshape.fill" : "gearshape")
+                        .font(.system(size: 20))
+                        .mainColor()
+                        .frame(width: 75, height: 55)
+                        .onTapGesture {
+                            currentTab = 3
+                        }
                 }
-                .tag(DefaultTap.list.rawValue)
-            SummaryView()
-                .tabItem {
-                    Image(systemName: "calendar")
-                    Text("Summary".localized)
-                }
-                .tag(DefaultTap.summary.rawValue)
-            RoutineView()
-                .tabItem {
-                    Image(systemName: "rectangle.stack")
-                    Text("Routine".localized)
-                }
-                .tag(DefaultTap.routine.rawValue)
-            SettingView()
-                .tabItem {
-                    Image(systemName: "gearshape")
-                    Text("Setting".localized)
-                }
-                .tag(DefaultTap.setting.rawValue)
+                .padding(.horizontal, 15)
+                .edgesIgnoringSafeArea([.bottom, .horizontal])
+                .background(colorScheme == .light ? Color.white : .black)
+                .compositingGroup()
+                .shadow(color: Color.gray.opacity(0.3), radius: 1.5, x: 0, y: -1.5)
+            }
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(defaultTap: 0)
+        ContentView(defaultTab: 0)
+            .environmentObject(DataSample.shared.habitManager)
+            .environmentObject(DataSample.shared.summaryManager)
+            .environmentObject(DataSample.shared.routineManager)
+            .environmentObject(AppSetting())
     }
 }

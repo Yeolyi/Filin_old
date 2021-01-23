@@ -28,14 +28,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fatalError()
         }
         
-        print(HabitManager.shared.contents)
-        
         let appSetting = AppSetting()
         appSetting.runCount += 1
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
         let contentView =
-            ContentView(defaultTap: appSetting.defaultTap)
+            ContentView(defaultTab: appSetting.defaultTap)
             .environment(\.managedObjectContext, context)
             .environmentObject(appSetting)
             .environmentObject(HabitManager.shared)
