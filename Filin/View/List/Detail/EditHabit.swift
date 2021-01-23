@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import LocalAuthentication
 
 struct EditHabit: View {
     
     let targetHabit: FlHabit
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var habitManager: HabitManager
+    @EnvironmentObject var summaryManager: SummaryManager
     @ObservedObject var tempHabit: FlHabit
     @State var showTimes = false
     @State var isDeleteAlert = false
@@ -240,13 +242,29 @@ struct EditHabit: View {
             message: nil,
             primaryButton: .default(Text("Cancel".localized)),
             secondaryButton: .destructive(Text("Delete".localized), action: {
-                for profile in SummaryManager.shared.contents {
-                    if let index = profile.habitArray.firstIndex(where: {$0 == tempHabit.id}) {
-                        profile[index + 1] = nil
+                let context = LAContext()
+                var error: NSError?
+                if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+                    let reason = "Delete after self-certification.".localized
+                    context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason ) { success, error in
+                        if success {
+                            // Move to the main thread because a state update triggers UI changes.
+                            DispatchQueue.main.async {
+                                for profile in summaryManager.contents {
+                                    if let index = profile.habitArray.firstIndex(where: {$0 == tempHabit.id}) {
+                                        profile[index + 1] = nil
+                                    }
+                                }
+                                habitManager.remove(withID: targetHabit.id, summary: summaryManager.contents[0])
+                            }
+                        } else {
+                            print(error?.localizedDescription ?? "Failed to authenticate")
+                            // Fall back to a asking for username and password.
+                            // ...
+                        }
+                        self.presentationMode.wrappedValue.dismiss()
                     }
                 }
-                HabitManager.shared.remove(withID: targetHabit.id, summary: SummaryManager.shared.contents[0])
-                self.presentationMode.wrappedValue.dismiss()
             })
         )
     }

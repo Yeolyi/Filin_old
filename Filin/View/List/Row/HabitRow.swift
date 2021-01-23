@@ -45,7 +45,8 @@ struct HabitRow: View {
                     .environmentObject(habit)
             }
             NavigationLink(destination:
-                            HabitDetailView(habit: habit).environmentObject(habit)
+                            HabitDetailView(habit: habit)
+                            .environmentObject(habit)
             ) {
                 HStack {
                     VStack {
