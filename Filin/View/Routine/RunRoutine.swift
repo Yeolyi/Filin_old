@@ -163,6 +163,6 @@ struct RunRoutine: View {
 
 struct RunRoutine_Previews: PreviewProvider {
     static var previews: some View {
-        RunRoutine(routine: DataSample.shared.routine1)
+        RunRoutine(routine: FlRoutine.routine1)
     }
 }

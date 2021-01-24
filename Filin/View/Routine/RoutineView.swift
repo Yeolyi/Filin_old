@@ -80,7 +80,7 @@ struct RoutineView: View {
                             emptyIndicatingRow
                         }
                     } else {
-                        ForEach([DataSample.shared.routine1, DataSample.shared.routine2], id: \.self) { routine in
+                        ForEach([FlRoutine.routine1, FlRoutine.routine2], id: \.self) { routine in
                             RoutineRow(routine: routine, isSheet: $isAddSheet)
                         }
                         .opacity(0.5)

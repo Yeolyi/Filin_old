@@ -233,7 +233,7 @@ func share(
 
 struct HabitShare_Previews: PreviewProvider {
     static var previews: some View {
-        HabitShare(habit: DataSample.shared.habit1)
+        HabitShare(habit: FlHabit.habit1)
             .environmentObject(AppSetting())
     }
 }

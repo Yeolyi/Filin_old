@@ -155,7 +155,7 @@ struct EditRoutine: View {
 struct EditRoutine_Previews: PreviewProvider {
     static var previews: some View {
         let coreDataPreview = DataSample.shared
-        EditRoutine(routine: DataSample.shared.routine1)
+        EditRoutine(routine: FlRoutine.routine1)
             .environmentObject(coreDataPreview.routineManager)
             .environmentObject(coreDataPreview.habitManager)
     }

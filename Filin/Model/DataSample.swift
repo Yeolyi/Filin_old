@@ -8,6 +8,44 @@
 import SwiftUI
 import CoreData
 
+extension FlHabit {
+    
+    typealias HabitData = (name: String, color: Color, numberOfTimes: Int, requiredSec: Int)
+    
+    static var habit1: FlHabit {
+        let habitData: HabitData =  ("Stretching".localized, Palette.Default.red.color, 10, 10)
+        return .init(
+            name: habitData.name, color: habitData.color, numberOfTimes:
+                habitData.numberOfTimes, requiredSec: habitData.requiredSec
+        )
+    }
+    
+    static var habit2: FlHabit {
+        let habitData: HabitData =  ("Drink water".localized, Palette.Default.blue.color, 8, 0)
+        return .init(
+            name: habitData.name, color: habitData.color, numberOfTimes:
+                habitData.numberOfTimes, requiredSec: habitData.requiredSec
+        )
+    }
+}
+
+extension FlRoutine {
+    
+    static var routine1: FlRoutine {
+        let temp = FlRoutine(UUID(), name: "After wake up".localized)
+        temp.list = [FlHabit.habit1, FlHabit.habit2]
+        temp.time = Date()
+        return temp
+    }
+    
+    static var routine2: FlRoutine {
+        let temp = FlRoutine(UUID(), name: "Before bed".localized)
+        temp.list = [FlHabit.habit1, FlHabit.habit2, FlHabit.habit1, FlHabit.habit2]
+        return temp
+    }
+    
+}
+
 /// Xcode preview와 앱스토어 스크린샷을 위한 임시 manager들과 데이터들을 제공.
 /// - Note: 데이터가 중복으로 저장됨을 막기 위해 싱글톤 패턴 사용.
 /// - Todo: 싱글톤 패턴을 꼭 사용해야되는지 생각해보기. 의존성 주입이 뭔지 공부하기.
@@ -18,23 +56,7 @@ final class DataSample {
     let routineManager = RoutineManager.shared
     
     static let shared = DataSample()
-    
-    var habit1: FlHabit {
-        habitManager.contents[0]
-    }
-    var habit2: FlHabit {
-        habitManager.contents[1]
-    }
-    var summary: FlSummary {
-        summaryManager.contents[0]
-    }
-    var routine1: FlRoutine {
-        routineManager.contents[0]
-    }
-    var routine2: FlRoutine {
-        routineManager.contents[1]
-    }
-    
+
     private init() {
         let habitDatas: [(name: String, color: Color, numberOfTimes: Int, requiredSec: Int)] = [
             ("Stretching".localized, Palette.Default.red.color, 10, 10),

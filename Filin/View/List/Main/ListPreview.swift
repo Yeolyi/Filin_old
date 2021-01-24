@@ -15,11 +15,8 @@ struct ListPreview: View {
         ScrollView {
             VStack(spacing: 0) {
                 Group {
-                    HabitRow(habit: FlHabit(
-                        name: "A ten-minute walk".localized,
-                        numberOfTimes: 3, requiredSec: 600
-                    ), showAdd: true)
-                    HabitRow(habit: FlHabit(name: "Stretching".localized), showAdd: true)
+                    HabitRow(habit: FlHabit.habit1, showAdd: true)
+                    HabitRow(habit: FlHabit.habit2, showAdd: true)
                 }
                 .opacity(0.5)
                 .disabled(true)

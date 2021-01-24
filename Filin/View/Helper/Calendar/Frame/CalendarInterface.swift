@@ -123,7 +123,7 @@ struct CalendarInterface<Content: View>: View {
 
 struct CustomCalendar_Previews: PreviewProvider {
     static var previews: some View {
-        RingCalendar(selectedDate: .constant(Date()), isExpanded: true, habit1: DataSample.shared.habit1)
+        RingCalendar(selectedDate: .constant(Date()), isExpanded: true, habit1: FlHabit.habit1)
             .environmentObject(AppSetting())
     }
 }

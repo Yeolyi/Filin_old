@@ -31,6 +31,7 @@ class FlRoutine: CoreDataConvertable {
     init(_ id: UUID, name: String) {
         self.id = id
         self.name = name
+        dayOfWeek = [1, 2, 3, 4, 5, 6, 7]
     }
     
     init(copyExceptID: FlRoutine) {

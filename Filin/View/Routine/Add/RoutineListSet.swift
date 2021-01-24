@@ -67,6 +67,6 @@ struct RoutineSetList: View {
 
 struct RoutineSetList_Previews: PreviewProvider {
     static var previews: some View {
-        RoutineSetList(listData: EditableList(values: DataSample.shared.routine1.list.map(\.id), save: {_ in}))
+        RoutineSetList(listData: EditableList(values: FlRoutine.routine1.list.map(\.id), save: {_ in}))
     }
 }

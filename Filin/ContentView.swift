@@ -31,6 +31,7 @@ struct ContentView: View {
             .padding(.bottom, 55)
             VStack(spacing: 0) {
                 Spacer()
+                Divider()
                 HStack {
                     Image(systemName: currentTab == 0 ? "rectangle.grid.1x2.fill" : "rectangle.grid.1x2")
                         .font(.system(size: 20))
@@ -67,8 +68,6 @@ struct ContentView: View {
                 .padding(.horizontal, 15)
                 .edgesIgnoringSafeArea([.bottom, .horizontal])
                 .background(colorScheme == .light ? Color.white : .black)
-                .compositingGroup()
-                .shadow(color: Color.gray.opacity(0.3), radius: 1.5, x: 0, y: -1.5)
             }
         }
     }

@@ -29,18 +29,18 @@ struct EditHabit: View {
     @State var _minute: Int
     var minute: Binding<Int> {
         Binding(get: {_minute},
-        set: {
-            _minute = $0
-            tempHabit.requiredSec = $0 * 60 + _second
-        })
+                set: {
+                    _minute = $0
+                    tempHabit.requiredSec = $0 * 60 + _second
+                })
     }
     @State var _second: Int
     var second: Binding<Int> {
         Binding(get: {_second},
-        set: {
-            _second = $0
-            tempHabit.requiredSec = $0 + _minute * 60
-        })
+                set: {
+                    _second = $0
+                    tempHabit.requiredSec = $0 + _minute * 60
+                })
     }
     
     @State var _isSet = false
@@ -55,7 +55,7 @@ struct EditHabit: View {
             }
         })
     }
-
+    
     @State var _setNum = 1
     var setNum: Binding<Int> {
         Binding(get: { _setNum }, set: {
@@ -216,7 +216,7 @@ struct EditHabit: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
             presentationMode.wrappedValue.dismiss()
-         }
+        }
     }
     var saveButton: some View {
         HeaderText("Save".localized) {
@@ -242,29 +242,13 @@ struct EditHabit: View {
             message: nil,
             primaryButton: .default(Text("Cancel".localized)),
             secondaryButton: .destructive(Text("Delete".localized), action: {
-                let context = LAContext()
-                var error: NSError?
-                if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
-                    let reason = "Delete after self-certification.".localized
-                    context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason ) { success, error in
-                        if success {
-                            // Move to the main thread because a state update triggers UI changes.
-                            DispatchQueue.main.async {
-                                for profile in summaryManager.contents {
-                                    if let index = profile.habitArray.firstIndex(where: {$0 == tempHabit.id}) {
-                                        profile[index + 1] = nil
-                                    }
-                                }
-                                habitManager.remove(withID: targetHabit.id, summary: summaryManager.contents[0])
-                            }
-                        } else {
-                            print(error?.localizedDescription ?? "Failed to authenticate")
-                            // Fall back to a asking for username and password.
-                            // ...
-                        }
-                        self.presentationMode.wrappedValue.dismiss()
+                for profile in summaryManager.contents {
+                    if let index = profile.habitArray.firstIndex(where: {$0 == tempHabit.id}) {
+                        profile[index + 1] = nil
                     }
                 }
+                habitManager.remove(withID: targetHabit.id, summary: summaryManager.contents[0])
+                self.presentationMode.wrappedValue.dismiss()
             })
         )
     }

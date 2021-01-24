@@ -124,7 +124,7 @@ struct CaptureCalendar_Previews: PreviewProvider {
     static var previews: some View {
         CaptureCalendar(showCalendarSelect: .constant(false),
                         isEmojiView: .constant(false), isExpanded: .constant(true),
-                        selectedDate: .constant(Date()), habit1: DataSample.shared.habit1
+                        selectedDate: .constant(Date()), habit1: FlHabit.habit1
         )
         .environmentObject(AppSetting())
         .rowBackground()
