@@ -30,10 +30,10 @@ struct RowBackground: ViewModifier {
             .padding(.horizontal, 10)
             .background(
                 Rectangle()
-                    .foregroundColor(colorScheme == .light ? .white : .black)
+                    .foregroundColor(colorScheme == .light ? .white : Color(hex: "#151515"))
                     .cornerRadius(10)
                     .shadow(
-                        color: (colorScheme == .light ? Color.gray.opacity(0.6) : Color.gray.opacity(0.45)),
+                        color: (colorScheme == .light ? Color.gray.opacity(0.6) : .clear),
                         radius: 4, x: 2.5, y: 2.5
                     )
             )
@@ -51,7 +51,10 @@ extension View {
 
 struct RowBackground_Previews: PreviewProvider {
     static var previews: some View {
-        HabitRow(habit: FlHabit(name: "Text"), showAdd: true)
-            .environmentObject(AppSetting())
+        NavigationView {
+            HabitRow(habit: FlHabit(name: "Text"), showAdd: true)
+        }
+        .environmentObject(AppSetting())
+        .environment(\.colorScheme, .dark)
     }
 }
