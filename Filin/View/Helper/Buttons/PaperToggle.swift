@@ -10,22 +10,19 @@ import SwiftUI
 struct PaperToggle: View {
     
     @Binding var isOn: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     init(_ isOn: Binding<Bool>) {
         self._isOn = isOn
     }
     
     var body: some View {
-        Button(action: {
-            withAnimation {
-                isOn.toggle()
-            }
-        }) {
-            Image(systemName: isOn ? "checkmark.circle" : "xmark.circle")
-                .mainColor()
-                .font(.system(size: 24, weight: .semibold))
-        }
-        .frame(width: 44)
+        Toggle("", isOn: $isOn)
+            .toggleStyle(
+                ColoredToggleStyle(
+                    onColor: ThemeColor.mainColor(colorScheme)
+                )
+            )
     }
 }
 
