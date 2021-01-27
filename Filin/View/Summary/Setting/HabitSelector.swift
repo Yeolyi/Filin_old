@@ -16,7 +16,7 @@ struct HabitSelector: View {
     
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(spacing: 0) {
                 ForEach(HabitManager.shared.contents, id: \.self) { habit in
                     Button(action: {
                         targetHabit = habit.id
@@ -34,7 +34,7 @@ struct HabitSelector: View {
                             }
                         }
                     }
-                    .rowBackground()
+                    .flatRowBackground()
                 }
                 Button(action: {
                     targetHabit = nil
@@ -46,10 +46,12 @@ struct HabitSelector: View {
                             .bodyText()
                         Spacer()
                     }
-                    .rowBackground()
+                    .flatRowBackground()
                 }
             }
-            .padding(.top, 1)
+            .padding(.top, 10)
         }
+        .padding(.top, 1)
+        .navigationBarTitle(Text("Habit List".localized), displayMode: .inline)
     }
 }

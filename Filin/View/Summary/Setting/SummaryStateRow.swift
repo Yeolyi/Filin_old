@@ -52,7 +52,7 @@ struct SummaryStateRow: View {
                     .opacity(0)
             }
         }
-        .rowBackground()
+        .flatRowBackground()
     }
 }
 

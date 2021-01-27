@@ -11,27 +11,18 @@ struct ProfileSettingView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var summaryManager: SummaryManager
-
+    
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    HStack {
-                        Text("Summary Setting".localized)
-                            .headline()
-                        Spacer()
-                    }
-                    .padding(20)
-                    Divider()
-                }
-                ScrollView {
+            ScrollView {
+                VStack(spacing: 5) {
                     SummaryStateRow(num: 1, targetHabit: $summaryManager.contents[0].first)
                     SummaryStateRow(num: 2, targetHabit: $summaryManager.contents[0].second)
                     SummaryStateRow(num: 3, targetHabit: $summaryManager.contents[0].third)
                 }
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
+            .padding(.top, 1)
+            .navigationBarTitle("Summary Setting".localized)
             .accentColor(ThemeColor.mainColor(colorScheme))
         }
     }
