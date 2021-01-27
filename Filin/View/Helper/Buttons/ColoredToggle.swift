@@ -16,6 +16,7 @@ struct ColoredToggleStyle: ToggleStyle {
             Button(action: {
                 withAnimation {
                     configuration.isOn.toggle()
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
             }) {
                 RoundedRectangle(cornerRadius: 16, style: .circular)
