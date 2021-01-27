@@ -59,6 +59,7 @@ class FlRoutine: CoreDataConvertable {
         target.name = name
         target.list = list.map(\.id)
         target.time = time?.hourAndMinuteStr
+        target.dayOfWeek = Array(dayOfWeek).map(Int16.init)
     }
 }
 
