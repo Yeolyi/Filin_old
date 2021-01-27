@@ -31,7 +31,7 @@ struct HabitDetailView: View {
     }
     var body: some View {
         ScrollView {
-            VStack(spacing: 15) {
+            VStack(spacing: 10) {
                 RingCalendar(selectedDate: $selectedDate, habit1: habit)
                 TodayInformation(selectedDate: $selectedDate)
                 EmojiPicker(

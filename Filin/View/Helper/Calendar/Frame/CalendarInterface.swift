@@ -34,6 +34,15 @@ struct CalendarInterface<Content: View>: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            HStack {
+                Text(isExpanded ? selectedDate.localizedYearMonth : selectedDate.localizedMonthDay)
+                    .foregroundColor(color)
+                    .headline()
+                Spacer()
+                controller
+            }
+            .padding(.bottom, 15)
+            .padding(.horizontal, 10)
             VStack(spacing: 0) {
                 if showCalendarSelect {
                     DatePicker("", selection: $selectedDate, displayedComponents: .date)
@@ -41,13 +50,6 @@ struct CalendarInterface<Content: View>: View {
                         .labelsHidden()
                         .frame(maxWidth: .infinity)
                 } else {
-                    HStack {
-                        Text(isExpanded ? selectedDate.localizedYearMonth : selectedDate.localizedMonthDay)
-                        .foregroundColor(color)
-                        .headline()
-                        Spacer()
-                    }
-                    .padding(.bottom, 8)
                     VStack(spacing: 0) {
                         HStack(spacing: 8) {
                             ForEach(
@@ -82,40 +84,32 @@ struct CalendarInterface<Content: View>: View {
                     }
                 }
             }
-            .rowBackground(innerBottomPadding: false)
-            controller
         }
+        .rowBackground(innerBottomPadding: false)
     }
     
     var controller: some View {
-        HStack(spacing: 5) {
-            Button(action: { withAnimation { isEmojiView.toggle() } }) {
-                HStack {
-                    Spacer()
-                    BasicImage(imageName: isEmojiView ? "percent" : "face.smiling")
-                    Text(isEmojiView ? "Show progress".localized : "Show Emoji".localized)
-                        .bodyText()
-                    Spacer()
-                }
-                .flatRowBackground(innerBottomPadding: true, 10, 0)
+        HStack(spacing: 15) {
+            BasicButton(isEmojiView ? "percent" : "face.smiling") {
+                withAnimation { isEmojiView.toggle() }
             }
-            Button(action: { withAnimation { showCalendarSelect.toggle() } }) {
-                HStack {
-                    Spacer()
-                    BasicImage(imageName: showCalendarSelect ? "checkmark" : "calendar")
-                    Text(showCalendarSelect ? "Done" : "Select Date")
-                        .bodyText()
-                    Spacer()
-                }
-                .flatRowBackground(innerBottomPadding: true, 10, 0)
+            BasicButton(showCalendarSelect ? "checkmark" : "calendar") {
+                withAnimation { showCalendarSelect.toggle() }
             }
         }
+        .padding(.trailing, 10)
     }
 }
 
 struct CustomCalendar_Previews: PreviewProvider {
+    struct StateWrapper: View {
+        @State var selectedDate = Date()
+        var body: some View {
+            RingCalendar(selectedDate: $selectedDate, isExpanded: true, habit1: FlHabit.habit1)
+                .environmentObject(AppSetting())
+        }
+    }
     static var previews: some View {
-        RingCalendar(selectedDate: .constant(Date()), isExpanded: true, habit1: FlHabit.habit1)
-            .environmentObject(AppSetting())
+        StateWrapper()
     }
 }
