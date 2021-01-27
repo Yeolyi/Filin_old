@@ -12,6 +12,7 @@ struct HabitList: View {
     @State var isSheet = false
     @EnvironmentObject var habitManager: HabitManager
     @EnvironmentObject var appSetting: AppSetting
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         NavigationView {
@@ -40,7 +41,7 @@ struct HabitList: View {
                 isSheet = true
             }
         }
-        .accentColor(.black)
+        .accentColor(ThemeColor.mainColor(colorScheme))
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }

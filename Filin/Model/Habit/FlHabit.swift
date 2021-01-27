@@ -35,7 +35,7 @@ class FlHabit: CoreDataConvertable {
         achievement.addUnit = addUnit
     }
     
-    init(_ target: Habit) {
+    private init(_ target: Habit) {
         id = target.id
         name = target.name
         dayOfWeek = Set(target.dayOfWeek.map(Int.init))
@@ -45,6 +45,7 @@ class FlHabit: CoreDataConvertable {
             numberOfTimes: Int(target.numberOfTimes),
             addUnit: 0
         )
+        dailyEmoji = target.dailyEmoji
         requiredSec = Int(target.requiredSecond)
     }
     
