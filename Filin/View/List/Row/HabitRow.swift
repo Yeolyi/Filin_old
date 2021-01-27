@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVFoundation
 
 struct HabitRow: View {
     
@@ -15,10 +14,10 @@ struct HabitRow: View {
     @EnvironmentObject var appSetting: AppSetting
     @State var isTapping = false
     @State var activeSheet: DetailViewActiveSheet?
-    let date: Date
+    var date: Date?
     let showAdd: Bool
     
-    init(habit: FlHabit, showAdd: Bool, date: Date = Date()) {
+    init(habit: FlHabit, showAdd: Bool, date: Date? = nil) {
         self.habit = habit
         self.showAdd = showAdd
         self.date = date
@@ -41,7 +40,7 @@ struct HabitRow: View {
     var body: some View {
         HStack(spacing: 0) {
             if showAdd {
-                CheckButton(date: date)
+                CheckButton(date: date ?? appSetting.mainDate)
                     .environmentObject(habit)
             }
             NavigationLink(destination:
@@ -64,11 +63,15 @@ struct HabitRow: View {
                     }
                     if habit.dayOfWeek.contains(appSetting.mainDate.dayOfTheWeek) {
                         ZStack {
-                            LinearProgressBar(color: habit.color, progress: habit.achievement.progress(at: date) ?? 0)
+                            LinearProgressBar(
+                                color: habit.color,
+                                progress: habit.achievement.progress(at: date ?? appSetting.mainDate) ?? 0
+                            )
                             HStack {
                                 Spacer()
                                 Text("""
-                                    \(habit.achievement.content[date.dictKey] ?? 0)/\(habit.achievement.numberOfTimes)
+                                    \(habit.achievement.content[date?.dictKey ?? appSetting.mainDate.dictKey] ?? 0)/ \
+                                    \(habit.achievement.numberOfTimes)
                                     """)
                                     .mainColor()
                                     .opacity(0.8)
