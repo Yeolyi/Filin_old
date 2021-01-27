@@ -36,6 +36,7 @@ struct HabitList: View {
                     .environmentObject(habitManager)
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
             if appSetting.isFirstRun && habitManager.contents.isEmpty {
                 isSheet = true

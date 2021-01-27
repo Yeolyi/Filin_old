@@ -9,6 +9,23 @@ import SwiftUI
 
 class AppSetting: ObservableObject {
     
+    init() {
+        guard appGroupUpdated else {
+            let previousUserDefaults = UserDefaults(suiteName: "group.wannasleep.habitdiary")!
+            for key in ["runCount", "defaultTap", "mondayCalendar", "dayResetTime", "addUnit"] {
+                guard let data = previousUserDefaults.object(forKey: key) as? Data else {
+                    return
+                }
+                UserDefaults.snuYum.set(data, forKey: key)
+            }
+            appGroupUpdated = true
+            return
+        }
+    }
+    
+    @AutoSave("appGroupUpdated", defaultValue: false)
+    var appGroupUpdated: Bool
+    
     @AutoSave("runCount", defaultValue: 0)
     var runCount: Int
     
@@ -45,4 +62,7 @@ class AppSetting: ObservableObject {
             return Date().addDate(-1)!
         }
     }
+    
+    static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+
 }

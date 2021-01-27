@@ -24,7 +24,6 @@ struct AutoSave<T: Codable> {
                 // Return defaultValue when no data in UserDefaults
                 return defaultValue
             }
-
             // Convert data to the desire data type
             let value = try? JSONDecoder().decode(T.self, from: data)
             return value ?? defaultValue
@@ -39,5 +38,5 @@ struct AutoSave<T: Codable> {
 }
 
 extension UserDefaults {
-    static let snuYum = UserDefaults(suiteName: "group.wannasleep.habitdiary")!
+    static let snuYum = UserDefaults(suiteName: "group.wannasleep.filin")!
 }

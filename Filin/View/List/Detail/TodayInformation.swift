@@ -60,9 +60,9 @@ struct TodayInformation: View {
             withAnimation {
                 habit.achievement.set(at: selectedDate, using: { val, addUnit in
                     if isAdd {
-                        return val + addUnit
+                        return val + (isSetMode ? addUnit : 1)
                     } else {
-                        return val - addUnit
+                        return val - (isSetMode ? addUnit : 1)
                     }
                 })
             }
