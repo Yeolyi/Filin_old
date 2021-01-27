@@ -35,7 +35,7 @@ struct RoutineSetList: View {
                         }
                     }
                 }
-                .rowBackground()
+                .flatRowBackground()
             }
             .padding(.bottom, 8)
             VStack(spacing: 0) {

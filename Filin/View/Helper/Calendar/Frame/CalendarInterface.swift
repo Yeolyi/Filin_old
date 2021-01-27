@@ -33,7 +33,7 @@ struct CalendarInterface<Content: View>: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             VStack(spacing: 0) {
                 if showCalendarSelect {
                     DatePicker("", selection: $selectedDate, displayedComponents: .date)
@@ -42,13 +42,7 @@ struct CalendarInterface<Content: View>: View {
                         .frame(maxWidth: .infinity)
                 } else {
                     HStack {
-                        Group {
-                            if isExpanded {
-                                Text(selectedDate.localizedYearMonth)
-                            } else {
-                                Text(selectedDate.localizedMonthDay)
-                            }
-                        }
+                        Text(isExpanded ? selectedDate.localizedYearMonth : selectedDate.localizedMonthDay)
                         .foregroundColor(color)
                         .headline()
                         Spacer()
@@ -79,6 +73,7 @@ struct CalendarInterface<Content: View>: View {
                                 content(selectedDate.weekNum(startFromMon: appSetting.isMondayStart), false)
                             }
                         }
+                        .animation(nil)
                         BasicButton(isExpanded ? "chevron.compact.up" : "chevron.compact.down") {
                             withAnimation {
                                 self.isExpanded.toggle()
@@ -90,7 +85,6 @@ struct CalendarInterface<Content: View>: View {
             .rowBackground(innerBottomPadding: false)
             controller
         }
-        .padding(.bottom, 5)
     }
     
     var controller: some View {
@@ -103,8 +97,7 @@ struct CalendarInterface<Content: View>: View {
                         .bodyText()
                     Spacer()
                 }
-                .rowBackground(innerBottomPadding: true, 10, 0)
-                .padding(.bottom, 3)
+                .flatRowBackground(innerBottomPadding: true, 10, 0)
             }
             Button(action: { withAnimation { showCalendarSelect.toggle() } }) {
                 HStack {
@@ -114,8 +107,7 @@ struct CalendarInterface<Content: View>: View {
                         .bodyText()
                     Spacer()
                 }
-                .rowBackground(innerBottomPadding: true, 10, 0)
-                .padding(.bottom, 3)
+                .flatRowBackground(innerBottomPadding: true, 10, 0)
             }
         }
     }

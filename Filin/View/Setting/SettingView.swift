@@ -39,7 +39,7 @@ struct SettingView: View {
                             }
                         }
                     }
-                    .rowBackground()
+                    .flatRowBackground()
                     .actionSheet(isPresented: $isTapSetting) {
                         ActionSheet(
                             title: Text("Choose Tab".localized),
@@ -59,7 +59,7 @@ struct SettingView: View {
                             .subColor()
                             .bodyText()
                     }
-                    .rowBackground()
+                    .flatRowBackground()
                     .onTapGesture { isEndOfDaySetting = true }
                     .actionSheet(isPresented: $isEndOfDaySetting) {
                         ActionSheet(
@@ -82,7 +82,7 @@ struct SettingView: View {
                         Spacer()
                         PaperToggle($appSetting.isMondayStart)
                     }
-                    .rowBackground()
+                    .flatRowBackground()
                     #if DEBUG
                     Button(action: {
                         _ = DataSample.shared
@@ -95,7 +95,7 @@ struct SettingView: View {
                         .onTapGesture {
                             
                         }
-                        .rowBackground()
+                        .flatRowBackground()
                     }
                     #endif
                 }
