@@ -36,7 +36,10 @@ struct AddHabit: View {
                 DateSection(dayOfTheWeek: $tempHabit.dayOfWeek)
             }
             if currentPage == 3 {
-                TimesSection(numberOfTimes: $tempHabit.achievement.numberOfTimes, addUnit: $tempHabit.addUnit)
+                TimesSection(
+                    numberOfTimes: $tempHabit.achievement.numberOfTimes,
+                    addUnit: $tempHabit.achievement.addUnit
+                )
             }
             if currentPage == 4 {
                 TimerSection(time: $tempHabit.requiredSec)

@@ -37,7 +37,7 @@ final class HabitManager: DataBridge {
     
     func save() {
         for flHabit in contents {
-            addUnit[flHabit.id] = flHabit.addUnit
+            addUnit[flHabit.id] = flHabit.achievement.addUnit
             if let index = fetched.firstIndex(where: {$0.id == flHabit.id}) {
                 flHabit.copyValues(to: fetched[index])
             } else {

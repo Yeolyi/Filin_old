@@ -14,7 +14,6 @@ class FlHabit: CoreDataConvertable {
     typealias DateKey = String
     
     let id: UUID
-    @Published var addUnit = 1
     @Published var name: String
     @Published var dayOfWeek: Set<Int> = [1, 2, 3, 4, 5, 6, 7]
     @Published var color: Color = .blue
@@ -67,7 +66,7 @@ class FlHabit: CoreDataConvertable {
         self.color = habit.color
         self.achievement.numberOfTimes = habit.achievement.numberOfTimes
         self.requiredSec = habit.requiredSec
-        self.addUnit = habit.addUnit
+        self.achievement.addUnit = habit.achievement.addUnit
     }
     
     func isTodo(at dayOfWeekInt: Int) -> Bool {

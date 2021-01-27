@@ -48,10 +48,10 @@ struct EditHabit: View {
         Binding(get: { _isSet}, set: {
             _isSet = $0
             if $0 {
-                tempHabit.addUnit = tempHabit.achievement.numberOfTimes
+                tempHabit.achievement.addUnit = tempHabit.achievement.numberOfTimes
                 _setNum = 1
             } else {
-                tempHabit.addUnit = 1
+                tempHabit.achievement.addUnit = 1
             }
         })
     }
@@ -65,8 +65,8 @@ struct EditHabit: View {
     }
     
     var oneTapNum: Binding<Int> {
-        Binding(get: {tempHabit.addUnit}, set: {
-            tempHabit.addUnit = $0
+        Binding(get: {tempHabit.achievement.addUnit}, set: {
+            tempHabit.achievement.addUnit = $0
             tempHabit.achievement.numberOfTimes = _setNum * $0
         })
     }
@@ -79,13 +79,13 @@ struct EditHabit: View {
         self.targetHabit = targetHabit
         tempHabit = FlHabit(name: "Temp")
         __setNum = State(
-            initialValue: targetHabit.addUnit != 1 ?
+            initialValue: targetHabit.achievement.addUnit != 1 ?
                 targetHabit.achievement.numberOfTimes / targetHabit.achievement.addUnit : 1
         )
         __minute = State(initialValue: targetHabit.requiredSec/60)
         __second = State(initialValue: targetHabit.requiredSec%60)
         __isRequiredTime = State(initialValue: targetHabit.requiredSec != 0)
-        __isSet = State(initialValue: targetHabit.addUnit != 1)
+        __isSet = State(initialValue: targetHabit.achievement.addUnit != 1)
         tempHabit.update(to: targetHabit)
     }
     

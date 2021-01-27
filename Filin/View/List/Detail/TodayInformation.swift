@@ -17,7 +17,7 @@ struct TodayInformation: View {
     @State var isExpanded = false
     
     var setAvailable: Bool {
-        return habit.addUnit != 1
+        return habit.achievement.addUnit != 1
     }
     
     var body: some View {
@@ -31,7 +31,7 @@ struct TodayInformation: View {
                     .headline()
                 Spacer()
                 if setAvailable {
-                    BasicTextButton(isSetMode ? "±\(habit.addUnit)" : "±1") { isSetMode.toggle() }
+                    BasicTextButton(isSetMode ? "±\(habit.achievement.addUnit)" : "±1") { isSetMode.toggle() }
                 }
             }
             HStack {
@@ -57,15 +57,14 @@ struct TodayInformation: View {
     }
     func moveButton(isAdd: Bool) -> some View {
         BasicButton(isAdd ? "plus" : "minus") {
-            let addVal = isSetMode ? habit.addUnit : 1
             withAnimation {
-                if isAdd {
-                    habit.achievement.content[selectedDate.dictKey] =
-                        (habit.achievement.content[selectedDate.dictKey] ?? 0) + addVal
-                } else {
-                    habit.achievement.content[selectedDate.dictKey] =
-                        max(0, (habit.achievement.content[selectedDate.dictKey] ?? 0) - addVal)
-                }
+                habit.achievement.set(at: selectedDate, using: { val, addUnit in
+                    if isAdd {
+                        return val + addUnit
+                    } else {
+                        return val - addUnit
+                    }
+                })
             }
             if habit.achievement.content[selectedDate.dictKey] == 0 {
                 habit.achievement.content[selectedDate.dictKey] = nil
