@@ -22,7 +22,24 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (SimpleEntry) -> Void
     ) {
-        let entry = SimpleEntry(date: Date(), configuration: configuration)
+        let intent = SelectWidgetHabitIntent()
+        if !WidgetBridge.todayAchievements.isEmpty {
+            let firstHabit = WidgetBridge.todayAchievements[0]
+            let habitCompact = HabitCompact(identifier: firstHabit.id.uuidString, display: firstHabit.name)
+            habitCompact.name = firstHabit.name
+            intent.habit = habitCompact
+        } else {
+            let id = UUID()
+            WidgetBridge.todayAchievements = [
+                HabitWidgetData(
+                    id: id, name: "Stretching".localized,
+                    numberOfTimes: 10, current: 6, colorHex: ThemeColor.colorList[0].hex
+                )
+            ]
+            let habitCompact = HabitCompact(identifier: id.uuidString, display: "Stretching".localized)
+            intent.habit = habitCompact
+        }
+        let entry = SimpleEntry(date: Date(), configuration: intent)
         completion(entry)
     }
     
@@ -61,7 +78,8 @@ struct HabitWidget: Widget {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             HabitWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .supportedFamilies([.systemSmall])
+        .configurationDisplayName("Today's goal".localized)
+        .description("Check the progress of the goal at a glance.")
     }
 }
