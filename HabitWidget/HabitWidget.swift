@@ -13,6 +13,10 @@ struct Provider: IntentTimelineProvider {
     
     typealias ConfigurationIntent = SelectWidgetHabitIntent
     
+    /// 다음 날 정보를 보여줄 시간 설정. 시간 단위. 기본값 0(24시)
+    @AutoSave("dayResetTime", defaultValue: 0)
+    var dayResetTime: Int
+    
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(), configuration: ConfigurationIntent())
     }
@@ -33,7 +37,7 @@ struct Provider: IntentTimelineProvider {
             WidgetBridge.todayAchievements = [
                 HabitWidgetData(
                     id: id, name: "Stretching".localized,
-                    numberOfTimes: 10, current: 6, colorHex: ThemeColor.colorList[0].hex
+                    numberOfTimes: 10, current: 6, colorHex: ThemeColor.colorList[0].hex, day: 1
                 )
             ]
             let habitCompact = HabitCompact(identifier: id.uuidString, display: "Stretching".localized)
@@ -48,17 +52,11 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<SimpleEntry>) -> Void
     ) {
-        var entries: [SimpleEntry] = []
-        
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+        var nextDate = Calendar.current.date(bySettingHour: dayResetTime, minute: 0, second: 0, of: Date())!
+        nextDate = nextDate.addingTimeInterval(86400)
+        let entry = SimpleEntry(date: Date(), configuration: configuration)
+        let nextEntry = SimpleEntry(date: nextDate, configuration: configuration)
+        let timeline = Timeline(entries: [entry, nextEntry], policy: .atEnd)
         completion(timeline)
     }
 }
@@ -81,5 +79,20 @@ struct HabitWidget: Widget {
         .supportedFamilies([.systemSmall])
         .configurationDisplayName("Today's goal".localized)
         .description("Check the progress of the goal at a glance.")
+    }
+}
+
+extension Date {
+    var day: Int {
+        Calendar.current.component(.day, from: self)
+    }
+    var hour: Int {
+        Calendar.current.component(.hour, from: self)
+    }
+    func addDate(_ num: Int) -> Date? {
+        var dayComponent = DateComponents()
+        dayComponent.day = num
+        let calendar = Calendar.current
+        return calendar.date(byAdding: dayComponent, to: self)
     }
 }

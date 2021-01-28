@@ -13,6 +13,7 @@ struct HabitWidgetData: Codable {
     let numberOfTimes: Int
     let current: Int
     let colorHex: String
+    let day: Int
 }
 
 class WidgetBridge {

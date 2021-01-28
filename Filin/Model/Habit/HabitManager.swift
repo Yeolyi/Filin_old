@@ -51,8 +51,8 @@ final class HabitManager: DataBridge {
                 .init(
                     id: flHabit.id, name: flHabit.name,
                     numberOfTimes: flHabit.achievement.numberOfTimes,
-                    current: flHabit.achievement.content[Date().dictKey] ?? 0,
-                    colorHex: flHabit.color.hex
+                    current: flHabit.achievement.content[AppSetting().mainDate.dictKey] ?? 0,
+                    colorHex: flHabit.color.hex, day: AppSetting().mainDate.day
                 )
             )
         }
