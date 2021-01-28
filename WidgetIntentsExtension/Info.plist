@@ -30,7 +30,7 @@
 			<array/>
 			<key>IntentsSupported</key>
 			<array>
-				<string>SelectHabitIntent</string>
+				<string>SelectWidgetHabitIntent</string>
 			</array>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>

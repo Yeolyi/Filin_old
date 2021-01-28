@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct WidgetHabitData: Codable {
+struct HabitWidgetData: Codable {
     let id: UUID
     let name: String
     let numberOfTimes: Int
     let current: Int
+    let colorHex: String
 }
 
-class WidgetDataManager {
+class WidgetBridge {
     @AutoSave("todayAchievements", defaultValue: [])
-    static var todayAchievements: [WidgetHabitData]
+    static var todayAchievements: [HabitWidgetData]
 }

@@ -33,7 +33,7 @@
 	<string>달력 이미지를 저장하기 위해서 권한이 필요합니다.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>SelectHabitIntent</string>
+		<string>SelectWidgetHabitIntent</string>
 		<string>SelectedHabitIntent</string>
 	</array>
 	<key>UIAppFonts</key>

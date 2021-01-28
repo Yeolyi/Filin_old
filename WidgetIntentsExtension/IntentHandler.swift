@@ -7,21 +7,20 @@
 
 import Intents
 
-class IntentHandler: INExtension, SelectHabitIntentHandling {
+class IntentHandler: INExtension, SelectWidgetHabitIntentHandling {
     
     @AutoSave("todayAchievements", defaultValue: [])
-    var todayAchievements: [WidgetHabitData]
+    var todayAchievements: [HabitWidgetData]
     
     func provideHabitOptionsCollection(
-        for intent: SelectHabitIntent,
-        with completion: @escaping (INObjectCollection<WidgetHabit>?, Error?) -> Void
+        for intent: SelectWidgetHabitIntent,
+        with completion: @escaping (INObjectCollection<HabitCompact>?, Error?) -> Void
     ) {
-        print("테스트")
-        let widgetHabitNames: [WidgetHabit] = todayAchievements.map(\.name).map { habitName in
-            let widgetHabitName = WidgetHabit(
-                identifier: UUID().uuidString, display: habitName
+        let widgetHabitNames: [HabitCompact] = todayAchievements.map { widgetHabit in
+            let widgetHabitName = HabitCompact(
+                identifier: widgetHabit.id.uuidString, display: widgetHabit.name
             )
-            widgetHabitName.name = habitName
+            widgetHabitName.name = widgetHabit.name
             return widgetHabitName
         }
         let collection = INObjectCollection(items: widgetHabitNames)

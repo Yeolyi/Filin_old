@@ -28,7 +28,7 @@
 			<key>INIntentLastParameterTag</key>
 			<integer>2</integer>
 			<key>INIntentName</key>
-			<string>SelectHabit</string>
+			<string>SelectWidgetHabit</string>
 			<key>INIntentParameters</key>
 			<array>
 				<dict>
@@ -43,7 +43,7 @@
 					<key>INIntentParameterName</key>
 					<string>habit</string>
 					<key>INIntentParameterObjectType</key>
-					<string>WidgetHabit</string>
+					<string>HabitCompact</string>
 					<key>INIntentParameterObjectTypeNamespace</key>
 					<string>88xZPY</string>
 					<key>INIntentParameterPromptDialogs</key>
@@ -86,7 +86,7 @@
 				</array>
 			</dict>
 			<key>INIntentTitle</key>
-			<string>Select Habit</string>
+			<string>Select Widget Habit</string>
 			<key>INIntentTitleID</key>
 			<string>gpCwrM</string>
 			<key>INIntentType</key>
@@ -99,13 +99,13 @@
 	<array>
 		<dict>
 			<key>INTypeDisplayName</key>
-			<string>Widget Habit</string>
+			<string>Habit Compact</string>
 			<key>INTypeDisplayNameID</key>
 			<string>x2bXwv</string>
 			<key>INTypeLastPropertyTag</key>
 			<integer>100</integer>
 			<key>INTypeName</key>
-			<string>WidgetHabit</string>
+			<string>HabitCompact</string>
 			<key>INTypeProperties</key>
 			<array>
 				<dict>

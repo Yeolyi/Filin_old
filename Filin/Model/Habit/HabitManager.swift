@@ -37,7 +37,7 @@ final class HabitManager: DataBridge {
     }
     
     func save() {
-        var widgetDataList: [WidgetHabitData] = []
+        var widgetDataList: [HabitWidgetData] = []
         for flHabit in contents {
             addUnit[flHabit.id] = flHabit.achievement.addUnit
             if let index = fetched.firstIndex(where: {$0.id == flHabit.id}) {
@@ -51,15 +51,15 @@ final class HabitManager: DataBridge {
                 .init(
                     id: flHabit.id, name: flHabit.name,
                     numberOfTimes: flHabit.achievement.numberOfTimes,
-                    current: flHabit.achievement.content[Date().dictKey] ?? 0
+                    current: flHabit.achievement.content[Date().dictKey] ?? 0,
+                    colorHex: flHabit.color.hex
                 )
             )
         }
-        WidgetDataManager.todayAchievements = widgetDataList
+        WidgetBridge.todayAchievements = widgetDataList
         if #available(iOS 14.0, *) {
-        WidgetCenter.shared.reloadAllTimelines()
+            WidgetCenter.shared.reloadAllTimelines()
         }
-        print(WidgetDataManager.todayAchievements)
         mocSave()
         for id in deletedIDs {
             if let habit = fetched.first(where: {$0.id == id}) {
