@@ -62,7 +62,7 @@ struct TodayInformation: View {
                     if isAdd {
                         return val + (isSetMode ? addUnit : 1)
                     } else {
-                        return val - (isSetMode ? addUnit : 1)
+                        return max(0, val - (isSetMode ? addUnit : 1))
                     }
                 })
             }
