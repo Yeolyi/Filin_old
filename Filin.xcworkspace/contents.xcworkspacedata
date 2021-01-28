@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/seongyeolyi/Desktop/Filin/Filin/Filin/View/Helper/View/lottieStack.json">
-   </FileRef>
-   <FileRef
       location = "group:Filin.xcodeproj">
    </FileRef>
    <FileRef

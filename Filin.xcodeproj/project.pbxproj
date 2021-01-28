@@ -37,6 +37,7 @@
 		2530711925BBE57D002AC0C6 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2530711825BBE57D002AC0C6 /* Achievement.swift */; };
 		2532DC762598F49D006DBA25 /* RoutineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2532DC752598F49D006DBA25 /* RoutineDate.swift */; };
 		2532DC7F2598F70B006DBA25 /* RoutineNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2532DC7E2598F70B006DBA25 /* RoutineNotification.swift */; };
+		253F65C125C306D1009213C8 /* lottieStack.json in Resources */ = {isa = PBXBuildFile; fileRef = 253F65B925C306AF009213C8 /* lottieStack.json */; };
 		25498A4D25BC045700283E71 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25498A4C25BC045700283E71 /* Palette.swift */; };
 		25498A5125BC048800283E71 /* PaletteProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25498A5025BC048800283E71 /* PaletteProtocol.swift */; };
 		25522D5625BC117900243C18 /* RowPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25522D5525BC117900243C18 /* RowPadding.swift */; };
@@ -133,7 +134,6 @@
 		25F887FA259509B300BC2D6A /* AddRoutine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F887F9259509B300BC2D6A /* AddRoutine.swift */; };
 		25F888252596201600BC2D6A /* RoutineListSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F888242596201600BC2D6A /* RoutineListSet.swift */; };
 		25FAA533259F7DEF0042E8A5 /* EditableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FAA532259F7DEF0042E8A5 /* EditableList.swift */; };
-		25FC34EC25A03BBD000B5844 /* lottieStack.json in Resources */ = {isa = PBXBuildFile; fileRef = 25FC34EA25A03A66000B5844 /* lottieStack.json */; };
 		25FC34F325A04559000B5844 /* PaperToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FC34F225A04559000B5844 /* PaperToggle.swift */; };
 		25FC34FA25A067C9000B5844 /* TimerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FC34F925A067C9000B5844 /* TimerPicker.swift */; };
 		25FC350925A0873D000B5844 /* PickerWithButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FC350825A0873D000B5844 /* PickerWithButton.swift */; };
@@ -205,6 +205,7 @@
 		2530711825BBE57D002AC0C6 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		2532DC752598F49D006DBA25 /* RoutineDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDate.swift; sourceTree = "<group>"; };
 		2532DC7E2598F70B006DBA25 /* RoutineNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineNotification.swift; sourceTree = "<group>"; };
+		253F65B925C306AF009213C8 /* lottieStack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = lottieStack.json; path = ../../../../../../lottieStack.json; sourceTree = "<group>"; };
 		25498A4C25BC045700283E71 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		25498A5025BC048800283E71 /* PaletteProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteProtocol.swift; sourceTree = "<group>"; };
 		25522D5525BC117900243C18 /* RowPadding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowPadding.swift; sourceTree = "<group>"; };
@@ -366,6 +367,7 @@
 		2526686E259E542400C435D6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				253F65B925C306AF009213C8 /* lottieStack.json */,
 				257D94AC25852EA6007D4CF1 /* ConditionalModifier.swift */,
 				250823C42583F93A0005D7CE /* KeyboardController.swift */,
 				258B6B142582965F0004BFE7 /* ModalAllowAutoDismiss.swift */,
@@ -920,9 +922,9 @@
 				2563B5012582826B00731635 /* Preview Assets.xcassets in Resources */,
 				25277CE5258E1BB70026B8F3 /* .swiftlint.yml in Resources */,
 				2511363325B5DF3600BE5F10 /* lottiePlus.json in Resources */,
-				25FC34EC25A03BBD000B5844 /* lottieStack.json in Resources */,
 				25A564E725904F9D00239CF6 /* Localizable.strings in Resources */,
 				2563B4FE2582826B00731635 /* Assets.xcassets in Resources */,
+				253F65C125C306D1009213C8 /* lottieStack.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
