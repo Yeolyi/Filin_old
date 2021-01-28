@@ -87,8 +87,9 @@ extension FlHabit {
         } else {
             count = [Int](repeating: 14, count: 7)
             let firstDayofWeekIndex = firstDay.dayOfTheWeek
+            print(firstDayofWeekIndex)
             count[firstDayofWeekIndex + 1 > 6 ? 0 : firstDayofWeekIndex + 1] += 1
-            count[firstDayofWeekIndex + 2 > 6 ? firstDayofWeekIndex - 6 : firstDayofWeekIndex + 2] += 1
+            count[firstDayofWeekIndex + 2 > 6 ? firstDayofWeekIndex - 5 : firstDayofWeekIndex + 2] += 1
         }
         return dayOfWeekAchievement.enumerated().map { Double($1)/Double(max(1, count[$0])) }
     }
